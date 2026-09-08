@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍷 The Complete Wine Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --burgundy: #5a0f2b;
+    --deep-red: #7b1a35;
+    --rose: #c4617a;
+    --blush: #e8a0ae;
+    --cream: #f8f0e8;
+    --parchment: #f0e6d0;
+    --gold: #c9a84c;
+    --gold-light: #e8cc7a;
+    --warm-black: #1a0a0f;
+    --ink: #2a1520;
+    --white-wine: #e8d9a0;
+    --champagne: #f5e6b8;
+    --text-body: #3a1a28;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--warm-black);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* === HERO === */
+  .hero {
+    background: linear-gradient(160deg, #1a0510 0%, #3d0820 40%, #5a0f2b 70%, #2a0510 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(201,168,76,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 80% 20%, rgba(196,97,122,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 50% at 50% 50%, rgba(90,15,43,0.5) 0%, transparent 80%);
+    pointer-events: none;
+  }
+
+  .hero-decoration {
+    font-size: 7rem;
+    animation: float 4s ease-in-out infinite;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 40px rgba(196,97,122,0.6));
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-18px) rotate(3deg); }
+  }
+
+  .hero-subtitle-top {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--cream);
+    text-shadow: 0 2px 40px rgba(201,168,76,0.3), 0 0 80px rgba(90,15,43,0.8);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+    display: block;
+  }
+
+  .hero-desc {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--blush);
+    max-width: 500px;
+    margin: 1.5rem auto 2.5rem;
+    opacity: 0.9;
+  }
+
+  .divider-vine {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--gold);
+    font-size: 1.4rem;
+    margin: 1rem 0;
+    opacity: 0.7;
+  }
+
+  .divider-vine::before, .divider-vine::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* === LAYOUT === */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* === TOC === */
+  .toc-section {
+    background: linear-gradient(135deg, #120510 0%, #1e0818 50%, #120510 100%);
+    border-top: 1px solid rgba(201,168,76,0.3);
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    padding: 4rem 2rem;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .toc-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 1.2rem 1.5rem;
+    text-decoration: none;
+    color: var(--cream);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .toc-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+    transform-origin: bottom;
+  }
+
+  .toc-card:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: var(--gold);
+    transform: translateX(6px);
+    color: var(--gold-light);
+  }
+
+  .toc-card:hover::before { transform: scaleY(1); }
+
+  .toc-icon { font-size: 1.4rem; flex-shrink: 0; }
+
+  .toc-card-text .toc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    display: block;
+  }
+
+  .toc-card-text .toc-sub {
+    font-size: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--blush);
+    letter-spacing: 0.05em;
+  }
+
+  /* === SECTION HEADERS === */
+  .section {
+    padding: 5rem 2rem;
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+  }
+
+  .section:nth-child(even) {
+    background: rgba(255,255,255,0.015);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.1;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  /* === TABLES === */
+  .wine-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.95rem;
+  }
+
+  .wine-table th {
+    background: rgba(201,168,76,0.15);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 1rem 1.2rem;
+    text-align: left;
+    border-bottom: 2px solid rgba(201,168,76,0.3);
+  }
+
+  .wine-table td {
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    vertical-align: top;
+  }
+
+  .wine-table tr:hover td {
+    background: rgba(201,168,76,0.05);
+  }
+
+  .wine-table td strong {
+    color: var(--cream);
+  }
+
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--gold);
+    color: var(--warm-black);
+    border-radius: 50%;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+
+  .rank-badge.top3 {
+    background: linear-gradient(135deg, #c9a84c, #f5e6b8);
+  }
+
+  /* === WINE STYLE CARDS === */
+  .wine-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+
+  .wine-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .wine-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .wine-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .wine-card.red::before { background: linear-gradient(90deg, #7b1a35, #c4617a); }
+  .wine-card.white::before { background: linear-gradient(90deg, #c9a84c, #e8d9a0); }
+  .wine-card.rose::before { background: linear-gradient(90deg, #e8a0ae, #f5c6cf); }
+  .wine-card.sparkling::before { background: linear-gradient(90deg, #c9a84c, #f5f5dc); }
+  .wine-card.dessert::before { background: linear-gradient(90deg, #8b4513, #d4a017); }
+  .wine-card.fortified::before { background: linear-gradient(90deg, #4a0808, #8b4513); }
+
+  .wine-card-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .wine-card.red .wine-card-type { color: var(--rose); }
+  .wine-card.white .wine-card-type { color: var(--gold); }
+  .wine-card.rose .wine-card-type { color: var(--blush); }
+  .wine-card.sparkling .wine-card-type { color: var(--champagne); }
+  .wine-card.dessert .wine-card-type { color: #d4a017; }
+  .wine-card.fortified .wine-card-type { color: #c4a882; }
+
+  .wine-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .wine-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.9rem;
+  }
+
+  .wine-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+  }
+
+  .wine-stat-value { color: var(--cream); }
+
+  .wine-card-desc {
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+    margin: 1rem 0;
+    line-height: 1.6;
+  }
+
+  .grape-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+
+  .grape-tag {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--gold-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  /* === REGION SECTION === */
+  .region-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .region-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 1.8rem;
+    transition: all 0.3s ease;
+  }
+
+  .region-card:hover {
+    background: rgba(201,168,76,0.05);
+    border-color: rgba(201,168,76,0.3);
+  }
+
+  .region-flag { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+
+  .region-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+
+  .region-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .region-wines {
+    list-style: none;
+    font-size: 0.9rem;
+  }
+
+  .region-wines li {
+    padding: 0.25rem 0;
+    color: rgba(255,255,255,0.75);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .region-wines li::before {
+    content: '◆';
+    color: var(--gold);
+    font-size: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  /* === DECISION TREE === */
+  .decision-tree {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 8px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+  }
+
+  .decision-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .decision-row:last-child { border-bottom: none; }
+
+  .decision-q {
+    font-style: italic;
+    color: var(--blush);
+    font-size: 1.05rem;
+  }
+
+  .decision-arrow {
+    color: var(--gold);
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .decision-a {
+    color: var(--cream);
+    font-weight: 600;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+  }
+
+  /* === PAIRING TABLE === */
+  .pairing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .pairing-item {
+    background: rgba(255,255,255,0.025);
+    border-left: 3px solid var(--gold);
+    padding: 1.2rem 1.5rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .pairing-food {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+
+  .pairing-wine {
+    font-size: 0.85rem;
+    color: var(--blush);
+    font-style: italic;
+  }
+
+  /* === QUICK REFERENCE CHARTS === */
+  .chart-box {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+  }
+
+  .chart-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .tannin-scale {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0.5rem 0;
+  }
+
+  .scale-dot {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  .dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* === TERMINOLOGY === */
+  .term-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .term-item {
+    background: rgba(255,255,255,0.025);
+    border-radius: 6px;
+    padding: 1.2rem 1.5rem;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .term-word {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .term-def {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+  }
+
+  /* === SERVING TEMPS === */
+  .temp-bar-container {
+    margin: 1rem 0;
+  }
+
+  .temp-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 80px;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+
+  .temp-label { color: var(--cream); }
+
+  .temp-bar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    height: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .temp-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #3a8fbf, #c4617a, #8b1a2a);
+  }
+
+  .temp-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gold);
+    text-align: right;
+  }
+
+  /* === ALPHABETICAL INDEX === */
+  .index-section {
+    background: linear-gradient(180deg, #120510 0%, #0e0310 100%);
+    padding: 5rem 2rem;
+  }
+
+  .index-letter-group { margin-bottom: 2.5rem; }
+
+  .index-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--gold);
+    opacity: 0.4;
+    line-height: 1;
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    padding-bottom: 0.3rem;
+  }
+
+  .index-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+  }
+
+  .index-link {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+    font-style: italic;
+  }
+
+  .index-link:hover { color: var(--gold-light); }
+
+  .index-link .index-category {
+    font-style: normal;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.3);
+    margin-left: 0.3rem;
+  }
+
+  .index-grid {
+    max-width: 1000px;
+    margin: 0 auto;
+    columns: 2;
+    column-gap: 3rem;
+  }
+
+  @media (max-width: 600px) {
+    .index-grid { columns: 1; }
+    .decision-row { grid-template-columns: 1fr; text-align: center; }
+    .temp-row { grid-template-columns: 1fr; }
+  }
+
+  /* === FOOTER === */
+  .footer {
+    background: var(--warm-black);
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .footer-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+  .footer-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .footer-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.25);
+    margin-top: 1rem;
+    text-transform: uppercase;
+  }
+
+  /* SCROLL ANIMATION */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* === SECTION ANCHOR OFFSET === */
+  .anchor { scroll-margin-top: 2rem; }
+
+  /* smooth scroll */
+  html { scroll-behavior: smooth; }
+
+  /* highlighted text */
+  mark {
+    background: rgba(201,168,76,0.2);
+    color: var(--gold-light);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+  }
+
+  .tip-box {
+    background: rgba(201,168,76,0.07);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .tip-box::before {
+    content: '💡 ';
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-decoration">🍷</div>
+  <div class="hero-subtitle-top">The Complete Guide to</div>
+  <h1 class="hero-title">
+    The World of
+    <em>Wine</em>
+  </h1>
+  <p class="hero-desc">Grapes, Regions, Styles & Everything You Need to Know</p>
+  <div class="divider-vine">🍇</div>
+</section>
+
+<!-- TABLE OF CONTENTS -->
+<section class="toc-section" id="toc">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">Navigate</span>
+      <h2 class="section-title">📖 Quick <em>Navigation</em></h2>
+    </div>
+    <div class="toc-grid">
+      <a href="#top-wines" class="toc-card">
+        <span class="toc-icon">🏆</span>
+        <div class="toc-card-text">
+          <span class="toc-title">Top Wine Brands</span>
+          <span class="toc-sub">World's Most Famous</span>
+        </div>
+      </a>
+      <a href="#red-wines" class="toc-card">
+        <span class="toc-icon">🔴</span>
+        <div class="toc-card-text">
+          <span class="toc-title">Red Wines</span>
+          <span class="toc-sub">Cabernet to Pinot Noir</span>
+        </div>
+      </a>
+      <a href="#white-wines" class="toc-card">
+        <span class="toc-icon">🟡</span>
+        <div class="toc-card-text">
+          <span class="toc-title">White Wines</span>
+          <span class="toc-sub">Chardonnay to Riesling</span>
+        </div>
+      </a>
+      <a href="#rose-sparkling" class="toc-card">
+        <span class="toc-icon">🌸</span>
+        <div class="toc-card-text">
+          <span class="toc-title">Rosé & Sparkling</span>
+          <span class="toc-sub">Champagne, Prosecco & more</span>
+        </div>
+      </a>
+      <a href="#dessert-fortified" class="toc-card">
+        <span class="toc-icon">🍯</span>
+        <div class="toc-card-text">
+          <span class="toc-title">Dessert & Fortified</span>
+          <span class="toc-sub">Port, Sherry, Ice Wine</span>
+        </div>
+      </a>
+      <a href="#regions" class="toc-card">
+        <span class="toc-icon">🌍</span>
+        <div class="toc-card-text">
+          <span class="toc-title">Regions by Country</span>
+          <span class="toc-sub">Old World vs New World</span>
+        </div>
+      </a>
+      <a href="#how-to-choose" class="toc-card">
+        <span class="toc-icon">🎯</span>
+        <div class="toc-card-text">
+          <span class="toc-title">How to Choose</span>
+          <span class="toc-sub">Decision Guide</span>
+        </div>
+      </a>
+      <a href="#pairing" class="toc-card">
+        <span class="toc-icon">🍽️</span>
+        <div class="toc-card-text">
+          <span class="toc-title">Food Pairing</span>
+          <span class="toc-sub">Classic Combinations</span>
+        </div>
+      </a>
+      <a href="#serving" class="toc-card">
+        <span class="toc-icon">🌡️</span>
+        <div class="toc-card-text">
+          <span class="toc-title">Serving & Storage</span>
+          <span class="toc-sub">Temperature, Glassware</span>
+        </div>
+      </a>
+      <a href="#quick-ref" class="toc-card">
+        <span class="toc-icon">📊</span>
+        <div class="toc-card-text">
+          <span class="toc-title">Quick Reference</span>
+          <span class="toc-sub">Charts & Scales</span>
+        </div>
+      </a>
+      <a href="#terminology" class="toc-card">
+        <span class="toc-icon">📚</span>
+        <div class="toc-card-text">
+          <span class="toc-title">Wine Terminology</span>
+          <span class="toc-sub">Glossary of Terms</span>
+        </div>
+      </a>
+      <a href="#index" class="toc-card">
+        <span class="toc-icon">🔤</span>
+        <div class="toc-card-text">
+          <span class="toc-title">A–Z Index</span>
+          <span class="toc-sub">Alphabetical Reference</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TOP WINE BRANDS -->
+<section class="section anchor" id="top-wines">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">Global Prestige</span>
+      <h2 class="section-title">🏆 Top Wine <em>Brands</em> Worldwide</h2>
+    </div>
+    <div class="fade-in">
+      <table class="wine-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Brand</th>
+            <th>Origin</th>
+            <th>Style</th>
+            <th>Known For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="rank-badge top3">1</span></td><td><strong>Barefoot</strong></td><td>🇺🇸 USA</td><td>Multiple</td><td>World's #1 wine brand by volume; approachable & affordable</td></tr>
+          <tr><td><span class="rank-badge top3">2</span></td><td><strong>Yellow Tail</strong></td><td>🇦🇺 Australia</td><td>Multiple</td><td>Fun, easy-drinking; iconic for wine newcomers</td></tr>
+          <tr><td><span class="rank-badge top3">3</span></td><td><strong>Beringer</strong></td><td>🇺🇸 California</td><td>Multiple</td><td>California's oldest continuously operating winery</td></tr>
+          <tr><td><span class="rank-badge">4</span></td><td><strong>Concha y Toro</strong></td><td>🇨🇱 Chile</td><td>Red / White</td><td>Latin America's most iconic winery; Casillero del Diablo</td></tr>
+          <tr><td><span class="rank-badge">5</span></td><td><strong>Moët & Chandon</strong></td><td>🇫🇷 France</td><td>Champagne</td><td>World's best-known Champagne brand</td></tr>
+          <tr><td><span class="rank-badge">6</span></td><td><strong>Santa Margherita</strong></td><td>🇮🇹 Italy</td><td>White (Pinot Grigio)</td><td>Popularized Pinot Grigio worldwide</td></tr>
+          <tr><td><span class="rank-badge">7</span></td><td><strong>Penfolds</strong></td><td>🇦🇺 Australia</td><td>Red</td><td>Grange – Australia's most celebrated wine</td></tr>
+          <tr><td><span class="rank-badge">8</span></td><td><strong>Meiomi</strong></td><td>🇺🇸 California</td><td>Pinot Noir</td><td>Silky, berry-forward; top-selling Pinot Noir in USA</td></tr>
+          <tr><td><span class="rank-badge">9</span></td><td><strong>Kim Crawford</strong></td><td>🇳🇿 New Zealand</td><td>Sauvignon Blanc</td><td>Benchmark NZ Sauvignon Blanc globally</td></tr>
+          <tr><td><span class="rank-badge">10</span></td><td><strong>Caymus</strong></td><td>🇺🇸 Napa Valley</td><td>Cabernet Sauvignon</td><td>Cult-status Napa Cab; consistently rated 90+ points</td></tr>
+          <tr><td><span class="rank-badge">11</span></td><td><strong>La Marca</strong></td><td>🇮🇹 Italy</td><td>Prosecco</td><td>#1 Prosecco brand in USA</td></tr>
+          <tr><td><span class="rank-badge">12</span></td><td><strong>Josh Cellars</strong></td><td>🇺🇸 California</td><td>Multiple</td><td>Fastest-growing wine brand in USA history</td></tr>
+          <tr><td><span class="rank-badge">13</span></td><td><strong>Kendall-Jackson</strong></td><td>🇺🇸 California</td><td>Chardonnay</td><td>America's best-selling Chardonnay for decades</td></tr>
+          <tr><td><span class="rank-badge">14</span></td><td><strong>Robert Mondavi</strong></td><td>🇺🇸 Napa Valley</td><td>Multiple</td><td>Pioneer of California fine wine on the world stage</td></tr>
+          <tr><td><span class="rank-badge">15</span></td><td><strong>Château Margaux</strong></td><td>🇫🇷 Bordeaux</td><td>Red Bordeaux</td><td>Premier Grand Cru Classé; one of Bordeaux's "First Growths"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- RED WINES -->
+<section class="section anchor" id="red-wines">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">Bold & Complex</span>
+      <h2 class="section-title">🔴 Red <em>Wines</em></h2>
+    </div>
+    <div class="wine-cards fade-in">
+
+      <div class="wine-card red">
+        <div class="wine-card-type">Red Wine</div>
+        <div class="wine-card-name">Cabernet Sauvignon</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">13–15%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Tannins</span><span class="wine-stat-value">High</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Full</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">Medium–High</span></div>
+        <div class="wine-card-desc">The "King of Red Grapes." Dark fruit (blackcurrant, plum), cedar, tobacco, green bell pepper. Ages beautifully for decades.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Caymus</span>
+          <span class="grape-tag">Opus One</span>
+          <span class="grape-tag">Château Margaux</span>
+          <span class="grape-tag">Stag's Leap</span>
+          <span class="grape-tag">Jordan</span>
+        </div>
+      </div>
+
+      <div class="wine-card red">
+        <div class="wine-card-type">Red Wine</div>
+        <div class="wine-card-name">Pinot Noir</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">12–14%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Tannins</span><span class="wine-stat-value">Low</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Light–Medium</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">High</span></div>
+        <div class="wine-card-desc">The "Heartbreak Grape." Delicate, silky, cherry, raspberry, earthy mushroom. Burgundy's crown jewel. The most food-friendly red.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Meiomi</span>
+          <span class="grape-tag">Willamette Valley</span>
+          <span class="grape-tag">Belle Glos</span>
+          <span class="grape-tag">Domaine Drouhin</span>
+        </div>
+      </div>
+
+      <div class="wine-card red">
+        <div class="wine-card-type">Red Wine</div>
+        <div class="wine-card-name">Merlot</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">13–14.5%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Tannins</span><span class="wine-stat-value">Medium</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Medium–Full</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">Medium</span></div>
+        <div class="wine-card-desc">Soft, plummy, velvety. Plum, chocolate, bay leaf. Bordeaux's most planted grape. Smooth enough for beginners, complex enough for connoisseurs.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Duckhorn</span>
+          <span class="grape-tag">Pétrus</span>
+          <span class="grape-tag">Frog's Leap</span>
+          <span class="grape-tag">Markham</span>
+        </div>
+      </div>
+
+      <div class="wine-card red">
+        <div class="wine-card-type">Red Wine</div>
+        <div class="wine-card-name">Syrah / Shiraz</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">13–15%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Tannins</span><span class="wine-stat-value">High</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Full</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">Medium</span></div>
+        <div class="wine-card-desc">Inky, bold. Blackberry, pepper, smoked meat, violet. Called Syrah in France (Rhône), Shiraz in Australia. Penfolds Grange is the gold standard.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Penfolds Grange</span>
+          <span class="grape-tag">Crozes-Hermitage</span>
+          <span class="grape-tag">Two Hands</span>
+          <span class="grape-tag">K Vintners</span>
+        </div>
+      </div>
+
+      <div class="wine-card red">
+        <div class="wine-card-type">Red Wine</div>
+        <div class="wine-card-name">Zinfandel</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">14–16%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Tannins</span><span class="wine-stat-value">Medium</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Full</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">Medium</span></div>
+        <div class="wine-card-desc">America's own grape. Jammy blackberry, raspberry jam, black pepper, tobacco. Can be very high in alcohol. Sonoma and Lodi are the heartlands.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Ridge Geyserville</span>
+          <span class="grape-tag">Seghesio</span>
+          <span class="grape-tag">Ravenswood</span>
+          <span class="grape-tag">Turley</span>
+        </div>
+      </div>
+
+      <div class="wine-card red">
+        <div class="wine-card-type">Red Wine</div>
+        <div class="wine-card-name">Malbec</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">13–15%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Tannins</span><span class="wine-stat-value">Medium–High</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Full</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">Medium</span></div>
+        <div class="wine-card-desc">Argentina's national treasure. Purple, velvety, dark plum, cocoa, violet. Softer tannins than Cab Sauv. Great value for the price.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Catena Zapata</span>
+          <span class="grape-tag">Achaval Ferrer</span>
+          <span class="grape-tag">Clos de los Siete</span>
+          <span class="grape-tag">Trivento Reserve</span>
+        </div>
+      </div>
+
+      <div class="wine-card red">
+        <div class="wine-card-type">Red Wine · Italian</div>
+        <div class="wine-card-name">Sangiovese / Chianti</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">12–14%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Tannins</span><span class="wine-stat-value">High</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Medium–Full</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">High</span></div>
+        <div class="wine-card-desc">Italy's most planted grape. Tart cherry, tomato leaf, dried herbs, leather. Basis of Chianti, Brunello di Montalcino, and Vino Nobile.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Antinori</span>
+          <span class="grape-tag">Frescobaldi</span>
+          <span class="grape-tag">Banfi Brunello</span>
+          <span class="grape-tag">Ruffino</span>
+        </div>
+      </div>
+
+      <div class="wine-card red">
+        <div class="wine-card-type">Red Wine · Spanish</div>
+        <div class="wine-card-name">Tempranillo / Rioja</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">12.5–14%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Tannins</span><span class="wine-stat-value">Medium–High</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Medium–Full</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">Medium</span></div>
+        <div class="wine-card-desc">Spain's great red. Leather, dried fig, vanilla (from oak), cherry. Rioja Reserva and Gran Reserva offer excellent aging potential.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">CVNE</span>
+          <span class="grape-tag">Marqués de Riscal</span>
+          <span class="grape-tag">Muga Reserva</span>
+          <span class="grape-tag">La Rioja Alta</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHITE WINES -->
+<section class="section anchor" id="white-wines">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">Crisp & Aromatic</span>
+      <h2 class="section-title">🟡 White <em>Wines</em></h2>
+    </div>
+    <div class="wine-cards fade-in">
+
+      <div class="wine-card white">
+        <div class="wine-card-type">White Wine</div>
+        <div class="wine-card-name">Chardonnay</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">13–15%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Dry</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Medium–Full</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">Medium</span></div>
+        <div class="wine-card-desc">The world's most popular white grape. Unoaked: crisp apple, citrus. Oaked: creamy, buttery, vanilla. Made everywhere from Burgundy to California.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Kendall-Jackson</span>
+          <span class="grape-tag">Rombauer</span>
+          <span class="grape-tag">Sonoma-Cutrer</span>
+          <span class="grape-tag">Cakebread</span>
+          <span class="grape-tag">Pouilly-Fuissé</span>
+        </div>
+      </div>
+
+      <div class="wine-card white">
+        <div class="wine-card-type">White Wine</div>
+        <div class="wine-card-name">Sauvignon Blanc</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">12–14%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Dry</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Light–Medium</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">High</span></div>
+        <div class="wine-card-desc">Zesty, grassy, tropical. Grapefruit, passion fruit, cut grass, green pepper. New Zealand (Marlborough) produces the world's most vibrant examples.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Kim Crawford</span>
+          <span class="grape-tag">Cloudy Bay</span>
+          <span class="grape-tag">Sancerre</span>
+          <span class="grape-tag">Merry Edwards</span>
+        </div>
+      </div>
+
+      <div class="wine-card white">
+        <div class="wine-card-type">White Wine · German</div>
+        <div class="wine-card-name">Riesling</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">7–13%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Dry to Sweet</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Light</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">Very High</span></div>
+        <div class="wine-card-desc">Germany's noble grape. Peach, apricot, petrol (with age), lime blossom. Can range from bone-dry Spätlese to lusciously sweet Trockenbeerenauslese. Ages 20–50 years.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Dr. Loosen</span>
+          <span class="grape-tag">Egon Müller</span>
+          <span class="grape-tag">J.J. Prüm</span>
+          <span class="grape-tag">Chateau Ste. Michelle</span>
+        </div>
+      </div>
+
+      <div class="wine-card white">
+        <div class="wine-card-type">White Wine · Italian</div>
+        <div class="wine-card-name">Pinot Grigio / Pinot Gris</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">12–14%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Dry</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Light–Medium</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">Medium–High</span></div>
+        <div class="wine-card-desc">Italian style: light, crisp, lemon-citrus. Alsatian Pinot Gris: rich, spiced, honeyed. One grape, very different personalities depending on origin.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Santa Margherita</span>
+          <span class="grape-tag">Mezzacorona</span>
+          <span class="grape-tag">Cavit</span>
+          <span class="grape-tag">Trimbach (Alsace)</span>
+        </div>
+      </div>
+
+      <div class="wine-card white">
+        <div class="wine-card-type">White Wine · French</div>
+        <div class="wine-card-name">Viognier</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">13–15%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Dry</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Full</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">Low</span></div>
+        <div class="wine-card-desc">Heady and perfumed. Peach, apricot, jasmine, honeysuckle. Low acidity makes it feel rich and lush. Condrieu (Rhône) is the benchmark.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Condrieu</span>
+          <span class="grape-tag">Yalumba</span>
+          <span class="grape-tag">Tablas Creek</span>
+          <span class="grape-tag">Zaca Mesa</span>
+        </div>
+      </div>
+
+      <div class="wine-card white">
+        <div class="wine-card-type">White Wine · Spanish</div>
+        <div class="wine-card-name">Albariño</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">11.5–13.5%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Dry</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Body</span><span class="wine-stat-value">Light–Medium</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Acidity</span><span class="wine-stat-value">High</span></div>
+        <div class="wine-card-desc">Spain's most exciting white. Stone fruit, white peach, saline, lemon. Galicia's Rías Baixas is ground zero. Outstanding with seafood.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Burgáns</span>
+          <span class="grape-tag">Pazo de Señoráns</span>
+          <span class="grape-tag">Mar de Frades</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ROSÉ & SPARKLING -->
+<section class="section anchor" id="rose-sparkling">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">Celebration & Elegance</span>
+      <h2 class="section-title">🌸 Rosé & <em>Sparkling</em></h2>
+    </div>
+    <div class="wine-cards fade-in">
+
+      <div class="wine-card rose">
+        <div class="wine-card-type">Rosé Wine</div>
+        <div class="wine-card-name">Provence Rosé</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">12–13.5%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Color</span><span class="wine-stat-value">Pale salmon-pink</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Dry</span></div>
+        <div class="wine-card-desc">The world's most celebrated rosé region. Delicate strawberry, peach, herbs, mineral finish. Pale color is a mark of prestige. Summer in a glass.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Whispering Angel</span>
+          <span class="grape-tag">Miraval (Brad Pitt)</span>
+          <span class="grape-tag">Château d'Esclans</span>
+          <span class="grape-tag">Domaines Ott</span>
+        </div>
+      </div>
+
+      <div class="wine-card rose">
+        <div class="wine-card-type">Rosé Wine</div>
+        <div class="wine-card-name">White Zinfandel</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">8–10%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Color</span><span class="wine-stat-value">Bright pink</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Off-dry to Sweet</span></div>
+        <div class="wine-card-desc">America's most popular rosé style. Sweet, fruity, watermelon, strawberry candy. The gateway wine for millions. Lower alcohol, crowd-pleasing.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Beringer</span>
+          <span class="grape-tag">Sutter Home</span>
+          <span class="grape-tag">Woodbridge</span>
+        </div>
+      </div>
+
+      <div class="wine-card sparkling">
+        <div class="wine-card-type">Sparkling · France</div>
+        <div class="wine-card-name">Champagne</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">11.5–12.5%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Pressure</span><span class="wine-stat-value">6 atm (high)</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Method</span><span class="wine-stat-value">Traditional Method</span></div>
+        <div class="wine-card-desc">The world's most prestigious sparkling wine. Brioche, toast, citrus, chalk. Only produced in Champagne, France. Grapes: Chardonnay, Pinot Noir, Meunier.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Moët & Chandon</span>
+          <span class="grape-tag">Veuve Clicquot</span>
+          <span class="grape-tag">Dom Pérignon</span>
+          <span class="grape-tag">Krug</span>
+          <span class="grape-tag">Billecart-Salmon</span>
+        </div>
+      </div>
+
+      <div class="wine-card sparkling">
+        <div class="wine-card-type">Sparkling · Italy</div>
+        <div class="wine-card-name">Prosecco</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">10.5–12%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Brut to Extra Dry</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Method</span><span class="wine-stat-value">Charmat (Tank)</span></div>
+        <div class="wine-card-desc">Italy's beloved bubbly. Light, fresh, peach, apple, white flowers. More affordable than Champagne, perfect for Aperol Spritzes and casual celebration.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">La Marca</span>
+          <span class="grape-tag">Mionetto</span>
+          <span class="grape-tag">Santa Margherita</span>
+          <span class="grape-tag">Zardetto</span>
+        </div>
+      </div>
+
+      <div class="wine-card sparkling">
+        <div class="wine-card-type">Sparkling · Spain</div>
+        <div class="wine-card-name">Cava</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">11.5–12.5%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Brut to Semi-Seco</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Method</span><span class="wine-stat-value">Traditional Method</span></div>
+        <div class="wine-card-desc">Spain's answer to Champagne. Made the same way but from native grapes (Macabeo, Xarel-lo, Parellada). Earthy, apple, lemon, nutty. Incredible value.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Freixenet</span>
+          <span class="grape-tag">Codorníu</span>
+          <span class="grape-tag">Segura Viudas</span>
+          <span class="grape-tag">Raventós i Blanc</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DESSERT & FORTIFIED -->
+<section class="section anchor" id="dessert-fortified">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">Rich & Indulgent</span>
+      <h2 class="section-title">🍯 Dessert & <em>Fortified</em> Wines</h2>
+    </div>
+    <div class="wine-cards fade-in">
+
+      <div class="wine-card dessert">
+        <div class="wine-card-type">Dessert Wine · Portugal</div>
+        <div class="wine-card-name">Port</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">19–22%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Sweet</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Serving</span><span class="wine-stat-value">After dinner</span></div>
+        <div class="wine-card-desc">Portugal's legendary fortified wine from the Douro Valley. Ruby Port: blackberry, chocolate. Tawny Port: caramel, dried fruit, nutty. Vintage Port ages for 50+ years.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Graham's</span>
+          <span class="grape-tag">Sandeman</span>
+          <span class="grape-tag">Fonseca</span>
+          <span class="grape-tag">Quinta do Crasto</span>
+        </div>
+      </div>
+
+      <div class="wine-card dessert">
+        <div class="wine-card-type">Fortified Wine · Spain</div>
+        <div class="wine-card-name">Sherry</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">15–22%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Dry to Very Sweet</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Region</span><span class="wine-stat-value">Jerez, Spain</span></div>
+        <div class="wine-card-desc">Wildly diverse. Fino: bone dry, almond, briny. Amontillado: nutty, amber. Oloroso: rich, walnut. Pedro Ximénez: black raisin syrup. Criminally underappreciated.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">González Byass</span>
+          <span class="grape-tag">Lustau</span>
+          <span class="grape-tag">Hidalgo</span>
+          <span class="grape-tag">Valdespino</span>
+        </div>
+      </div>
+
+      <div class="wine-card dessert">
+        <div class="wine-card-type">Dessert Wine · Germany</div>
+        <div class="wine-card-name">Ice Wine / Eiswein</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">6–12%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Very Sweet</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Serving</span><span class="wine-stat-value">Small pour (2 oz)</span></div>
+        <div class="wine-card-desc">Liquid gold. Grapes frozen on the vine, then pressed. Concentrated honey, apricot, peach nectar. Canada and Germany are the top producers. Sip slowly.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Inniskillin (Canada)</span>
+          <span class="grape-tag">Peller Estates</span>
+          <span class="grape-tag">Dr. Loosen Eiswein</span>
+        </div>
+      </div>
+
+      <div class="wine-card dessert">
+        <div class="wine-card-type">Dessert Wine · France</div>
+        <div class="wine-card-name">Sauternes</div>
+        <div class="wine-stat"><span class="wine-stat-label">ABV</span><span class="wine-stat-value">13–14%</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Sweetness</span><span class="wine-stat-value">Very Sweet</span></div>
+        <div class="wine-stat"><span class="wine-stat-label">Method</span><span class="wine-stat-value">Noble Rot (Botrytis)</span></div>
+        <div class="wine-card-desc">Bordeaux's nectar. Noble rot concentrates sugars into honeyed complexity. Apricot, honey, orange marmalade, saffron. Château d'Yquem is the pinnacle of sweet wine.</div>
+        <div class="grape-tags">
+          <span class="grape-tag">Château d'Yquem</span>
+          <span class="grape-tag">Château Rieussec</span>
+          <span class="grape-tag">Château Climens</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- REGIONS -->
+<section class="section anchor" id="regions">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">Old World & New World</span>
+      <h2 class="section-title">🌍 Wine <em>Regions</em> by Country</h2>
+    </div>
+    <div class="tip-box fade-in">Old World = Europe (France, Italy, Spain, Germany). Typically more restrained, earthy, mineral. New World = USA, Australia, Chile, Argentina. Typically riper, fruitier, more straightforward labeling by grape name.</div>
+    <div class="region-grid fade-in">
+
+      <div class="region-card">
+        <span class="region-flag">🇫🇷</span>
+        <div class="region-name">France</div>
+        <div class="region-sub">Old World · The Gold Standard</div>
+        <ul class="region-wines">
+          <li><strong>Bordeaux</strong> — Cabernet Sauvignon, Merlot blends</li>
+          <li><strong>Burgundy</strong> — Pinot Noir, Chardonnay</li>
+          <li><strong>Champagne</strong> — Sparkling wines</li>
+          <li><strong>Rhône Valley</strong> — Syrah, Grenache, Viognier</li>
+          <li><strong>Alsace</strong> — Riesling, Gewürztraminer</li>
+          <li><strong>Loire Valley</strong> — Sauvignon Blanc (Sancerre), Chenin Blanc</li>
+          <li><strong>Provence</strong> — Rosé wines</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇮🇹</span>
+        <div class="region-name">Italy</div>
+        <div class="region-sub">Old World · 350+ Native Grapes</div>
+        <ul class="region-wines">
+          <li><strong>Tuscany</strong> — Chianti, Brunello, Super Tuscans</li>
+          <li><strong>Piedmont</strong> — Barolo, Barbaresco (Nebbiolo)</li>
+          <li><strong>Veneto</strong> — Pinot Grigio, Amarone, Prosecco</li>
+          <li><strong>Sicily</strong> — Nero d'Avola, Marsala</li>
+          <li><strong>Friuli</strong> — Pinot Grigio, Friulano</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇪🇸</span>
+        <div class="region-name">Spain</div>
+        <div class="region-sub">Old World · Rioja & Beyond</div>
+        <ul class="region-wines">
+          <li><strong>Rioja</strong> — Tempranillo; Crianza, Reserva, Gran Reserva</li>
+          <li><strong>Ribera del Duero</strong> — Tempranillo (bold, concentrated)</li>
+          <li><strong>Priorat</strong> — Garnacha, Cariñena (powerful reds)</li>
+          <li><strong>Rías Baixas</strong> — Albariño (crisp whites)</li>
+          <li><strong>Cava</strong> — Sparkling wines (Catalonia)</li>
+          <li><strong>Jerez</strong> — Sherry (fortified)</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇩🇪</span>
+        <div class="region-name">Germany</div>
+        <div class="region-sub">Old World · White Wine Paradise</div>
+        <ul class="region-wines">
+          <li><strong>Mosel</strong> — Riesling (slate soils, delicate)</li>
+          <li><strong>Rheingau</strong> — Riesling (fuller, richer)</li>
+          <li><strong>Pfalz</strong> — Riesling, Spätburgunder (Pinot Noir)</li>
+          <li><strong>Baden</strong> — Pinot Noir (warmest German region)</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇺🇸</span>
+        <div class="region-name">United States</div>
+        <div class="region-sub">New World · Innovation & Terroir</div>
+        <ul class="region-wines">
+          <li><strong>Napa Valley, CA</strong> — Cabernet Sauvignon (world-class)</li>
+          <li><strong>Sonoma, CA</strong> — Pinot Noir, Chardonnay, Zinfandel</li>
+          <li><strong>Willamette Valley, OR</strong> — Pinot Noir (Burgundy-like)</li>
+          <li><strong>Washington State</strong> — Cabernet, Syrah, Riesling</li>
+          <li><strong>Finger Lakes, NY</strong> — Riesling, Gewürztraminer</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇦🇺</span>
+        <div class="region-name">Australia</div>
+        <div class="region-sub">New World · Sun-Drenched Boldness</div>
+        <ul class="region-wines">
+          <li><strong>Barossa Valley, SA</strong> — Shiraz (Penfolds Grange country)</li>
+          <li><strong>McLaren Vale, SA</strong> — Grenache, Shiraz blends</li>
+          <li><strong>Margaret River, WA</strong> — Cabernet Sauvignon, Chardonnay</li>
+          <li><strong>Yarra Valley, VIC</strong> — Pinot Noir (cool-climate)</li>
+          <li><strong>Clare Valley, SA</strong> — Riesling</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇦🇷</span>
+        <div class="region-name">Argentina</div>
+        <div class="region-sub">New World · High Altitude Wines</div>
+        <ul class="region-wines">
+          <li><strong>Mendoza</strong> — Malbec capital of the world</li>
+          <li><strong>Luján de Cuyo</strong> — Premium Malbec at altitude</li>
+          <li><strong>Salta</strong> — World's highest vineyards (9,000 ft+)</li>
+          <li><strong>Patagonia</strong> — Cool-climate Pinot Noir, Chardonnay</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇨🇱</span>
+        <div class="region-name">Chile</div>
+        <div class="region-sub">New World · Best Value on Earth</div>
+        <ul class="region-wines">
+          <li><strong>Maipo Valley</strong> — Cabernet Sauvignon</li>
+          <li><strong>Colchagua Valley</strong> — Carménère (Chile's signature grape)</li>
+          <li><strong>Casablanca Valley</strong> — Sauvignon Blanc, Chardonnay</li>
+          <li><strong>Elqui Valley</strong> — Syrah (extreme desert wines)</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇳🇿</span>
+        <div class="region-name">New Zealand</div>
+        <div class="region-sub">New World · Crisp & Pure</div>
+        <ul class="region-wines">
+          <li><strong>Marlborough</strong> — Sauvignon Blanc (world-famous)</li>
+          <li><strong>Central Otago</strong> — Pinot Noir (southernmost wine region)</li>
+          <li><strong>Hawke's Bay</strong> — Bordeaux varieties, Syrah</li>
+          <li><strong>Martinborough</strong> — Pinot Noir, Riesling</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO CHOOSE -->
+<section class="section anchor" id="how-to-choose">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">Your Personal Guide</span>
+      <h2 class="section-title">🎯 How to <em>Choose</em> Your Wine</h2>
+    </div>
+    <div class="decision-tree fade-in">
+      <div class="decision-row">
+        <div class="decision-q">Want something bold & powerful?</div>
+        <div class="decision-arrow">→</div>
+        <div class="decision-a">Cabernet Sauvignon, Syrah/Shiraz, Barolo, Malbec</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-q">Want something light & elegant?</div>
+        <div class="decision-arrow">→</div>
+        <div class="decision-a">Pinot Noir, Beaujolais, Bardolino, Valpolicella</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-q">Want a crisp, refreshing white?</div>
+        <div class="decision-arrow">→</div>
+        <div class="decision-a">Sauvignon Blanc, Pinot Grigio, Albariño, Grüner Veltliner</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-q">Want a rich, creamy white?</div>
+        <div class="decision-arrow">→</div>
+        <div class="decision-a">Oaked Chardonnay, Viognier, White Burgundy</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-q">Want something sweet?</div>
+        <div class="decision-arrow">→</div>
+        <div class="decision-a">Riesling (Spätlese), Moscato, White Zinfandel, Port, Sauternes</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-q">Want bubbles for a celebration?</div>
+        <div class="decision-arrow">→</div>
+        <div class="decision-a">Champagne (premium), Cava (value), Prosecco (fun & casual)</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-q">Pairing with a steak dinner?</div>
+        <div class="decision-arrow">→</div>
+        <div class="decision-a">Cabernet Sauvignon, Malbec, Barolo, Rioja Reserva</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-q">Pairing with seafood?</div>
+        <div class="decision-arrow">→</div>
+        <div class="decision-a">Sauvignon Blanc, Chablis, Albariño, Muscadet, Champagne</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-q">Pairing with pizza / pasta?</div>
+        <div class="decision-arrow">→</div>
+        <div class="decision-a">Chianti, Barbera, Montepulciano d'Abruzzo, Primitivo</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-q">Best value under $20?</div>
+        <div class="decision-arrow">→</div>
+        <div class="decision-a">Chilean Malbec/Cab, Cava, Spanish Garnacha, Portuguese Vinho Verde</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD PAIRING -->
+<section class="section anchor" id="pairing">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">Perfect Matches</span>
+      <h2 class="section-title">🍽️ Wine & Food <em>Pairing</em></h2>
+    </div>
+    <div class="tip-box fade-in">The Golden Rules: Match weight (light food = light wine). Contrast or complement flavors. High-acid wines cut through fat. Sweet wines balance spicy food. Regional pairings almost always work.</div>
+    <div class="pairing-grid fade-in">
+      <div class="pairing-item">
+        <div class="pairing-food">🥩 Red Meat / Steak</div>
+        <div class="pairing-wine">Cabernet Sauvignon, Malbec, Barolo, Rioja Gran Reserva</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🐟 Fish / Seafood</div>
+        <div class="pairing-wine">Chablis, Sauvignon Blanc, Albariño, Muscadet, Champagne</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🍝 Tomato-based Pasta</div>
+        <div class="pairing-wine">Chianti, Barbera d'Asti, Sangiovese, Montepulciano</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🧀 Hard / Aged Cheese</div>
+        <div class="pairing-wine">Barolo, Cabernet Sauvignon, Vintage Port, Oaky Chardonnay</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🧀 Soft / Creamy Cheese</div>
+        <div class="pairing-wine">Champagne, Sauvignon Blanc, Pinot Noir, White Burgundy</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🍗 Roast Chicken / Pork</div>
+        <div class="pairing-wine">Chardonnay, Viognier, Pinot Noir, Côtes du Rhône</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🌶️ Spicy Asian Food</div>
+        <div class="pairing-wine">Off-dry Riesling, Gewürztraminer, Grüner Veltliner, Rosé</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🍫 Chocolate Desserts</div>
+        <div class="pairing-wine">Tawny Port, Banyuls, Recioto, Pedro Ximénez Sherry</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🦪 Oysters</div>
+        <div class="pairing-wine">Muscadet, Chablis, Champagne, Fino Sherry (classic!)</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🥗 Salads / Vegetables</div>
+        <div class="pairing-wine">Sauvignon Blanc, Pinot Grigio, Dry Rosé, Vinho Verde</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🫕 Rich Stews / Game</div>
+        <div class="pairing-wine">Syrah/Shiraz, Grenache, Zinfandel, Châteauneuf-du-Pape</div>
+      </div>
+      <div class="pairing-item">
+        <div class="pairing-food">🍑 Fruit Desserts</div>
+        <div class="pairing-wine">Sauternes, Moscato d'Asti, Late-Harvest Riesling, Ice Wine</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVING & STORAGE -->
+<section class="section anchor" id="serving">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">The Details Matter</span>
+      <h2 class="section-title">🌡️ Serving & <em>Storage</em></h2>
+    </div>
+
+    <div class="chart-box fade-in">
+      <div class="chart-title">Ideal Serving Temperatures</div>
+      <div class="temp-bar-container">
+        <div class="temp-row">
+          <div class="temp-label">Sparkling / Champagne</div>
+          <div class="temp-bar-track"><div class="temp-bar-fill" style="width:20%; background: #4ab0d9;"></div></div>
+          <div class="temp-val">40–50°F</div>
+        </div>
+        <div class="temp-row">
+          <div class="temp-label">Light White (Pinot Grigio)</div>
+          <div class="temp-bar-track"><div class="temp-bar-fill" style="width:30%; background: #6ac4d9;"></div></div>
+          <div class="temp-val">44–50°F</div>
+        </div>
+        <div class="temp-row">
+          <div class="temp-label">Full White (Chardonnay)</div>
+          <div class="temp-bar-track"><div class="temp-bar-fill" style="width:40%; background: #8fd4b0;"></div></div>
+          <div class="temp-val">50–55°F</div>
+        </div>
+        <div class="temp-row">
+          <div class="temp-label">Rosé</div>
+          <div class="temp-bar-track"><div class="temp-bar-fill" style="width:35%; background: #e8a0ae;"></div></div>
+          <div class="temp-val">46–54°F</div>
+        </div>
+        <div class="temp-row">
+          <div class="temp-label">Light Red (Pinot Noir)</div>
+          <div class="temp-bar-track"><div class="temp-bar-fill" style="width:55%; background: #c4617a;"></div></div>
+          <div class="temp-val">55–60°F</div>
+        </div>
+        <div class="temp-row">
+          <div class="temp-label">Medium Red (Merlot)</div>
+          <div class="temp-bar-track"><div class="temp-bar-fill" style="width:65%; background: #a83050;"></div></div>
+          <div class="temp-val">60–65°F</div>
+        </div>
+        <div class="temp-row">
+          <div class="temp-label">Full Red (Cabernet, Syrah)</div>
+          <div class="temp-bar-track"><div class="temp-bar-fill" style="width:80%; background: #7b1a35;"></div></div>
+          <div class="temp-val">62–68°F</div>
+        </div>
+        <div class="temp-row">
+          <div class="temp-label">Fortified (Port, Sherry)</div>
+          <div class="temp-bar-track"><div class="temp-bar-fill" style="width:90%; background: #5a1010;"></div></div>
+          <div class="temp-val">60–68°F</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-grid fade-in" style="margin-top: 2rem;">
+      <div class="region-card">
+        <span class="region-flag">🥂</span>
+        <div class="region-name">Glassware Guide</div>
+        <ul class="region-wines">
+          <li><strong>Bordeaux glass</strong> — Tall, large bowl; Cab Sauv, Merlot</li>
+          <li><strong>Burgundy glass</strong> — Wide bowl; Pinot Noir, delicate reds</li>
+          <li><strong>Universal glass</strong> — Medium bowl; everyday wines</li>
+          <li><strong>White wine glass</strong> — Narrower bowl; whites, rosé</li>
+          <li><strong>Flute</strong> — Tall, narrow; Champagne, Prosecco, Cava</li>
+          <li><strong>Coupe</strong> — Wide, shallow; cocktails, fun sparkling</li>
+          <li><strong>Port glass</strong> — Small; fortified & dessert wines</li>
+        </ul>
+      </div>
+      <div class="region-card">
+        <span class="region-flag">🏠</span>
+        <div class="region-name">Storing Wine</div>
+        <ul class="region-wines">
+          <li>Ideal temp: <strong>55°F / 13°C</strong> (consistent)</li>
+          <li>Store bottles on their <strong>side</strong> (keeps cork moist)</li>
+          <li>Avoid sunlight, heat, and vibration</li>
+          <li>Humidity: 60–70% ideal</li>
+          <li>Most wines are meant to drink <strong>within 1–3 years</strong></li>
+          <li>Fine wine (Barolo, Burgundy, Bordeaux) can age 10–50+ years</li>
+          <li>Once opened: reseal, refrigerate, drink within 3–5 days</li>
+        </ul>
+      </div>
+      <div class="region-card">
+        <span class="region-flag">👃</span>
+        <div class="region-name">Tasting Wine Like a Pro</div>
+        <ul class="region-wines">
+          <li><strong>1. Look</strong> — Color, clarity, depth</li>
+          <li><strong>2. Swirl</strong> — Release aromas; note viscosity (legs)</li>
+          <li><strong>3. Smell</strong> — Fruits, earth, oak, flowers, minerality</li>
+          <li><strong>4. Taste</strong> — Sweetness, acidity, tannins, alcohol, body</li>
+          <li><strong>5. Finish</strong> — How long does the flavor linger? (quality indicator)</li>
+          <li>Decant big reds 30–60 min before serving</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK REFERENCE -->
+<section class="section anchor" id="quick-ref">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">At a Glance</span>
+      <h2 class="section-title">📊 Quick <em>Reference</em> Charts</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;" class="fade-in">
+
+      <div class="chart-box">
+        <div class="chart-title">Wine Sweetness Scale</div>
+        <table class="wine-table">
+          <tr><th>Level</th><th>Style</th><th>Examples</th></tr>
+          <tr><td>🟢 Bone Dry</td><td>&lt;2g/L sugar</td><td>Most reds, Chablis, Fino Sherry</td></tr>
+          <tr><td>🟡 Dry</td><td>2–9g/L</td><td>Chardonnay, Cabernet, Chianti</td></tr>
+          <tr><td>🟠 Off-Dry</td><td>9–18g/L</td><td>Riesling Spätlese, Pinot Gris</td></tr>
+          <tr><td>🔴 Sweet</td><td>18–45g/L</td><td>Sauternes, Moscato, Ice Wine</td></tr>
+          <tr><td>🟣 Very Sweet</td><td>45g/L+</td><td>Port, TBA Riesling, Pedro Ximénez</td></tr>
+        </table>
+      </div>
+
+      <div class="chart-box">
+        <div class="chart-title">Tannin Levels (Red Wines)</div>
+        <table class="wine-table">
+          <tr><th>Tannin</th><th>Feel</th><th>Wine</th></tr>
+          <tr><td>Very Low</td><td>Silky</td><td>Pinot Noir, Gamay, Grenache</td></tr>
+          <tr><td>Low–Med</td><td>Soft</td><td>Merlot, Barbera, Dolcetto</td></tr>
+          <tr><td>Medium</td><td>Firm</td><td>Malbec, Zinfandel, Syrah</td></tr>
+          <tr><td>High</td><td>Grippy</td><td>Cabernet Sauvignon, Nebbiolo</td></tr>
+          <tr><td>Very High</td><td>Drying</td><td>Barolo, Aglianico, Tannat</td></tr>
+        </table>
+      </div>
+
+      <div class="chart-box">
+        <div class="chart-title">Acidity Levels (White Wines)</div>
+        <table class="wine-table">
+          <tr><th>Acidity</th><th>Feel</th><th>Wine</th></tr>
+          <tr><td>Low</td><td>Soft, round</td><td>Viognier, Gewürztraminer</td></tr>
+          <tr><td>Medium</td><td>Balanced</td><td>Chardonnay, Pinot Grigio</td></tr>
+          <tr><td>High</td><td>Crisp, racy</td><td>Sauvignon Blanc, Albariño</td></tr>
+          <tr><td>Very High</td><td>Mouthwatering</td><td>Riesling, Champagne, Chablis</td></tr>
+        </table>
+      </div>
+
+      <div class="chart-box">
+        <div class="chart-title">Wine Label Vocabulary</div>
+        <table class="wine-table">
+          <tr><th>Term</th><th>Means</th></tr>
+          <tr><td>Château / Domaine</td><td>French estate (property)</td></tr>
+          <tr><td>Crianza / Reserva</td><td>Spanish oak aging level</td></tr>
+          <tr><td>Gran Reserva</td><td>Spain's longest-aged wines</td></tr>
+          <tr><td>Spätlese / Auslese</td><td>German ripeness levels</td></tr>
+          <tr><td>DOC / AOC / AVA</td><td>Protected origin designations</td></tr>
+          <tr><td>Premier / Grand Cru</td><td>France's quality classifications</td></tr>
+          <tr><td>Vintage</td><td>Year the grapes were harvested</td></tr>
+          <tr><td>Non-Vintage (NV)</td><td>Blend of multiple years (Champagne)</td></tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TERMINOLOGY -->
+<section class="section anchor" id="terminology">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">The Language of Wine</span>
+      <h2 class="section-title">📚 Wine <em>Terminology</em></h2>
+    </div>
+    <div class="term-grid fade-in">
+      <div class="term-item"><div class="term-word">Terroir</div><div class="term-def">The complete natural environment: soil, climate, topography. Why the same grape tastes different in different places.</div></div>
+      <div class="term-item"><div class="term-word">Tannins</div><div class="term-def">Natural compounds from grape skins and oak that create a drying, grippy sensation. Higher in red wines.</div></div>
+      <div class="term-item"><div class="term-word">Acidity</div><div class="term-def">Makes wine taste bright and crisp. Essential for balance and food-pairing. High acidity = longer aging potential.</div></div>
+      <div class="term-item"><div class="term-word">Finish / Length</div><div class="term-def">How long the flavor lingers after swallowing. A long finish (30+ seconds) indicates a high-quality wine.</div></div>
+      <div class="term-item"><div class="term-word">Decanting</div><div class="term-def">Pouring wine into a carafe to expose it to oxygen. Softens tannins and opens up aromas.</div></div>
+      <div class="term-item"><div class="term-word">Vintage</div><div class="term-def">The year the grapes were harvested. Weather affects quality significantly year-to-year.</div></div>
+      <div class="term-item"><div class="term-word">Sulfites</div><div class="term-def">Preservatives used in winemaking. "Contains sulfites" is required on labels in many countries. Not the cause of most headaches.</div></div>
+      <div class="term-item"><div class="term-word">Malolactic Fermentation</div><div class="term-def">Converts sharp malic acid to softer lactic acid. Gives Chardonnay that creamy, buttery texture.</div></div>
+      <div class="term-item"><div class="term-word">Oxidation</div><div class="term-def">Exposure to air that changes wine's flavor. Good when controlled (decanting); bad when wine goes off.</div></div>
+      <div class="term-item"><div class="term-word">Noble Rot (Botrytis)</div><div class="term-def">A beneficial fungus that dehydrates grapes, concentrating sugars for sweet wines like Sauternes.</div></div>
+      <div class="term-item"><div class="term-word">Sur Lie</div><div class="term-def">Aging wine on dead yeast cells. Adds creaminess and complexity. Common in Champagne and Muscadet.</div></div>
+      <div class="term-item"><div class="term-word">Legs / Tears</div><div class="term-def">Droplets that form on the glass after swirling. Indicate alcohol and sugar content — not quality.</div></div>
+      <div class="term-item"><div class="term-word">Blind Tasting</div><div class="term-def">Evaluating wine without knowing what it is. Used to remove bias from the judgment process.</div></div>
+      <div class="term-item"><div class="term-word">Cuvée</div><div class="term-def">A blend or special selection of wine. Especially common in Champagne and Rhône blends.</div></div>
+      <div class="term-item"><div class="term-word">Natural Wine</div><div class="term-def">Made with minimal intervention: organic grapes, native yeasts, no added sulfites. Often cloudy, funky, alive.</div></div>
+      <div class="term-item"><div class="term-word">Orange Wine</div><div class="term-def">White wine made like red wine — with extended skin contact. Amber-colored, tannic, complex.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ALPHABETICAL INDEX -->
+<section class="index-section anchor" id="index">
+  <div class="container">
+    <div class="section-header fade-in">
+      <span class="section-label">Complete Reference</span>
+      <h2 class="section-title">🔤 Alphabetical <em>Index</em></h2>
+    </div>
+    <div class="index-grid fade-in">
+
+      <div class="index-letter-group">
+        <div class="index-letter">A</div>
+        <div class="index-items">
+          <a href="#white-wines" class="index-link">Acidity <span class="index-category">concept</span></a>
+          <a href="#regions" class="index-link">Albariño <span class="index-category">grape</span></a>
+          <a href="#regions" class="index-link">Alsace <span class="index-category">region</span></a>
+          <a href="#regions" class="index-link">Argentina <span class="index-category">country</span></a>
+          <a href="#regions" class="index-link">Australia <span class="index-category">country</span></a>
+          <a href="#terminology" class="index-link">Acidity <span class="index-category">term</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">B</div>
+        <div class="index-items">
+          <a href="#top-wines" class="index-link">Barefoot <span class="index-category">brand</span></a>
+          <a href="#regions" class="index-link">Barossa Valley <span class="index-category">region</span></a>
+          <a href="#regions" class="index-link">Barolo <span class="index-category">wine</span></a>
+          <a href="#top-wines" class="index-link">Beringer <span class="index-category">brand</span></a>
+          <a href="#regions" class="index-link">Bordeaux <span class="index-category">region</span></a>
+          <a href="#regions" class="index-link">Burgundy <span class="index-category">region</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">C</div>
+        <div class="index-items">
+          <a href="#red-wines" class="index-link">Cabernet Sauvignon <span class="index-category">grape</span></a>
+          <a href="#regions" class="index-link">California <span class="index-category">region</span></a>
+          <a href="#rose-sparkling" class="index-link">Cava <span class="index-category">sparkling</span></a>
+          <a href="#top-wines" class="index-link">Caymus <span class="index-category">brand</span></a>
+          <a href="#rose-sparkling" class="index-link">Champagne <span class="index-category">sparkling</span></a>
+          <a href="#regions" class="index-link">Chile <span class="index-category">country</span></a>
+          <a href="#red-wines" class="index-link">Chianti <span class="index-category">wine</span></a>
+          <a href="#top-wines" class="index-link">Concha y Toro <span class="index-category">brand</span></a>
+          <a href="#terminology" class="index-link">Cuvée <span class="index-category">term</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">D</div>
+        <div class="index-items">
+          <a href="#terminology" class="index-link">Decanting <span class="index-category">technique</span></a>
+          <a href="#terminology" class="index-link">Dessert Wine <span class="index-category">category</span></a>
+          <a href="#quick-ref" class="index-link">Dry / Sweetness Scale <span class="index-category">reference</span></a>
+          <a href="#regions" class="index-link">Douro Valley <span class="index-category">region</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">F</div>
+        <div class="index-items">
+          <a href="#terminology" class="index-link">Finish / Length <span class="index-category">term</span></a>
+          <a href="#dessert-fortified" class="index-link">Fortified Wine <span class="index-category">category</span></a>
+          <a href="#regions" class="index-link">France <span class="index-category">country</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">G</div>
+        <div class="index-items">
+          <a href="#regions" class="index-link">Germany <span class="index-category">country</span></a>
+          <a href="#serving" class="index-link">Glassware <span class="index-category">guide</span></a>
+          <a href="#regions" class="index-link">Grenache <span class="index-category">grape</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">I</div>
+        <div class="index-items">
+          <a href="#dessert-fortified" class="index-link">Ice Wine / Eiswein <span class="index-category">dessert</span></a>
+          <a href="#regions" class="index-link">Italy <span class="index-category">country</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">K</div>
+        <div class="index-items">
+          <a href="#top-wines" class="index-link">Kendall-Jackson <span class="index-category">brand</span></a>
+          <a href="#top-wines" class="index-link">Kim Crawford <span class="index-category">brand</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">M</div>
+        <div class="index-items">
+          <a href="#red-wines" class="index-link">Malbec <span class="index-category">grape</span></a>
+          <a href="#terminology" class="index-link">Malolactic Fermentation <span class="index-category">term</span></a>
+          <a href="#regions" class="index-link">Marlborough <span class="index-category">region</span></a>
+          <a href="#top-wines" class="index-link">Meiomi <span class="index-category">brand</span></a>
+          <a href="#red-wines" class="index-link">Merlot <span class="index-category">grape</span></a>
+          <a href="#regions" class="index-link">Mendoza <span class="index-category">region</span></a>
+          <a href="#top-wines" class="index-link">Moët & Chandon <span class="index-category">brand</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">N</div>
+        <div class="index-items">
+          <a href="#regions" class="index-link">Napa Valley <span class="index-category">region</span></a>
+          <a href="#terminology" class="index-link">Natural Wine <span class="index-category">category</span></a>
+          <a href="#regions" class="index-link">New Zealand <span class="index-category">country</span></a>
+          <a href="#terminology" class="index-link">Noble Rot / Botrytis <span class="index-category">term</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">O</div>
+        <div class="index-items">
+          <a href="#terminology" class="index-link">Orange Wine <span class="index-category">category</span></a>
+          <a href="#terminology" class="index-link">Oxidation <span class="index-category">term</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">P</div>
+        <div class="index-items">
+          <a href="#top-wines" class="index-link">Penfolds <span class="index-category">brand</span></a>
+          <a href="#white-wines" class="index-link">Pinot Grigio / Pinot Gris <span class="index-category">grape</span></a>
+          <a href="#red-wines" class="index-link">Pinot Noir <span class="index-category">grape</span></a>
+          <a href="#dessert-fortified" class="index-link">Port <span class="index-category">fortified</span></a>
+          <a href="#regions" class="index-link">Provence <span class="index-category">region</span></a>
+          <a href="#rose-sparkling" class="index-link">Prosecco <span class="index-category">sparkling</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">R</div>
+        <div class="index-items">
+          <a href="#regions" class="index-link">Rhône Valley <span class="index-category">region</span></a>
+          <a href="#white-wines" class="index-link">Riesling <span class="index-category">grape</span></a>
+          <a href="#regions" class="index-link">Rioja <span class="index-category">region</span></a>
+          <a href="#top-wines" class="index-link">Robert Mondavi <span class="index-category">brand</span></a>
+          <a href="#rose-sparkling" class="index-link">Rosé <span class="index-category">style</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">S</div>
+        <div class="index-items">
+          <a href="#red-wines" class="index-link">Sangiovese <span class="index-category">grape</span></a>
+          <a href="#dessert-fortified" class="index-link">Sauternes <span class="index-category">dessert</span></a>
+          <a href="#white-wines" class="index-link">Sauvignon Blanc <span class="index-category">grape</span></a>
+          <a href="#serving" class="index-link">Serving Temperatures <span class="index-category">guide</span></a>
+          <a href="#dessert-fortified" class="index-link">Sherry <span class="index-category">fortified</span></a>
+          <a href="#regions" class="index-link">Sonoma <span class="index-category">region</span></a>
+          <a href="#regions" class="index-link">Spain <span class="index-category">country</span></a>
+          <a href="#rose-sparkling" class="index-link">Sparkling Wine <span class="index-category">category</span></a>
+          <a href="#serving" class="index-link">Storage <span class="index-category">guide</span></a>
+          <a href="#terminology" class="index-link">Sulfites <span class="index-category">term</span></a>
+          <a href="#terminology" class="index-link">Sur Lie <span class="index-category">term</span></a>
+          <a href="#red-wines" class="index-link">Syrah / Shiraz <span class="index-category">grape</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">T</div>
+        <div class="index-items">
+          <a href="#terminology" class="index-link">Tannins <span class="index-category">term</span></a>
+          <a href="#red-wines" class="index-link">Tempranillo <span class="index-category">grape</span></a>
+          <a href="#terminology" class="index-link">Terroir <span class="index-category">concept</span></a>
+          <a href="#serving" class="index-link">Tasting Wine <span class="index-category">guide</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">V</div>
+        <div class="index-items">
+          <a href="#terminology" class="index-link">Vintage <span class="index-category">term</span></a>
+          <a href="#white-wines" class="index-link">Viognier <span class="index-category">grape</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">W</div>
+        <div class="index-items">
+          <a href="#regions" class="index-link">Washington State <span class="index-category">region</span></a>
+          <a href="#rose-sparkling" class="index-link">White Zinfandel <span class="index-category">rosé</span></a>
+          <a href="#regions" class="index-link">Willamette Valley <span class="index-category">region</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">Y</div>
+        <div class="index-items">
+          <a href="#top-wines" class="index-link">Yellow Tail <span class="index-category">brand</span></a>
+        </div>
+      </div>
+
+      <div class="index-letter-group">
+        <div class="index-letter">Z</div>
+        <div class="index-items">
+          <a href="#red-wines" class="index-link">Zinfandel <span class="index-category">grape</span></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-icon">🍷</div>
+  <p class="footer-text">"Wine is sunlight, held together by water."</p>
+  <p class="footer-sub" style="color: rgba(255,255,255,0.3); font-style: italic; font-family: 'Cormorant Garamond'; font-size: 0.9rem; margin-top: 0.5rem;">— Galileo Galilei</p>
+  <p class="footer-sub">Now go explore the wonderful world of wine. Cheers! 🥂</p>
+</footer>
+
+<script>
+  // Scroll animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

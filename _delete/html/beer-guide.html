@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍺 The Complete Beer Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bitter:ital,wght@0,400;0,600;0,700;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --amber: #d4820a;
+    --amber-light: #f0a830;
+    --amber-pale: #f5c96b;
+    --foam: #f7edd8;
+    --cream: #ede0c4;
+    --parchment: #d6c49a;
+    --dark: #130c04;
+    --mid: #1e1308;
+    --card: #251a0a;
+    --stout: #0d0800;
+    --copper: #8b4513;
+    --hops: #4a6741;
+    --text: #e8d5b0;
+    --text-dim: rgba(232,213,176,0.55);
+    --gold: #c9a84c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Bitter', serif;
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Subtle grain */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 100%, rgba(212,130,10,0.3) 0%, transparent 65%),
+      radial-gradient(ellipse 30% 40% at 15% 30%, rgba(74,103,65,0.12) 0%, transparent 60%),
+      linear-gradient(180deg, #0d0800 0%, #1e1005 50%, #0d0800 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 2rem 7rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Decorative hops bg */
+  .hero::before {
+    content: '🍺 🌾 🍺 🌾 🍺 🌾 🍺 🌾 🍺 🌾 🍺 🌾 🍺 🌾 🍺 🌾 🍺';
+    position: absolute;
+    bottom: 1.5rem;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 1.4rem;
+    opacity: 0.08;
+    letter-spacing: 0.5rem;
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.5em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    border: 1px solid rgba(212,130,10,0.3);
+    padding: 0.3rem 1.2rem;
+    display: inline-block;
+  }
+
+  .hero-icon {
+    font-size: 7rem;
+    display: block;
+    margin-bottom: 1.2rem;
+    animation: tilt 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 50px rgba(212,130,10,0.55));
+  }
+
+  @keyframes tilt {
+    0%, 100% { transform: rotate(-5deg) translateY(0); }
+    50% { transform: rotate(5deg) translateY(-14px); }
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 13vw, 11rem);
+    line-height: 0.88;
+    color: var(--foam);
+    letter-spacing: 0.02em;
+    text-shadow:
+      3px 3px 0 #8b4513,
+      6px 6px 0 rgba(139,69,19,0.4),
+      0 0 80px rgba(212,130,10,0.25);
+    margin-bottom: 0.4rem;
+  }
+
+  .hero-title .line2 {
+    color: var(--amber-light);
+    display: block;
+    font-size: clamp(3rem, 9vw, 8rem);
+  }
+
+  .hero-desc {
+    font-family: 'Bitter', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 500px;
+    margin: 1.5rem auto 0;
+  }
+
+  .hero-rule {
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--amber), transparent);
+    margin: 1.5rem auto;
+  }
+
+  /* ===== STICKY NAV ===== */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--stout);
+    border-bottom: 3px solid var(--amber);
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: stretch;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 1rem;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-link {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 0.9rem 1.1rem;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: all 0.2s;
+  }
+  .nav-link:hover { color: var(--amber-light); border-bottom-color: var(--amber); }
+
+  /* ===== LAYOUT ===== */
+  .container { max-width: 1050px; margin: 0 auto; padding: 0 2rem; }
+
+  .section {
+    padding: 5rem 2rem;
+    border-bottom: 1px solid rgba(212,130,10,0.1);
+  }
+
+  .section-header { margin-bottom: 3rem; }
+
+  .eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--amber);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+    line-height: 0.95;
+    color: var(--foam);
+    letter-spacing: 0.02em;
+  }
+
+  .section-title em { color: var(--amber-light); font-style: normal; }
+
+  /* ===== TOC ===== */
+  .toc-section {
+    background: var(--mid);
+    border-top: 4px solid var(--amber);
+    border-bottom: 1px solid rgba(212,130,10,0.2);
+    padding: 3.5rem 2rem;
+  }
+
+  .toc-grid {
+    max-width: 1050px;
+    margin: 2rem auto 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 0.7rem;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.3rem;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(212,130,10,0.12);
+    text-decoration: none;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    transition: all 0.22s;
+    border-radius: 2px;
+    font-family: 'Bitter', serif;
+  }
+
+  .toc-item:hover {
+    color: var(--amber-pale);
+    background: rgba(212,130,10,0.07);
+    border-color: rgba(212,130,10,0.4);
+    transform: translateX(5px);
+  }
+
+  .toc-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: rgba(212,130,10,0.3);
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  /* ===== TABLES ===== */
+  .beer-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .beer-table th {
+    background: rgba(212,130,10,0.12);
+    color: var(--amber);
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.9rem 1.1rem;
+    text-align: left;
+    border-bottom: 2px solid rgba(212,130,10,0.3);
+  }
+
+  .beer-table td {
+    padding: 0.8rem 1.1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+
+  .beer-table tr:hover td { background: rgba(212,130,10,0.04); }
+
+  .rank-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    background: var(--amber);
+    color: var(--dark);
+    border-radius: 50%;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .rank-num.gold { background: linear-gradient(135deg, #c9a84c, #f5e093); }
+
+  /* ===== STYLE CARDS ===== */
+  .style-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .style-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .style-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  }
+
+  .style-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  /* Color top bars by beer type */
+  .style-card.ale-ipa::before { background: linear-gradient(90deg, #e8a830, #f5c96b); }
+  .style-card.ale-pale::before { background: linear-gradient(90deg, #d4a030, #e8c060); }
+  .style-card.ale-blonde::before { background: linear-gradient(90deg, #e8d060, #f5e090); }
+  .style-card.ale-brown::before { background: linear-gradient(90deg, #8b5a2b, #c07840); }
+  .style-card.ale-porter::before { background: linear-gradient(90deg, #2a1a0a, #5a3020); }
+  .style-card.ale-stout::before { background: linear-gradient(90deg, #0d0800, #2a1510); }
+  .style-card.ale-wheat::before { background: linear-gradient(90deg, #d4c060, #e8d890); }
+  .style-card.ale-belgian::before { background: linear-gradient(90deg, #c9a84c, #f5d870); }
+  .style-card.lager-pils::before { background: linear-gradient(90deg, #d4d060, #f0e890); }
+  .style-card.lager-pale::before { background: linear-gradient(90deg, #d0c850, #e8e080); }
+  .style-card.lager-light::before { background: linear-gradient(90deg, #c8d8e0, #e0f0f8); }
+  .style-card.lager-amber::before { background: linear-gradient(90deg, #c87030, #e09050); }
+  .style-card.lager-dark::before { background: linear-gradient(90deg, #3a1a08, #6a3018); }
+  .style-card.lager-bock::before { background: linear-gradient(90deg, #6a3010, #a05020); }
+
+  .card-family {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    color: var(--amber);
+    opacity: 0.7;
+  }
+
+  .card-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--foam);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .card-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.88rem;
+  }
+
+  .stat-key {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .stat-val { color: var(--text); }
+
+  .card-desc {
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    margin: 1rem 0 0.8rem;
+    line-height: 1.55;
+  }
+
+  .brand-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.8rem;
+  }
+
+  .brand-pill {
+    background: rgba(212,130,10,0.1);
+    border: 1px solid rgba(212,130,10,0.2);
+    color: var(--amber-pale);
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.62rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  .pairing-note {
+    margin-top: 0.8rem;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.38);
+    font-style: italic;
+  }
+
+  .pairing-note strong { color: rgba(212,130,10,0.7); font-style: normal; }
+
+  /* ===== REGION GRID ===== */
+  .region-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .region-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1.6rem;
+    transition: all 0.25s;
+  }
+
+  .region-card:hover {
+    background: rgba(212,130,10,0.04);
+    border-color: rgba(212,130,10,0.25);
+  }
+
+  .region-flag { font-size: 2.2rem; display: block; margin-bottom: 0.5rem; }
+
+  .region-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: var(--foam);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.2rem;
+  }
+
+  .region-sub {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .region-list { list-style: none; }
+
+  .region-list li {
+    padding: 0.22rem 0;
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+  }
+
+  .region-list li::before {
+    content: '▸';
+    color: var(--amber);
+    font-size: 0.55rem;
+    flex-shrink: 0;
+    position: relative;
+    top: -1px;
+  }
+
+  /* ===== DECISION TREE ===== */
+  .decision-box {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(212,130,10,0.18);
+    border-radius: 4px;
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+
+  .decision-row {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .decision-row:last-child { border-bottom: none; }
+
+  .d-q { font-style: italic; color: var(--amber-pale); font-size: 1rem; }
+  .d-arr { color: var(--amber); font-size: 1.3rem; text-align: center; }
+  .d-a { color: var(--foam); font-weight: 700; font-size: 0.95rem; }
+
+  /* ===== QUICK REF ===== */
+  .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .ref-box {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 4px;
+    padding: 1.6rem;
+  }
+
+  .ref-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid rgba(212,130,10,0.2);
+  }
+
+  /* ===== PAIRING ===== */
+  .pairing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+
+  .pairing-item {
+    background: rgba(255,255,255,0.02);
+    border-left: 3px solid var(--amber);
+    padding: 1rem 1.3rem;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .pair-food {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    color: var(--foam);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+
+  .pair-beer { font-size: 0.85rem; color: var(--amber-pale); font-style: italic; }
+
+  /* ===== SERVING TEMP ===== */
+  .temp-row {
+    display: grid;
+    grid-template-columns: 210px 1fr 90px;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.88rem;
+  }
+
+  .temp-track {
+    height: 7px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .temp-fill {
+    height: 100%;
+    border-radius: 4px;
+  }
+
+  .temp-val {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68rem;
+    color: var(--amber);
+    text-align: right;
+  }
+
+  /* ===== CRAFT vs MACRO ===== */
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 600px) { .split-grid { grid-template-columns: 1fr; } }
+
+  .split-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 2rem;
+  }
+
+  .split-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(212,130,10,0.2);
+  }
+
+  .split-card.macro .split-title { color: var(--parchment); }
+  .split-card.craft .split-title { color: var(--amber-light); }
+
+  .split-list { list-style: none; }
+
+  .split-list li {
+    padding: 0.3rem 0;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .split-list li::before { content: '◆'; color: var(--amber); font-size: 0.45rem; flex-shrink: 0; position: relative; top: 5px; }
+
+  /* ===== TERMINOLOGY ===== */
+  .term-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .term-item {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 4px;
+    padding: 1.2rem 1.4rem;
+  }
+
+  .term-word {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    color: var(--amber);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+
+  .term-def { font-size: 0.88rem; color: var(--text-dim); line-height: 1.5; }
+
+  /* ===== TIP BOX ===== */
+  .tip-box {
+    background: rgba(212,130,10,0.07);
+    border: 1px solid rgba(212,130,10,0.22);
+    border-left: 4px solid var(--amber);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 0.92rem;
+  }
+
+  .two-col-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 640px) { .two-col-table { grid-template-columns: 1fr; } }
+
+  /* ===== CULTURE CARDS ===== */
+  .culture-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .culture-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 4px;
+    padding: 1.6rem;
+    transition: all 0.25s;
+  }
+
+  .culture-card:hover { border-color: rgba(212,130,10,0.3); }
+
+  .culture-flag { font-size: 2.5rem; display: block; margin-bottom: 0.6rem; }
+
+  .culture-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--foam);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.8rem;
+  }
+
+  .culture-facts { list-style: none; }
+
+  .culture-facts li {
+    padding: 0.25rem 0;
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .culture-facts li::before { content: '•'; color: var(--amber); flex-shrink: 0; }
+
+  /* ===== INDEX ===== */
+  .index-bg {
+    background: var(--stout);
+    padding: 5rem 2rem;
+  }
+
+  .index-cols {
+    columns: 3;
+    column-gap: 3rem;
+    max-width: 1050px;
+    margin: 2rem auto 0;
+  }
+
+  @media (max-width: 750px) { .index-cols { columns: 1; } }
+  @media (max-width: 1000px) { .index-cols { columns: 2; } }
+
+  .idx-group {
+    break-inside: avoid;
+    margin-bottom: 2rem;
+  }
+
+  .idx-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    color: var(--amber);
+    opacity: 0.3;
+    line-height: 1;
+    border-bottom: 1px solid rgba(212,130,10,0.15);
+    padding-bottom: 0.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .idx-links { list-style: none; }
+
+  .idx-links li { padding: 0.18rem 0; }
+
+  .idx-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.87rem;
+    transition: color 0.2s;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+
+  .idx-links a:hover { color: var(--amber-pale); }
+
+  .idx-cat {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.58rem;
+    color: rgba(212,130,10,0.4);
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    background: #080500;
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 3px solid rgba(212,130,10,0.25);
+  }
+
+  .footer-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+
+  .footer-sub {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  .ale-lager-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(212,130,10,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 580px) { .ale-lager-split { grid-template-columns: 1fr; } }
+
+  .ale-side, .lager-side {
+    padding: 2rem;
+  }
+
+  .ale-side {
+    background: rgba(212,130,10,0.06);
+    border-right: 1px solid rgba(212,130,10,0.15);
+  }
+
+  .lager-side { background: rgba(60,100,180,0.04); }
+
+  .family-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(212,130,10,0.2);
+  }
+
+  .ale-side .family-title { color: var(--amber-light); }
+  .lager-side .family-title { color: #8ab4d4; }
+
+  .family-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.88rem;
+  }
+
+  .fkey { color: var(--text-dim); font-size: 0.8rem; }
+  .fval { color: var(--text); }
+
+  html { scroll-margin-top: 2rem; }
+  .anchor { scroll-margin-top: 1rem; }
+
+  @media (max-width: 640px) {
+    .decision-row { grid-template-columns: 1fr; }
+    .d-arr { text-align: left; }
+    .temp-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-label">The Definitive Reference</span>
+  <span class="hero-icon">🍺</span>
+  <h1 class="hero-title">
+    The Complete
+    <span class="line2">Beer Guide</span>
+  </h1>
+  <div class="hero-rule"></div>
+  <p class="hero-desc">Brands, Styles, Regions & Everything You Need to Know</p>
+</section>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#toc" class="nav-link">Contents</a>
+    <a href="#top-brands" class="nav-link">Top Brands</a>
+    <a href="#two-families" class="nav-link">Ale vs Lager</a>
+    <a href="#ale-styles" class="nav-link">Ale Styles</a>
+    <a href="#lager-styles" class="nav-link">Lager Styles</a>
+    <a href="#by-region" class="nav-link">By Region</a>
+    <a href="#how-to-choose" class="nav-link">How to Choose</a>
+    <a href="#pairing" class="nav-link">Food Pairing</a>
+    <a href="#serving" class="nav-link">Serving</a>
+    <a href="#quick-ref" class="nav-link">Quick Ref</a>
+    <a href="#craft-vs-macro" class="nav-link">Craft vs Macro</a>
+    <a href="#culture" class="nav-link">Culture</a>
+    <a href="#terminology" class="nav-link">Terminology</a>
+    <a href="#index" class="nav-link">A–Z Index</a>
+  </div>
+</nav>
+
+<!-- TOC -->
+<section class="toc-section anchor" id="toc">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="eyebrow">Navigate the Guide</span>
+      <h2 class="section-title">📖 Quick <em>Navigation</em></h2>
+    </div>
+    <div class="toc-grid">
+      <a href="#top-brands" class="toc-item"><span class="toc-num">01</span> Top 20 Brands Worldwide</a>
+      <a href="#two-families" class="toc-item"><span class="toc-num">02</span> Ales vs Lagers — The Two Families</a>
+      <a href="#ale-styles" class="toc-item"><span class="toc-num">03</span> Ale Styles (IPA, Stout, Porter…)</a>
+      <a href="#lager-styles" class="toc-item"><span class="toc-num">04</span> Lager Styles (Pilsner, Bock…)</a>
+      <a href="#by-region" class="toc-item"><span class="toc-num">05</span> Beers by Region & Country</a>
+      <a href="#how-to-choose" class="toc-item"><span class="toc-num">06</span> How to Choose Your Beer</a>
+      <a href="#pairing" class="toc-item"><span class="toc-num">07</span> Beer & Food Pairing</a>
+      <a href="#serving" class="toc-item"><span class="toc-num">08</span> Serving Temperatures</a>
+      <a href="#quick-ref" class="toc-item"><span class="toc-num">09</span> Quick Reference Charts</a>
+      <a href="#craft-vs-macro" class="toc-item"><span class="toc-num">10</span> Craft Beer vs Macro Beer</a>
+      <a href="#culture" class="toc-item"><span class="toc-num">11</span> Regional Beer Cultures</a>
+      <a href="#terminology" class="toc-item"><span class="toc-num">12</span> Beer Terminology Glossary</a>
+      <a href="#index" class="toc-item"><span class="toc-num">13</span> A–Z Alphabetical Index</a>
+    </div>
+  </div>
+</section>
+
+<!-- TOP BRANDS -->
+<section class="section anchor fade-up" id="top-brands">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 01 — Global Rankings</span>
+      <h2 class="section-title">🏆 Top 20 Brands <em>Worldwide</em></h2>
+    </div>
+    <p style="color:var(--text-dim); margin-bottom: 1.5rem; font-style: italic;">Ranked by volume sold and global brand value.</p>
+    <table class="beer-table">
+      <thead>
+        <tr><th>#</th><th>Brand</th><th>Origin</th><th>Style</th><th>Known For</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="rank-num gold">1</span></td><td><strong>Snow</strong></td><td>🇨🇳 China</td><td>Light Lager</td><td>World's #1 by volume; primarily sold in China</td></tr>
+        <tr><td><span class="rank-num gold">2</span></td><td><strong>Corona Extra</strong></td><td>🇲🇽 Mexico</td><td>Pale Lager</td><td>#1 brand value globally; served with lime</td></tr>
+        <tr><td><span class="rank-num gold">3</span></td><td><strong>Budweiser</strong></td><td>🇺🇸 USA</td><td>Pale Lager</td><td>"King of Beers"</td></tr>
+        <tr><td><span class="rank-num">4</span></td><td><strong>Heineken</strong></td><td>🇳🇱 Netherlands</td><td>Pale Lager</td><td>Green bottle; global premium brand</td></tr>
+        <tr><td><span class="rank-num">5</span></td><td><strong>Tsingtao</strong></td><td>🇨🇳 China</td><td>Pale Lager</td><td>Most exported Chinese beer</td></tr>
+        <tr><td><span class="rank-num">6</span></td><td><strong>Bud Light</strong></td><td>🇺🇸 USA</td><td>Light Lager</td><td>Low-calorie; formerly #1 in USA</td></tr>
+        <tr><td><span class="rank-num">7</span></td><td><strong>Modelo Especial</strong></td><td>🇲🇽 Mexico</td><td>Pilsner</td><td>Top-selling in USA (2023–2024)</td></tr>
+        <tr><td><span class="rank-num">8</span></td><td><strong>Michelob Ultra</strong></td><td>🇺🇸 USA</td><td>Light Lager</td><td>#1 USA seller (2025); health-focused</td></tr>
+        <tr><td><span class="rank-num">9</span></td><td><strong>Coors Light</strong></td><td>🇺🇸 USA</td><td>Light Lager</td><td>"Silver Bullet"; cold-activated cans</td></tr>
+        <tr><td><span class="rank-num">10</span></td><td><strong>Guinness</strong></td><td>🇮🇪 Ireland</td><td>Dry Stout</td><td>Most famous stout worldwide; nitro pour</td></tr>
+        <tr><td><span class="rank-num">11</span></td><td><strong>Stella Artois</strong></td><td>🇧🇪 Belgium</td><td>Pilsner</td><td>Premium European lager; chalice glass</td></tr>
+        <tr><td><span class="rank-num">12</span></td><td><strong>Brahma</strong></td><td>🇧🇷 Brazil</td><td>Pale Lager</td><td>Top Brazilian brand</td></tr>
+        <tr><td><span class="rank-num">13</span></td><td><strong>Skol</strong></td><td>🇧🇷 Brazil</td><td>Pale Lager</td><td>Strong global presence</td></tr>
+        <tr><td><span class="rank-num">14</span></td><td><strong>Harbin</strong></td><td>🇨🇳 China</td><td>Pale Lager</td><td>One of China's oldest breweries</td></tr>
+        <tr><td><span class="rank-num">15</span></td><td><strong>Miller Lite</strong></td><td>🇺🇸 USA</td><td>Light Lager</td><td>The original light beer</td></tr>
+        <tr><td><span class="rank-num">16</span></td><td><strong>Asahi</strong></td><td>🇯🇵 Japan</td><td>Pale Lager</td><td>Super Dry; crisp, clean finish</td></tr>
+        <tr><td><span class="rank-num">17</span></td><td><strong>Carlsberg</strong></td><td>🇩🇰 Denmark</td><td>Pilsner</td><td>"Probably the best beer in the world"</td></tr>
+        <tr><td><span class="rank-num">18</span></td><td><strong>Kirin</strong></td><td>🇯🇵 Japan</td><td>Pale Lager</td><td>Traditional Japanese; Ichiban Shibori</td></tr>
+        <tr><td><span class="rank-num">19</span></td><td><strong>Amstel</strong></td><td>🇳🇱 Netherlands</td><td>Pale Lager</td><td>Heineken-owned; clean European lager</td></tr>
+        <tr><td><span class="rank-num">20</span></td><td><strong>Busch</strong></td><td>🇺🇸 USA</td><td>Pale Lager</td><td>Budget-friendly; popular in rural USA</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TWO FAMILIES -->
+<section class="section anchor fade-up" id="two-families">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 02 — The Foundation</span>
+      <h2 class="section-title">🍺 Ales vs Lagers — <em>The Two Families</em></h2>
+    </div>
+    <div class="tip-box">All beer on earth falls into one of two categories based on yeast type and fermentation temperature. Everything else — flavor, color, bitterness — flows from this fundamental split.</div>
+    <div class="ale-lager-split">
+      <div class="ale-side">
+        <div class="family-title">🔴 ALES</div>
+        <div class="family-stat"><span class="fkey">Yeast</span><span class="fval">Top-fermenting</span></div>
+        <div class="family-stat"><span class="fkey">Temperature</span><span class="fval">Warmer (60–75°F)</span></div>
+        <div class="family-stat"><span class="fkey">Fermentation</span><span class="fval">Faster (days–weeks)</span></div>
+        <div class="family-stat"><span class="fkey">Flavor</span><span class="fval">Complex, fruity, robust</span></div>
+        <div class="family-stat"><span class="fkey">Age</span><span class="fval">Oldest beer style</span></div>
+        <div class="family-stat" style="border-bottom:none;"><span class="fkey">Examples</span><span class="fval">IPA, Stout, Pale Ale, Porter, Hefeweizen, Belgian</span></div>
+      </div>
+      <div class="lager-side">
+        <div class="family-title">🔵 LAGERS</div>
+        <div class="family-stat"><span class="fkey">Yeast</span><span class="fval">Bottom-fermenting</span></div>
+        <div class="family-stat"><span class="fkey">Temperature</span><span class="fval">Cooler (45–55°F)</span></div>
+        <div class="family-stat"><span class="fkey">Fermentation</span><span class="fval">Slower (weeks–months)</span></div>
+        <div class="family-stat"><span class="fkey">Flavor</span><span class="fval">Clean, crisp, smooth</span></div>
+        <div class="family-stat"><span class="fkey">Age</span><span class="fval">Developed ~1800s Bavaria</span></div>
+        <div class="family-stat" style="border-bottom:none;"><span class="fkey">Examples</span><span class="fval">Pilsner, Helles, Bock, Dunkel, Light Lager</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALE STYLES -->
+<section class="section anchor fade-up" id="ale-styles">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 03 — Ales</span>
+      <h2 class="section-title">🔴 Ale <em>Styles</em></h2>
+    </div>
+    <div class="style-cards">
+
+      <div class="style-card ale-ipa">
+        <div class="card-family">Ale · India Pale Ale</div>
+        <div class="card-name">IPA</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">5–7% (Session) · 7–10% (Standard) · 10%+ (Imperial)</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Gold to amber</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Intensely hoppy, bitter, citrus/tropical fruit</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Medium to full</span></div>
+        <div class="card-desc">The craft beer revolution's flagship style. West Coast = pine, grapefruit, dry, bitter. Hazy/NEIPA = juicy, tropical, smooth, less bitter. Session = lower ABV but still hoppy. Double/Imperial = intense everything.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Dogfish Head 60 Min</span>
+          <span class="brand-pill">Sierra Nevada Torpedo</span>
+          <span class="brand-pill">Lagunitas IPA</span>
+          <span class="brand-pill">Stone IPA</span>
+          <span class="brand-pill">Bell's Two Hearted</span>
+          <span class="brand-pill">Voodoo Ranger</span>
+          <span class="brand-pill">Hazy Little Thing</span>
+          <span class="brand-pill">Pliny the Elder</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Spicy foods, burgers, sharp cheddar, fried food</div>
+      </div>
+
+      <div class="style-card ale-pale">
+        <div class="card-family">Ale · Pale Ale</div>
+        <div class="card-name">Pale Ale</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">4.5–6%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Golden to copper</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Balanced malt sweetness + hop bitterness</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Medium</span></div>
+        <div class="card-desc">Less intense than IPA but more character than a lager. The perfect middle ground. American Pale Ale = citrusy, crisp. English Pale Ale = more malt-forward, earthy hops. Sierra Nevada Pale Ale is the gold standard.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Sierra Nevada Pale Ale</span>
+          <span class="brand-pill">Dale's Pale Ale</span>
+          <span class="brand-pill">New Belgium Fat Tire</span>
+          <span class="brand-pill">Founders Pale Ale</span>
+          <span class="brand-pill">Bass Ale</span>
+          <span class="brand-pill">Fuller's London Pride</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Pizza, roast chicken, salmon, cheddar</div>
+      </div>
+
+      <div class="style-card ale-blonde">
+        <div class="card-family">Ale · Blonde / Golden Ale</div>
+        <div class="card-name">Blonde Ale</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">4–6%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Light gold to pale amber</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Light, crisp, slightly sweet, minimal bitterness</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Light to medium</span></div>
+        <div class="card-desc">The great gateway ale. Designed to be approachable for lager drinkers. Low bitterness, clean malt, very refreshing. Kölsch is the German version — pale, clean, slightly fruity.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Kona Big Wave</span>
+          <span class="brand-pill">Firestone Walker 805</span>
+          <span class="brand-pill">Karbach Love Street</span>
+          <span class="brand-pill">Alaskan Summer</span>
+          <span class="brand-pill">Reissdorf Kölsch</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Salads, seafood, light pasta, mild cheeses</div>
+      </div>
+
+      <div class="style-card ale-brown">
+        <div class="card-family">Ale · Brown Ale</div>
+        <div class="card-name">Brown Ale</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">4–6%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Amber to dark brown</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Toasty, nutty, caramel, chocolate notes</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Medium</span></div>
+        <div class="card-desc">The underrated middle child of dark beers. More approachable than a stout, more character than a pale ale. Nutty, toasty, slightly sweet. Newcastle is the classic crowd-pleaser.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Newcastle Brown Ale</span>
+          <span class="brand-pill">Samuel Smith's Nut Brown</span>
+          <span class="brand-pill">Brooklyn Brown Ale</span>
+          <span class="brand-pill">Bell's Best Brown</span>
+          <span class="brand-pill">Cigar City Maduro</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Roasted meats, BBQ, sausages, nutty cheeses</div>
+      </div>
+
+      <div class="style-card ale-porter">
+        <div class="card-family">Ale · Porter</div>
+        <div class="card-name">Porter</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">4–6%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Dark brown to black</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Roasted malt, coffee, chocolate, caramel, toffee</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Medium to full</span></div>
+        <div class="card-desc">The 18th century London working-class beer. Roasty and rich but smoother and less intense than stout. Coffee, dark chocolate, slight sweetness. Deschutes Black Butte is a benchmark American porter.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Founders Porter</span>
+          <span class="brand-pill">Deschutes Black Butte</span>
+          <span class="brand-pill">Anchor Porter</span>
+          <span class="brand-pill">Great Lakes Edmund Fitzgerald</span>
+          <span class="brand-pill">Samuel Smith's Taddy</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> BBQ, smoked meats, chocolate desserts, blue cheese</div>
+      </div>
+
+      <div class="style-card ale-stout">
+        <div class="card-family">Ale · Stout</div>
+        <div class="card-name">Stout</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">4–7% (Dry) · 8–12% (Imperial)</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Black</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Rich, roasted barley, coffee, dark chocolate</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Full, creamy</span></div>
+        <div class="card-desc">Dry Stout (Guinness) = coffee-like, lighter body, 4.2% ABV. Milk Stout = lactose sweetness, creamy. Oatmeal Stout = silky smooth. Imperial/Russian Imperial = 8–12%+ ABV, rich and warming. One of the most diverse beer families.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Guinness Draught</span>
+          <span class="brand-pill">Left Hand Milk Stout</span>
+          <span class="brand-pill">Founders Breakfast Stout</span>
+          <span class="brand-pill">Old Rasputin Imperial</span>
+          <span class="brand-pill">Samuel Smith's Oatmeal</span>
+          <span class="brand-pill">Murphy's Irish Stout</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Oysters, beef stew, chocolate cake, vanilla ice cream</div>
+      </div>
+
+      <div class="style-card ale-wheat">
+        <div class="card-family">Ale · Wheat Beer</div>
+        <div class="card-name">Wheat Ale</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">4–6%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Pale to golden, often cloudy</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Light, fruity (banana, clove), citrusy, refreshing</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Light to medium</span></div>
+        <div class="card-desc">Hefeweizen = German style with banana + clove from yeast. Witbier/Belgian White = spiced with coriander and orange peel (Blue Moon). American Wheat = crisper, more citrusy. Unfiltered = naturally cloudy, smooth.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Blue Moon Belgian White</span>
+          <span class="brand-pill">Franziskaner Hefeweizen</span>
+          <span class="brand-pill">Paulaner Hefeweizen</span>
+          <span class="brand-pill">Allagash White</span>
+          <span class="brand-pill">Erdinger</span>
+          <span class="brand-pill">Bell's Oberon</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Seafood, salads, light cheeses, citrus dishes</div>
+      </div>
+
+      <div class="style-card ale-belgian">
+        <div class="card-family">Ale · Belgian Style</div>
+        <div class="card-name">Belgian Ale</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">6–12%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Varies — pale gold to dark brown</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Fruity, spicy (clove, pepper), sweet, complex</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Medium to full</span></div>
+        <div class="card-desc">Dubbel: dark, malty, raisin, 6–8% ABV. Tripel: strong golden, spicy, fruity, 8–10%. Quad: very strong, dark fruit, warming, 9–12%+. Saison: farmhouse ale, peppery, dry, 5–7%. Trappist monastery ales are legendary and world-class.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Chimay Red/White/Blue</span>
+          <span class="brand-pill">Duvel</span>
+          <span class="brand-pill">Westmalle Tripel</span>
+          <span class="brand-pill">Rochefort 10</span>
+          <span class="brand-pill">Delirium Tremens</span>
+          <span class="brand-pill">Saison Dupont</span>
+          <span class="brand-pill">Westvleteren 12</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Rich meats, game, strong cheeses, mussels</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LAGER STYLES -->
+<section class="section anchor fade-up" id="lager-styles">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 04 — Lagers</span>
+      <h2 class="section-title">🔵 Lager <em>Styles</em></h2>
+    </div>
+    <div class="style-cards">
+
+      <div class="style-card lager-pils">
+        <div class="card-family">Lager · Pilsner</div>
+        <div class="card-name">Pilsner</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">4–5.5%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Pale gold to light amber</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Crisp, clean, hoppy, slightly bitter, dry finish</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Light to medium</span></div>
+        <div class="card-desc">Born in Plzeň, Czech Republic in 1842. Czech Pilsner (Pilsner Urquell) = fuller, more bitter, richer gold. German Pils (Bitburger, Warsteiner) = lighter, crisper, more delicate. The most widely imitated style in history.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Pilsner Urquell</span>
+          <span class="brand-pill">Beck's</span>
+          <span class="brand-pill">Stella Artois</span>
+          <span class="brand-pill">Bitburger</span>
+          <span class="brand-pill">Warsteiner</span>
+          <span class="brand-pill">Spaten Pils</span>
+          <span class="brand-pill">Budweiser Budvar</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Fried foods, seafood, salads, light pasta</div>
+      </div>
+
+      <div class="style-card lager-pale">
+        <div class="card-family">Lager · Pale / American Lager</div>
+        <div class="card-name">Pale Lager</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">4–5%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Very pale straw to gold</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Light, clean, mild, low hop flavor, refreshing</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Light</span></div>
+        <div class="card-desc">The world's most popular beer style. American lagers (Budweiser, Coors) use corn/rice adjuncts for extra lightness. Mexican lagers (Corona, Modelo) add lime culture. International lagers (Heineken, Asahi) are pilsner-derived. Easy to drink, widely available.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Budweiser</span>
+          <span class="brand-pill">Coors Banquet</span>
+          <span class="brand-pill">Miller High Life</span>
+          <span class="brand-pill">Corona Extra</span>
+          <span class="brand-pill">Modelo Especial</span>
+          <span class="brand-pill">Heineken</span>
+          <span class="brand-pill">Asahi Super Dry</span>
+          <span class="brand-pill">Yuengling Lager</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> BBQ, burgers, pizza, tacos, anything casual</div>
+      </div>
+
+      <div class="style-card lager-light">
+        <div class="card-family">Lager · Light Lager</div>
+        <div class="card-name">Light Lager</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">3–4.2%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Very pale, nearly clear</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Extremely light, minimal flavor, low calories</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Very light</span></div>
+        <div class="card-desc">America's #1 category. Calories: Michelob Ultra (96), Miller Lite (96), Coors Light (102), Bud Light (110). Designed for session drinking. Less flavor by design — maximum refreshment, minimum consequence.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Michelob Ultra (96 cal)</span>
+          <span class="brand-pill">Miller Lite (96 cal)</span>
+          <span class="brand-pill">Coors Light (102 cal)</span>
+          <span class="brand-pill">Bud Light (110 cal)</span>
+          <span class="brand-pill">Busch Light</span>
+          <span class="brand-pill">Natural Light</span>
+          <span class="brand-pill">Keystone Light</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Light foods, salads, grilled chicken, fish tacos</div>
+      </div>
+
+      <div class="style-card lager-amber">
+        <div class="card-family">Lager · Amber / Vienna Lager</div>
+        <div class="card-name">Amber Lager</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">4.5–5.5%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Amber to copper</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Malty, slightly sweet, toasted bread, caramel</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Medium</span></div>
+        <div class="card-desc">Vienna lager style originated in 19th century Austria. Sam Adams Boston Lager essentially introduced Americans to malty lagers. Negra Modelo is the best-selling dark Mexican beer. Great balance of malt and hop.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Samuel Adams Boston Lager</span>
+          <span class="brand-pill">Negra Modelo</span>
+          <span class="brand-pill">Brooklyn Lager</span>
+          <span class="brand-pill">Dos Equis Amber</span>
+          <span class="brand-pill">Yuengling Lager</span>
+          <span class="brand-pill">Abita Amber</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Roasted chicken, pork, sausages, caramel desserts</div>
+      </div>
+
+      <div class="style-card lager-dark">
+        <div class="card-family">Lager · Dark Lager / Dunkel</div>
+        <div class="card-name">Dark Lager</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">4.5–6%</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Dark brown</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Malty, bread-like, chocolate, caramel, smooth</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Medium to full</span></div>
+        <div class="card-desc">Germany's dark lager tradition predates pale lagers. Dunkel means "dark" in German. Munich's answer to stout — rich malt flavor without heavy roast. Schwarzbier (black beer) is an even darker variant. Smooth and approachable.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Köstritzer Schwarzbier</span>
+          <span class="brand-pill">Paulaner Dunkel</span>
+          <span class="brand-pill">Hofbräu Dunkel</span>
+          <span class="brand-pill">Shiner Bock</span>
+          <span class="brand-pill">Sam Adams Black Lager</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Roasted meats, sausages, bread, pretzels</div>
+      </div>
+
+      <div class="style-card lager-bock">
+        <div class="card-family">Lager · Bock</div>
+        <div class="card-name">Bock</div>
+        <div class="card-stat"><span class="stat-key">ABV</span><span class="stat-val">6–7.5% (Traditional) · 7–10% (Doppelbock) · 9–14% (Eisbock)</span></div>
+        <div class="card-stat"><span class="stat-key">Color</span><span class="stat-val">Amber to dark brown</span></div>
+        <div class="card-stat"><span class="stat-key">Taste</span><span class="stat-val">Malty, sweet, full-bodied, caramel, toffee</span></div>
+        <div class="card-stat"><span class="stat-key">Body</span><span class="stat-val">Full</span></div>
+        <div class="card-desc">Bavaria's strong lager tradition. Traditional Bock (6–7%): Shiner Bock is America's most popular. Maibock: lighter, spring seasonal. Doppelbock (7–10%): richer, darker — Paulaner Salvator is the archetype. Eisbock: freeze-concentrated to reach 9–14%, incredibly powerful.</div>
+        <div class="brand-row">
+          <span class="brand-pill">Shiner Bock</span>
+          <span class="brand-pill">Paulaner Salvator</span>
+          <span class="brand-pill">Ayinger Celebrator</span>
+          <span class="brand-pill">Spaten Optimator</span>
+          <span class="brand-pill">Schneider Aventinus Eisbock</span>
+          <span class="brand-pill">Sam Adams Double Bock</span>
+        </div>
+        <div class="pairing-note"><strong>Pairs with:</strong> Roasted pork, sausages, hearty stews, aged cheeses</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- BY REGION -->
+<section class="section anchor fade-up" id="by-region">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 05 — Around the World</span>
+      <h2 class="section-title">🌍 Beers by <em>Region</em></h2>
+    </div>
+    <div class="region-grid">
+
+      <div class="region-card">
+        <span class="region-flag">🇺🇸</span>
+        <div class="region-name">American Classics</div>
+        <span class="region-sub">USA — All Styles</span>
+        <ul class="region-list">
+          <li><strong>Light Lagers:</strong> Bud Light, Miller Lite, Coors Light, Michelob Ultra, Natural Light, Busch Light</li>
+          <li><strong>Standard Lagers:</strong> Budweiser, Coors Banquet, Miller High Life, PBR, Yuengling, Lone Star</li>
+          <li><strong>Premium/Craft:</strong> Samuel Adams, Sierra Nevada, New Belgium, Dogfish Head, Lagunitas, Stone Brewing</li>
+          <li><strong>Texas Craft:</strong> Karbach Love Street (Kölsch-style)</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇲🇽</span>
+        <div class="region-name">Mexican Imports</div>
+        <span class="region-sub">Mexico — Light & Bold</span>
+        <ul class="region-list">
+          <li><strong>Light & Refreshing:</strong> Corona Extra, Modelo Especial, Pacifico, Tecate, Sol, Dos Equis Lager</li>
+          <li><strong>Darker Options:</strong> Negra Modelo, Dos Equis Amber, Bohemia</li>
+          <li>Traditionally served ice cold with lime</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇩🇪</span>
+        <div class="region-name">Germany</div>
+        <span class="region-sub">Europe — Purity Law Since 1516</span>
+        <ul class="region-list">
+          <li>Reinheitsgebot: only water, malt, hops, yeast</li>
+          <li><strong>Pilsner:</strong> Beck's, Warsteiner, Bitburger, Spaten</li>
+          <li><strong>Wheat:</strong> Erdinger, Franziskaner, Paulaner</li>
+          <li><strong>Dark:</strong> Paulaner Dunkel, Hofbräu Dunkel</li>
+          <li><strong>Bock:</strong> Paulaner Salvator, Ayinger Celebrator</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇧🇪</span>
+        <div class="region-name">Belgium</div>
+        <span class="region-sub">Europe — Complex Ale Tradition</span>
+        <ul class="region-list">
+          <li>Trappist monastery ales are world-famous</li>
+          <li><strong>Pilsner:</strong> Stella Artois</li>
+          <li><strong>Wheat:</strong> Hoegaarden</li>
+          <li><strong>Ales:</strong> Chimay, Duvel, Leffe, Westmalle, Rochefort, Orval</li>
+          <li>Complex, high-ABV ales; sour ales</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇬🇧</span>
+        <div class="region-name">British / Irish</div>
+        <span class="region-sub">UK & Ireland — Pub Culture</span>
+        <ul class="region-list">
+          <li>Cask ales, traditional pub culture</li>
+          <li><strong>Stout:</strong> Guinness, Murphy's, Beamish</li>
+          <li><strong>Pale Ale:</strong> Bass Ale, Newcastle Brown, Fuller's London Pride</li>
+          <li><strong>Irish Ale:</strong> Smithwick's, Boddingtons</li>
+          <li>Less carbonation; warmer serving temps</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇨🇿</span>
+        <div class="region-name">Czech Republic</div>
+        <span class="region-sub">Europe — Birthplace of Pilsner</span>
+        <ul class="region-list">
+          <li>Invented the world's first golden lager in 1842</li>
+          <li><strong>Pilsner:</strong> Pilsner Urquell, Budweiser Budvar, Staropramen</li>
+          <li>Czech Pilsner = darker gold, fuller body, more bitter</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇳🇱</span>
+        <div class="region-name">Netherlands</div>
+        <span class="region-sub">Europe — Global Export Leaders</span>
+        <ul class="region-list">
+          <li><strong>Heineken</strong> — green bottle, global premium</li>
+          <li><strong>Heineken 0.0</strong> — non-alcoholic version</li>
+          <li><strong>Amstel</strong> — Heineken-owned</li>
+          <li><strong>Grolsch</strong> — swing-top bottle icon</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇯🇵</span>
+        <div class="region-name">Japan</div>
+        <span class="region-sub">Asia — Precision Brewing</span>
+        <ul class="region-list">
+          <li><strong>Asahi Super Dry</strong> — ultra-crisp, "karakuchi" (dry) style</li>
+          <li><strong>Kirin Ichiban</strong> — first-press only brewing</li>
+          <li><strong>Sapporo</strong> — Japan's oldest beer brand (1876)</li>
+          <li><strong>Suntory</strong> — Premium Malts flagship</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🇨🇳</span>
+        <div class="region-name">China</div>
+        <span class="region-sub">Asia — World's #1 Volume</span>
+        <ul class="region-list">
+          <li><strong>Snow</strong> — world's #1 beer by volume sold</li>
+          <li><strong>Tsingtao</strong> — most exported Chinese beer (founded by Germans in 1903)</li>
+          <li><strong>Harbin</strong> — one of China's oldest breweries</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🌏</span>
+        <div class="region-name">Other Asia</div>
+        <span class="region-sub">Southeast Asia & Beyond</span>
+        <ul class="region-list">
+          <li><strong>Singha</strong> — Thailand; crisp, full-bodied</li>
+          <li><strong>Tiger</strong> — Singapore; clean, light lager</li>
+          <li><strong>San Miguel</strong> — Philippines; one of Asia's oldest</li>
+        </ul>
+      </div>
+
+      <div class="region-card">
+        <span class="region-flag">🍎</span>
+        <div class="region-name">Hard Cider & Seltzers</div>
+        <span class="region-sub">USA — The Adjacent Category</span>
+        <ul class="region-list">
+          <li><strong>Hard Cider:</strong> Angry Orchard (apple cider; 5% ABV)</li>
+          <li><strong>Flavored Malt:</strong> Twisted Tea (hard iced tea; 5% ABV)</li>
+          <li><strong>Hard Seltzer:</strong> White Claw, Truly (4–5% ABV; ~100 cal)</li>
+          <li><strong>Vodka Soda:</strong> High Noon (real fruit juice + vodka)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO CHOOSE -->
+<section class="section anchor fade-up" id="how-to-choose">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 06 — Decision Guide</span>
+      <h2 class="section-title">🎯 How to Choose <em>Your Beer</em></h2>
+    </div>
+    <div class="decision-box">
+      <div class="decision-row">
+        <div class="d-q">Want something light & refreshing?</div>
+        <div class="d-arr">→</div>
+        <div class="d-a">Pilsner, Pale Lager, Light Lager, Wheat Ale, Blonde Ale</div>
+      </div>
+      <div class="decision-row">
+        <div class="d-q">Want something hoppy & bitter?</div>
+        <div class="d-arr">→</div>
+        <div class="d-a">IPA (West Coast for dry/bitter, Hazy for smooth/juicy), Pale Ale</div>
+      </div>
+      <div class="decision-row">
+        <div class="d-q">Want something dark & rich?</div>
+        <div class="d-arr">→</div>
+        <div class="d-a">Stout, Porter, Dark Lager, Bock</div>
+      </div>
+      <div class="decision-row">
+        <div class="d-q">Want something balanced?</div>
+        <div class="d-arr">→</div>
+        <div class="d-a">Pale Ale, Amber Lager, Brown Ale</div>
+      </div>
+      <div class="decision-row">
+        <div class="d-q">Want something fruity & complex?</div>
+        <div class="d-arr">→</div>
+        <div class="d-a">Belgian Ale, Hefeweizen, Saison</div>
+      </div>
+      <div class="decision-row">
+        <div class="d-q">Want low calories?</div>
+        <div class="d-arr">→</div>
+        <div class="d-a">Light Lager (Michelob Ultra, Bud Light, Miller Lite) or Hard Seltzer</div>
+      </div>
+      <div class="decision-row">
+        <div class="d-q">Want high alcohol?</div>
+        <div class="d-arr">→</div>
+        <div class="d-a">Imperial IPA, Imperial Stout, Belgian Tripel/Quad, Doppelbock</div>
+      </div>
+      <div class="decision-row">
+        <div class="d-q">New to craft beer?</div>
+        <div class="d-arr">→</div>
+        <div class="d-a">Blonde Ale, Hefeweizen, Pale Ale — eases you in gently</div>
+      </div>
+      <div class="decision-row">
+        <div class="d-q">I only drink lagers, want to try something new?</div>
+        <div class="d-arr">→</div>
+        <div class="d-a">Blonde Ale or Pale Ale — closest ale to a lager in drinkability</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD PAIRING -->
+<section class="section anchor fade-up" id="pairing">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 07 — Food Pairing</span>
+      <h2 class="section-title">🍽️ Beer & Food <em>Pairing</em></h2>
+    </div>
+    <div class="tip-box">
+      <strong>Pairing Principles:</strong> Match intensity (light food = light beer, rich food = rich beer). Complement (roasted meat + roasted stout). Contrast (spicy food + refreshing pilsner). Cut through fat (hoppy IPA cuts grease). Carbonation cleanses the palate between bites.
+    </div>
+    <div class="pairing-grid">
+      <div class="pairing-item"><div class="pair-food">🍕 Pizza</div><div class="pair-beer">Pale Lager, Pilsner, Pale Ale</div></div>
+      <div class="pairing-item"><div class="pair-food">🍔 Burgers</div><div class="pair-beer">Pale Ale, IPA, Amber Lager</div></div>
+      <div class="pairing-item"><div class="pair-food">🥩 BBQ / Smoked Meats</div><div class="pair-beer">Porter, Stout, Brown Ale, Bock</div></div>
+      <div class="pairing-item"><div class="pair-food">🌶️ Spicy Food</div><div class="pair-beer">IPA, Pilsner, Wheat Ale</div></div>
+      <div class="pairing-item"><div class="pair-food">🐟 Seafood</div><div class="pair-beer">Pilsner, Wheat Ale, Blonde Ale</div></div>
+      <div class="pairing-item"><div class="pair-food">🍟 Fried Foods</div><div class="pair-beer">Pilsner, Pale Lager, IPA</div></div>
+      <div class="pairing-item"><div class="pair-food">🍫 Chocolate Dessert</div><div class="pair-beer">Stout, Porter, Belgian Quad</div></div>
+      <div class="pairing-item"><div class="pair-food">🧀 Sharp Cheese</div><div class="pair-beer">IPA, Strong Ale</div></div>
+      <div class="pairing-item"><div class="pair-food">🧀 Mild Cheese</div><div class="pair-beer">Pale Lager, Wheat Ale</div></div>
+      <div class="pairing-item"><div class="pair-food">🦪 Oysters</div><div class="pair-beer">Dry Stout — the classic pairing!</div></div>
+      <div class="pairing-item"><div class="pair-food">🍖 Sausages / Pork</div><div class="pair-beer">Märzen, Bock, Amber Lager</div></div>
+      <div class="pairing-item"><div class="pair-food">🥗 Salads / Light Fare</div><div class="pair-beer">Saison, Wheat Ale, Blonde Ale</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVING TEMPS -->
+<section class="section anchor fade-up" id="serving">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 08 — Serving & Storage</span>
+      <h2 class="section-title">🌡️ Serving, Storage<br><em>& Glassware</em></h2>
+    </div>
+
+    <div class="two-col-table">
+      <div class="ref-box">
+        <div class="ref-title">Serving Temperatures</div>
+        <div class="temp-row">
+          <span>Light Lagers</span>
+          <div class="temp-track"><div class="temp-fill" style="width:15%; background: linear-gradient(90deg, #5bc4e8, #8ad8f0);"></div></div>
+          <span class="temp-val">35–40°F</span>
+        </div>
+        <div class="temp-row">
+          <span>Pilsners</span>
+          <div class="temp-track"><div class="temp-fill" style="width:22%; background: linear-gradient(90deg, #5bc4e8, #8ad8f0);"></div></div>
+          <span class="temp-val">38–45°F</span>
+        </div>
+        <div class="temp-row">
+          <span>Pale Ales / IPAs</span>
+          <div class="temp-track"><div class="temp-fill" style="width:38%; background: linear-gradient(90deg, #d4a030, #e8c060);"></div></div>
+          <span class="temp-val">45–50°F</span>
+        </div>
+        <div class="temp-row">
+          <span>Wheat Ales</span>
+          <div class="temp-track"><div class="temp-fill" style="width:35%; background: linear-gradient(90deg, #d4c060, #e8d880);"></div></div>
+          <span class="temp-val">45–50°F</span>
+        </div>
+        <div class="temp-row">
+          <span>Stouts / Porters</span>
+          <div class="temp-track"><div class="temp-fill" style="width:52%; background: linear-gradient(90deg, #8b4513, #c06030);"></div></div>
+          <span class="temp-val">50–55°F</span>
+        </div>
+        <div class="temp-row">
+          <span>Belgian Ales</span>
+          <div class="temp-track"><div class="temp-fill" style="width:52%; background: linear-gradient(90deg, #c9a84c, #e8c860);"></div></div>
+          <span class="temp-val">50–55°F</span>
+        </div>
+        <div class="temp-row" style="border:none;">
+          <span>Strong Ales 8%+</span>
+          <div class="temp-track"><div class="temp-fill" style="width:70%; background: linear-gradient(90deg, #d4820a, #f0a830);"></div></div>
+          <span class="temp-val">55–60°F</span>
+        </div>
+        <div class="tip-box" style="margin-top:1rem; font-size: 0.82rem;">General rule: the stronger and darker the beer, the warmer it should be served.</div>
+      </div>
+
+      <div>
+        <div class="ref-box" style="margin-bottom: 1.5rem;">
+          <div class="ref-title">Glassware Matters</div>
+          <div class="card-stat"><span class="stat-key">Pint Glass</span><span class="stat-val">General purpose — most beers</span></div>
+          <div class="card-stat"><span class="stat-key">Pilsner Glass</span><span class="stat-val">Tall, narrow; showcases color & carbonation</span></div>
+          <div class="card-stat"><span class="stat-key">Tulip / Goblet</span><span class="stat-val">Belgian ales; traps aroma beautifully</span></div>
+          <div class="card-stat"><span class="stat-key">Snifter</span><span class="stat-val">Strong ales, stouts; for sipping</span></div>
+          <div class="card-stat" style="border:none;"><span class="stat-key">Weizen Glass</span><span class="stat-val">Wheat beers; holds volume + head retention</span></div>
+        </div>
+        <div class="ref-box">
+          <div class="ref-title">Storing Beer</div>
+          <div class="card-stat"><span class="stat-key">Position</span><span class="stat-val">Store upright (reduces oxidation)</span></div>
+          <div class="card-stat"><span class="stat-key">Temperature</span><span class="stat-val">Cool, consistent — avoid fluctuations</span></div>
+          <div class="card-stat"><span class="stat-key">Light</span><span class="stat-val">Avoid sunlight — causes "skunking" in clear/green bottles</span></div>
+          <div class="card-stat" style="border:none;"><span class="stat-key">After buying</span><span class="stat-val">Refrigerate promptly; most beer = drink fresh</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-box" style="margin-top: 1.5rem;">
+      <div class="ref-title">Tasting Beer Like a Pro</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div class="card-stat" style="flex-direction:column; align-items:start; gap:0.2rem; border:none; padding:0;">
+          <span class="stat-key">1 — Look</span>
+          <span class="stat-val" style="font-size:0.88rem; color:var(--text-dim);">Observe color, clarity, head retention and size</span>
+        </div>
+        <div class="card-stat" style="flex-direction:column; align-items:start; gap:0.2rem; border:none; padding:0;">
+          <span class="stat-key">2 — Smell</span>
+          <span class="stat-val" style="font-size:0.88rem; color:var(--text-dim);">Swirl gently, inhale — hops, malt, yeast, fruit</span>
+        </div>
+        <div class="card-stat" style="flex-direction:column; align-items:start; gap:0.2rem; border:none; padding:0;">
+          <span class="stat-key">3 — Taste</span>
+          <span class="stat-val" style="font-size:0.88rem; color:var(--text-dim);">Small sip, let it coat your whole mouth</span>
+        </div>
+        <div class="card-stat" style="flex-direction:column; align-items:start; gap:0.2rem; border:none; padding:0;">
+          <span class="stat-key">4 — Evaluate</span>
+          <span class="stat-val" style="font-size:0.88rem; color:var(--text-dim);">Balance, finish, aftertaste — how long does it linger?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK REF -->
+<section class="section anchor fade-up" id="quick-ref">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 09 — Charts</span>
+      <h2 class="section-title">📊 Quick <em>Reference</em> Charts</h2>
+    </div>
+    <div class="ref-grid">
+
+      <div class="ref-box">
+        <div class="ref-title">Beer Strength Scale</div>
+        <table class="beer-table">
+          <tr><th>Level</th><th>ABV</th><th>Examples</th></tr>
+          <tr><td>🟢 Session/Light</td><td>3–4.5%</td><td>Light lagers, Session IPA, Dry stout</td></tr>
+          <tr><td>🟡 Standard</td><td>4.5–6%</td><td>Most lagers, Pale ales, Pilsners, Wheat beers</td></tr>
+          <tr><td>🟠 Strong</td><td>6–8%</td><td>IPA, Belgian Dubbel, Bock</td></tr>
+          <tr><td>🔴 Very Strong</td><td>8–12%+</td><td>Imperial IPA/Stout, Belgian Tripel/Quad, Doppelbock</td></tr>
+        </table>
+      </div>
+
+      <div class="ref-box">
+        <div class="ref-title">Bitterness Scale (IBU)</div>
+        <table class="beer-table">
+          <tr><th>IBU</th><th>Bitterness</th><th>Styles</th></tr>
+          <tr><td>5–15</td><td>Very Low</td><td>Light Lager, Wheat Ale</td></tr>
+          <tr><td>15–30</td><td>Low</td><td>Pale Lager, Blonde Ale, Hefeweizen</td></tr>
+          <tr><td>30–50</td><td>Medium</td><td>Pale Ale, Pilsner, Brown Ale</td></tr>
+          <tr><td>50–70</td><td>High</td><td>IPA, Porter</td></tr>
+          <tr><td>70–100+</td><td>Very High</td><td>Double IPA, Imperial IPA</td></tr>
+        </table>
+      </div>
+
+      <div class="ref-box">
+        <div class="ref-title">Flavor Profiles</div>
+        <table class="beer-table">
+          <tr><th>If You Like…</th><th>Try These Styles</th></tr>
+          <tr><td>Sweet & Malty</td><td>Bock, Brown Ale, Milk Stout, Amber Lager</td></tr>
+          <tr><td>Bitter & Hoppy</td><td>IPA, Pale Ale, Pilsner</td></tr>
+          <tr><td>Roasted / Coffee</td><td>Stout, Porter</td></tr>
+          <tr><td>Fruity & Spicy</td><td>Belgian Ale, Hefeweizen, Saison</td></tr>
+          <tr><td>Clean & Crisp</td><td>Pilsner, Pale Lager, Kölsch</td></tr>
+          <tr><td>Dark & Smooth</td><td>Porter, Dark Lager, Oatmeal Stout</td></tr>
+        </table>
+      </div>
+
+      <div class="ref-box">
+        <div class="ref-title">Color Guide</div>
+        <table class="beer-table">
+          <tr><th>Color</th><th>Styles</th></tr>
+          <tr><td>Very Pale (Straw)</td><td>Light Lager, Pilsner, Blonde Ale</td></tr>
+          <tr><td>Gold to Amber</td><td>Pale Ale, IPA, Amber Lager, Bock</td></tr>
+          <tr><td>Copper to Brown</td><td>Brown Ale, Porter, Vienna Lager</td></tr>
+          <tr><td>Dark Brown to Black</td><td>Stout, Dark Lager, Schwarzbier</td></tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CRAFT vs MACRO -->
+<section class="section anchor fade-up" id="craft-vs-macro">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 10 — The Great Debate</span>
+      <h2 class="section-title">🏅 Craft Beer vs <em>Macro Beer</em></h2>
+    </div>
+    <div class="split-grid">
+      <div class="split-card macro">
+        <div class="split-title">🏭 Macro Beer (Big Brands)</div>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:1rem; font-style:italic;">Budweiser, Coors, Miller, Heineken, Corona</p>
+        <ul class="split-list">
+          <li>Mass-produced; highly consistent batch to batch</li>
+          <li>Lighter, more accessible flavors</li>
+          <li>Lower cost — best value per ounce</li>
+          <li>Available everywhere, any hour</li>
+          <li>Built for easy session drinking</li>
+          <li>Global recognition and cultural presence</li>
+        </ul>
+      </div>
+      <div class="split-card craft">
+        <div class="split-title">🍻 Craft Beer (Independent)</div>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:1rem; font-style:italic;">Sierra Nevada, Dogfish Head, Stone, local breweries</p>
+        <ul class="split-list">
+          <li>Small-batch, experimental, creative</li>
+          <li>Bold, complex, diverse flavors</li>
+          <li>Higher cost — artisanal production</li>
+          <li>Regional or limited availability</li>
+          <li>Wide style variety — hundreds of sub-styles</li>
+          <li>Seasonal and one-off releases</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tip-box" style="margin-top:1.5rem;">Both have their place. Macro for easy drinking and social occasions. Craft for exploration, tasting, and finding your personal favorites. The best beer is the one you enjoy.</div>
+  </div>
+</section>
+
+<!-- CULTURE -->
+<section class="section anchor fade-up" id="culture">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 11 — Around the World</span>
+      <h2 class="section-title">🌍 Regional Beer <em>Cultures</em></h2>
+    </div>
+    <div class="culture-grid">
+      <div class="culture-card">
+        <span class="culture-flag">🇺🇸</span>
+        <div class="culture-name">American Beer Culture</div>
+        <ul class="culture-facts">
+          <li>Light lagers dominate the volume market (Bud Light, Coors Light)</li>
+          <li>Craft beer boom since the 1980s — IPAs are now king</li>
+          <li>West Coast = hoppy, bitter IPAs; East Coast = hazy, juicy IPAs</li>
+          <li>Growing seltzer, cider, and non-alcoholic markets</li>
+        </ul>
+      </div>
+      <div class="culture-card">
+        <span class="culture-flag">🇩🇪</span>
+        <div class="culture-name">German Beer Culture</div>
+        <ul class="culture-facts">
+          <li>Reinheitsgebot (Purity Law) since 1516: only water, malt, hops, yeast</li>
+          <li>Pilsners, Hefeweizens, Bocks, Dunkel — all regional specialties</li>
+          <li>Beer gardens are a cultural institution, especially in Bavaria</li>
+          <li>Oktoberfest: 6+ million liters of Märzen served annually in Munich</li>
+        </ul>
+      </div>
+      <div class="culture-card">
+        <span class="culture-flag">🇧🇪</span>
+        <div class="culture-name">Belgian Beer Culture</div>
+        <ul class="culture-facts">
+          <li>UNESCO recognized Belgian beer culture in 2016</li>
+          <li>Trappist monasteries brew some of the world's most sought-after ales</li>
+          <li>800+ distinct beers in a country smaller than Maryland</li>
+          <li>Sour ales (lambic, gueuze) use wild fermentation — unique worldwide</li>
+        </ul>
+      </div>
+      <div class="culture-card">
+        <span class="culture-flag">🇬🇧</span>
+        <div class="culture-name">British Beer Culture</div>
+        <ul class="culture-facts">
+          <li>Cask ale (real ale) is a uniquely British tradition</li>
+          <li>CAMRA (Campaign for Real Ale) has protected traditional brewing since 1971</li>
+          <li>Porters, stouts, and pale ales are the backbone</li>
+          <li>Served warmer than American standards; lower carbonation</li>
+        </ul>
+      </div>
+      <div class="culture-card">
+        <span class="culture-flag">🇲🇽</span>
+        <div class="culture-name">Mexican Beer Culture</div>
+        <ul class="culture-facts">
+          <li>Light lagers served ice cold with lime and salt</li>
+          <li>Beach and casual outdoor drinking culture</li>
+          <li>Corona, Modelo, Pacifico dominate domestic and export markets</li>
+          <li>Michelada: beer + lime juice + hot sauce + salt rim — a national tradition</li>
+        </ul>
+      </div>
+      <div class="culture-card">
+        <span class="culture-flag">🇨🇿</span>
+        <div class="culture-name">Czech Beer Culture</div>
+        <ul class="culture-facts">
+          <li>World's highest per capita beer consumption</li>
+          <li>Birthplace of the modern lager (Pilsner, 1842)</li>
+          <li>Beer is often cheaper than water in Prague restaurants</li>
+          <li>Unpasteurized "tank beer" (tankové pivo) is a Czech specialty</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TERMINOLOGY -->
+<section class="section anchor fade-up" id="terminology">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Section 12 — The Language of Beer</span>
+      <h2 class="section-title">📚 Beer <em>Terminology</em></h2>
+    </div>
+    <div class="term-grid">
+      <div class="term-item"><div class="term-word">ABV</div><div class="term-def">Alcohol By Volume — the % of alcohol in the beer. Standard beer is 4–6%. Imperial styles can reach 12–15%.</div></div>
+      <div class="term-item"><div class="term-word">IBU</div><div class="term-def">International Bitterness Units — measures hop bitterness. Light lagers: 5–15 IBU. Double IPAs: 70–100+ IBU.</div></div>
+      <div class="term-item"><div class="term-word">Session Beer</div><div class="term-def">Lower ABV beer (under 5%) designed for drinking over an extended period without heavy intoxication.</div></div>
+      <div class="term-item"><div class="term-word">Hazy / Unfiltered</div><div class="term-def">Cloudy appearance from suspended yeast and proteins. Associated with New England IPAs — smooth, soft mouthfeel.</div></div>
+      <div class="term-item"><div class="term-word">Dry-Hopped</div><div class="term-def">Hops added during or after fermentation rather than the boil. Adds intense aroma without bitterness.</div></div>
+      <div class="term-item"><div class="term-word">Draft / Draught</div><div class="term-def">Beer served from a pressurized keg through a tap system. Generally fresher than bottled or canned.</div></div>
+      <div class="term-item"><div class="term-word">Nitro</div><div class="term-def">Nitrogenated beer — uses nitrogen instead of CO₂. Creates tiny bubbles, creamy texture, smooth head. Guinness is the famous example.</div></div>
+      <div class="term-item"><div class="term-word">Bomber</div><div class="term-def">A 22 oz (650ml) bottle — common for craft beer releases and limited editions.</div></div>
+      <div class="term-item"><div class="term-word">Growler</div><div class="term-def">A 64 oz (half-gallon) refillable bottle used to take draft beer home from a brewery or taproom.</div></div>
+      <div class="term-item"><div class="term-word">Cask</div><div class="term-def">Unpasteurized, naturally carbonated beer served at cellar temperature. The traditional "real ale" format in Britain.</div></div>
+      <div class="term-item"><div class="term-word">Reinheitsgebot</div><div class="term-def">German Beer Purity Law of 1516: only water, malted barley, hops, and yeast permitted. Still followed by many German brewers.</div></div>
+      <div class="term-item"><div class="term-word">Adjuncts</div><div class="term-def">Non-malt fermentables added to beer — corn, rice (used in American lagers), oats, wheat, lactose, fruit.</div></div>
+      <div class="term-item"><div class="term-word">Lagering</div><div class="term-def">Cold-conditioning process where lagers rest at near-freezing temps for weeks/months to develop clean, crisp flavor.</div></div>
+      <div class="term-item"><div class="term-word">Trappist</div><div class="term-def">Beer brewed by or under supervision of Trappist monks. Only 14 breweries worldwide qualify. Highly sought-after.</div></div>
+      <div class="term-item"><div class="term-word">Skunked</div><div class="term-def">Off-flavor caused by UV light reacting with hop compounds. Clear and green bottles are most vulnerable. Brown bottles protect best.</div></div>
+      <div class="term-item"><div class="term-word">Malt</div><div class="term-def">Barley that's been germinated and dried. The main source of fermentable sugars and the foundation of beer's body, color, and sweetness.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- A-Z INDEX -->
+<section class="index-bg anchor" id="index">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="eyebrow">Section 13 — Full Reference</span>
+      <h2 class="section-title">🔤 A–Z <em>Index</em></h2>
+    </div>
+    <div class="index-cols fade-up">
+
+      <div class="idx-group">
+        <div class="idx-letter">A</div>
+        <ul class="idx-links">
+          <li><a href="#top-brands">Asahi Super Dry <span class="idx-cat">brand · Japan</span></a></li>
+          <li><a href="#by-region">American Classics <span class="idx-cat">region</span></a></li>
+          <li><a href="#ale-styles">Ale Styles Overview <span class="idx-cat">section</span></a></li>
+          <li><a href="#ale-styles">Amber Lager <span class="idx-cat">style</span></a></li>
+          <li><a href="#by-region">Amstel <span class="idx-cat">brand · Netherlands</span></a></li>
+          <li><a href="#by-region">Angry Orchard <span class="idx-cat">hard cider</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">B</div>
+        <ul class="idx-links">
+          <li><a href="#top-brands">Budweiser <span class="idx-cat">brand · USA</span></a></li>
+          <li><a href="#top-brands">Bud Light <span class="idx-cat">brand · USA</span></a></li>
+          <li><a href="#ale-styles">Belgian Ale <span class="idx-cat">style</span></a></li>
+          <li><a href="#ale-styles">Blonde / Golden Ale <span class="idx-cat">style</span></a></li>
+          <li><a href="#lager-styles">Bock <span class="idx-cat">style</span></a></li>
+          <li><a href="#ale-styles">Brown Ale <span class="idx-cat">style</span></a></li>
+          <li><a href="#by-region">Beck's <span class="idx-cat">brand · Germany</span></a></li>
+          <li><a href="#by-region">Blue Moon <span class="idx-cat">brand · USA</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">C</div>
+        <ul class="idx-links">
+          <li><a href="#top-brands">Carlsberg <span class="idx-cat">brand · Denmark</span></a></li>
+          <li><a href="#top-brands">Coors Light <span class="idx-cat">brand · USA</span></a></li>
+          <li><a href="#top-brands">Corona Extra <span class="idx-cat">brand · Mexico</span></a></li>
+          <li><a href="#craft-vs-macro">Craft vs Macro <span class="idx-cat">section</span></a></li>
+          <li><a href="#by-region">Chimay <span class="idx-cat">brand · Belgium</span></a></li>
+          <li><a href="#culture">Czech Beer Culture <span class="idx-cat">culture</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">D</div>
+        <ul class="idx-links">
+          <li><a href="#lager-styles">Dark Lager / Dunkel <span class="idx-cat">style</span></a></li>
+          <li><a href="#ale-styles">Dogfish Head 60 Minute <span class="idx-cat">brand · IPA</span></a></li>
+          <li><a href="#lager-styles">Doppelbock <span class="idx-cat">style</span></a></li>
+          <li><a href="#two-families">Draft / Draught <span class="idx-cat">term</span></a></li>
+          <li><a href="#terminology">Dry-Hopped <span class="idx-cat">term</span></a></li>
+          <li><a href="#by-region">Duvel <span class="idx-cat">brand · Belgium</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">E–F</div>
+        <ul class="idx-links">
+          <li><a href="#lager-styles">Eisbock <span class="idx-cat">style</span></a></li>
+          <li><a href="#ale-styles">Erdinger Hefeweizen <span class="idx-cat">brand · Germany</span></a></li>
+          <li><a href="#pairing">Food Pairing Guide <span class="idx-cat">section</span></a></li>
+          <li><a href="#ale-styles">Founders Porter/Stout <span class="idx-cat">brand · USA</span></a></li>
+          <li><a href="#by-region">Franziskaner <span class="idx-cat">brand · Germany</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">G</div>
+        <ul class="idx-links">
+          <li><a href="#top-brands">Guinness <span class="idx-cat">brand · Ireland</span></a></li>
+          <li><a href="#serving">Glassware Guide <span class="idx-cat">section</span></a></li>
+          <li><a href="#by-region">Grolsch <span class="idx-cat">brand · Netherlands</span></a></li>
+          <li><a href="#terminology">Growler <span class="idx-cat">term</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">H</div>
+        <ul class="idx-links">
+          <li><a href="#top-brands">Heineken <span class="idx-cat">brand · Netherlands</span></a></li>
+          <li><a href="#ale-styles">Hefeweizen <span class="idx-cat">style</span></a></li>
+          <li><a href="#by-region">High Noon <span class="idx-cat">vodka soda</span></a></li>
+          <li><a href="#by-region">Hoegaarden <span class="idx-cat">brand · Belgium</span></a></li>
+          <li><a href="#how-to-choose">How to Choose <span class="idx-cat">section</span></a></li>
+          <li><a href="#by-region">Harbin <span class="idx-cat">brand · China</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">I–J</div>
+        <ul class="idx-links">
+          <li><a href="#ale-styles">IPA — India Pale Ale <span class="idx-cat">style</span></a></li>
+          <li><a href="#terminology">IBU <span class="idx-cat">term</span></a></li>
+          <li><a href="#ale-styles">Imperial / Double IPA <span class="idx-cat">sub-style</span></a></li>
+          <li><a href="#ale-styles">Imperial Stout <span class="idx-cat">sub-style</span></a></li>
+          <li><a href="#by-region">Japan — Beer Culture <span class="idx-cat">region</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">K–L</div>
+        <ul class="idx-links">
+          <li><a href="#by-region">Karbach Love Street <span class="idx-cat">brand · Texas</span></a></li>
+          <li><a href="#top-brands">Kirin <span class="idx-cat">brand · Japan</span></a></li>
+          <li><a href="#ale-styles">Kona Big Wave <span class="idx-cat">brand · blonde ale</span></a></li>
+          <li><a href="#lager-styles">Lager Styles Overview <span class="idx-cat">section</span></a></li>
+          <li><a href="#by-region">Leffe <span class="idx-cat">brand · Belgium</span></a></li>
+          <li><a href="#ale-styles">Light Lager <span class="idx-cat">style</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">M</div>
+        <ul class="idx-links">
+          <li><a href="#terminology">Malt <span class="idx-cat">ingredient / term</span></a></li>
+          <li><a href="#by-region">Mexican Imports <span class="idx-cat">region</span></a></li>
+          <li><a href="#top-brands">Michelob Ultra <span class="idx-cat">brand · USA</span></a></li>
+          <li><a href="#top-brands">Miller Lite <span class="idx-cat">brand · USA</span></a></li>
+          <li><a href="#top-brands">Modelo Especial <span class="idx-cat">brand · Mexico</span></a></li>
+          <li><a href="#ale-styles">Milk Stout <span class="idx-cat">sub-style</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">N–O</div>
+        <ul class="idx-links">
+          <li><a href="#ale-styles">New England / Hazy IPA <span class="idx-cat">sub-style</span></a></li>
+          <li><a href="#by-region">Newcastle Brown Ale <span class="idx-cat">brand · UK</span></a></li>
+          <li><a href="#terminology">Nitro Beer <span class="idx-cat">term</span></a></li>
+          <li><a href="#ale-styles">Oatmeal Stout <span class="idx-cat">sub-style</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">P</div>
+        <ul class="idx-links">
+          <li><a href="#ale-styles">Pale Ale <span class="idx-cat">style</span></a></li>
+          <li><a href="#lager-styles">Pale Lager <span class="idx-cat">style</span></a></li>
+          <li><a href="#by-region">Paulaner <span class="idx-cat">brand · Germany</span></a></li>
+          <li><a href="#lager-styles">Pilsner <span class="idx-cat">style</span></a></li>
+          <li><a href="#by-region">Pilsner Urquell <span class="idx-cat">brand · Czech</span></a></li>
+          <li><a href="#ale-styles">Porter <span class="idx-cat">style</span></a></li>
+          <li><a href="#by-region">PBR (Pabst Blue Ribbon) <span class="idx-cat">brand · USA</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">Q–R</div>
+        <ul class="idx-links">
+          <li><a href="#quick-ref">Quick Reference Charts <span class="idx-cat">section</span></a></li>
+          <li><a href="#terminology">Reinheitsgebot <span class="idx-cat">term · German purity law</span></a></li>
+          <li><a href="#by-region">Regional Beer Cultures <span class="idx-cat">section</span></a></li>
+          <li><a href="#by-region">Rochefort 10 <span class="idx-cat">brand · Belgium</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">S</div>
+        <ul class="idx-links">
+          <li><a href="#ale-styles">Saison / Farmhouse Ale <span class="idx-cat">style</span></a></li>
+          <li><a href="#by-region">Samuel Adams <span class="idx-cat">brand · USA</span></a></li>
+          <li><a href="#terminology">Session Beer <span class="idx-cat">term</span></a></li>
+          <li><a href="#by-region">Sierra Nevada <span class="idx-cat">brand · USA</span></a></li>
+          <li><a href="#by-region">Singha <span class="idx-cat">brand · Thailand</span></a></li>
+          <li><a href="#by-region">Snow <span class="idx-cat">brand · China</span></a></li>
+          <li><a href="#ale-styles">Stout <span class="idx-cat">style</span></a></li>
+          <li><a href="#serving">Storing Beer <span class="idx-cat">guide</span></a></li>
+          <li><a href="#terminology">Skunked Beer <span class="idx-cat">term</span></a></li>
+          <li><a href="#by-region">Stella Artois <span class="idx-cat">brand · Belgium</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">T</div>
+        <ul class="idx-links">
+          <li><a href="#serving">Tasting Beer Like a Pro <span class="idx-cat">guide</span></a></li>
+          <li><a href="#terminology">Terminology Glossary <span class="idx-cat">section</span></a></li>
+          <li><a href="#serving">Temperature Guide <span class="idx-cat">section</span></a></li>
+          <li><a href="#by-region">Tiger Beer <span class="idx-cat">brand · Singapore</span></a></li>
+          <li><a href="#terminology">Trappist Beer <span class="idx-cat">term</span></a></li>
+          <li><a href="#by-region">Tsingtao <span class="idx-cat">brand · China</span></a></li>
+          <li><a href="#by-region">Twisted Tea <span class="idx-cat">flavored malt</span></a></li>
+          <li><a href="#two-families">Two Families: Ale vs Lager <span class="idx-cat">section</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">V–W</div>
+        <ul class="idx-links">
+          <li><a href="#lager-styles">Vienna Lager <span class="idx-cat">style</span></a></li>
+          <li><a href="#ale-styles">West Coast IPA <span class="idx-cat">sub-style</span></a></li>
+          <li><a href="#ale-styles">Wheat Ale / Hefeweizen <span class="idx-cat">style</span></a></li>
+          <li><a href="#by-region">White Claw <span class="idx-cat">hard seltzer</span></a></li>
+          <li><a href="#by-region">Westvleteren 12 <span class="idx-cat">brand · Belgium</span></a></li>
+        </ul>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-letter">Y–Z</div>
+        <ul class="idx-links">
+          <li><a href="#by-region">Yuengling <span class="idx-cat">brand · USA (oldest brewery)</span></a></li>
+          <li><a href="#by-region">Yellow Tail <span class="idx-cat">brand · Australia</span></a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-title">🍺 Now Go Explore the World of Beer. Cheers!</div>
+  <p class="footer-sub">Based on the Complete Beer Guide &nbsp;·&nbsp; Brands, Styles, Regions & Everything You Need to Know</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

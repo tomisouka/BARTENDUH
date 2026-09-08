@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2024 Specialty Cocktail Recipes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0b07;
+    --surface: #16120d;
+    --card: #1d1710;
+    --border: #2e2518;
+    --gold: #c9a84c;
+    --gold-light: #e8c97e;
+    --amber: #d4712b;
+    --cream: #f0e8d5;
+    --muted: #8a7a60;
+    --text: #ede0c8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative;
+    text-align: center;
+    padding: 80px 24px 60px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .title-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--cream);
+    letter-spacing: -0.02em;
+  }
+
+  h1 span {
+    color: var(--gold);
+    display: block;
+  }
+
+  .header-rule {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 28px auto;
+  }
+
+  /* Filter tabs */
+  .filter-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(14,11,7,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .filter-bar::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 18px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover { color: var(--cream); }
+  .filter-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* Main grid */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+
+  .category-block {
+    margin-bottom: 72px;
+  }
+
+  .category-block.hidden { display: none; }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  .category-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cream);
+    white-space: nowrap;
+  }
+
+  .category-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  .category-count {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  /* Recipe card */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .card:hover {
+    border-color: rgba(201,168,76,0.3);
+    transform: translateY(-2px);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-header {
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.3;
+  }
+
+  .card-toggle {
+    color: var(--gold);
+    font-size: 18px;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: transform 0.25s;
+    margin-top: 2px;
+  }
+
+  .card.open .card-toggle { transform: rotate(45deg); }
+
+  .card-body {
+    display: none;
+    padding: 20px 24px 24px;
+  }
+
+  .card.open .card-body { display: block; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    margin-top: 18px;
+  }
+
+  .section-label:first-child { margin-top: 0; }
+
+  .ingredients {
+    list-style: none;
+  }
+
+  .ingredients li {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text);
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .ingredients li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--amber);
+    font-size: 10px;
+    top: 5px;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+
+  .meta-item {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .meta-item strong {
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+
+  .instructions {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--muted);
+    font-style: italic;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+    padding-top: 14px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+
+  @media (max-width: 600px) {
+    .recipes-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="title-eyebrow">Bartender Reference — 2024</p>
+  <h1>Specialty<span>Cocktail Recipes</span></h1>
+  <div class="header-rule"></div>
+</header>
+
+<nav class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="old-fashioned">Old Fashioneds</button>
+  <button class="filter-btn" data-filter="margarita">Margaritas</button>
+  <button class="filter-btn" data-filter="tequila">Tequila</button>
+  <button class="filter-btn" data-filter="vodka">Vodka</button>
+  <button class="filter-btn" data-filter="whiskey">Whiskey</button>
+  <button class="filter-btn" data-filter="wine">Wine-Based</button>
+  <button class="filter-btn" data-filter="rum">Rum & Tropical</button>
+</nav>
+
+<main>
+
+  <!-- OLD FASHIONEDS -->
+  <section class="category-block" data-category="old-fashioned">
+    <div class="category-header">
+      <h2 class="category-title">Old Fashioneds</h2>
+      <div class="category-line"></div>
+      <span class="category-count">4 recipes</span>
+    </div>
+    <div class="recipes-grid">
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Classic Old Fashioned</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>2 oz Buffalo Trace</li>
+            <li>3 Dash Angostura Bitters</li>
+            <li>.25 oz Turbinado Simple</li>
+            <li>Fat Ice Cube</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Orange Peel & Luxardo Cherry</span>
+            <span class="meta-item"><strong>Glass:</strong> Old Fashioned</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">Build in glass. Add whiskey, bitters, simple then Fat Ice Cube, stir in glass with bar spoon. Add orange peel & Luxardo Cherry. DO NOT muddle fruit. Do not build in mixing glass with ice, then strain into glass — this dilutes the cocktail.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Black Walnut Old Fashioned</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>2 oz Knob Creek Rye</li>
+            <li>5 Dash Black Walnut Bitters</li>
+            <li>.5 oz Simple</li>
+            <li>Fat Ice Cube</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Orange Peel & Luxardo Cherry</span>
+            <span class="meta-item"><strong>Glass:</strong> Old Fashioned</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">Build in glass. Add whiskey, bitters, simple then Fat Ice Cube, stir in glass with bar spoon. Add orange peel & Luxardo Cherry. DO NOT muddle fruit. Do not build in mixing glass with ice — this dilutes the cocktail.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Smokey Old Fashioned</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>2 oz Kurvball</li>
+            <li>3 Dash Angostura Bitters</li>
+            <li>2 Dash Orange Bitters</li>
+            <li>Fat Ice Cube</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Orange Peel & Luxardo Cherry</span>
+            <span class="meta-item"><strong>Glass:</strong> Old Fashioned</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">Build in glass. Add whiskey, bitters, simple then Fat Ice Cube, stir in glass with bar spoon. Add orange peel & Luxardo Cherry. DO NOT muddle fruit. Do not build in mixing glass with ice — this dilutes the cocktail.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">TX Old Fashioned</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>2 oz TX Blended Whiskey</li>
+            <li>.25 oz Turbinado Simple</li>
+            <li>2 Dash Angostura Bitters</li>
+            <li>2 Dash Orange Bitters</li>
+            <li>Fat Ice Cube</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Orange Peel & Luxardo Cherry</span>
+            <span class="meta-item"><strong>Glass:</strong> Old Fashioned</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">Build in glass. Add whiskey, bitters, simple then Fat Ice Cube, stir in glass with bar spoon. Add orange peel & Luxardo Cherry. DO NOT muddle fruit.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MARGARITAS -->
+  <section class="category-block" data-category="margarita">
+    <div class="category-header">
+      <h2 class="category-title">Margaritas</h2>
+      <div class="category-line"></div>
+      <span class="category-count">7 recipes</span>
+    </div>
+    <div class="recipes-grid">
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">The OG Margarita</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Hornitos Blanco</li>
+            <li>.75 oz Cointreau</li>
+            <li>.75 oz Lime Juice</li>
+            <li>Salt or Tajin Rim Optional</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Lime Wedge</span>
+            <span class="meta-item"><strong>Glass:</strong> 9 oz Highball (rocks)</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In a shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice. Garnish with lime wedge.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Spicy Pineapple Margarita</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Casamigos Repo</li>
+            <li>1 oz Pineapple Juice</li>
+            <li>.5 oz Lime Juice</li>
+            <li>.5 oz Monin Hot Honey</li>
+            <li>2 Dash Angostura Bitters</li>
+            <li>Salt or Tajin Rim Optional</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Glass:</strong> 9 oz Highball (rocks)</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In a shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Firebox Margarita</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>2 oz Kurvball</li>
+            <li>1.5 oz Pineapple Juice</li>
+            <li>.25 oz Monin Hot Honey</li>
+            <li>2 oz Margarita Mix</li>
+            <li>Hot Honey Rim Optional (Tajin Rim Optional)</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Glass:</strong> 14 oz Collins</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In a shaker with ice, combine all ingredients, shake well. Strain into glass over fresh ice.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Perfect Patron Rita</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1 oz Patron Silver</li>
+            <li>.5 oz DeKuyper Triple Sec</li>
+            <li>4 oz Margarita Mix</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Lime Wedge</span>
+            <span class="meta-item"><strong>Glass:</strong> 14 oz Collins</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice. Garnish with lime wedge.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Altos Strawberry Rita</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Olmeca Altos Plata Tequila</li>
+            <li>.75 oz Lime Juice</li>
+            <li>.5 oz Monin Agave Nectar</li>
+            <li>.5 oz Finest Call Strawberry</li>
+            <li>Sugar, Salt, or Tajin Rim Optional</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Lime Wedge</span>
+            <span class="meta-item"><strong>Glass:</strong> 14 oz Collins</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice. Garnish with lime wedge.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Tropical Heat Rita</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Ghost Tequila</li>
+            <li>.75 oz Finest Call Mango</li>
+            <li>.75 oz Lime Juice</li>
+            <li>.25 oz Réal Passion Fruit Syrup</li>
+            <li>Salt or Tajin Rim Optional</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Glass:</strong> 9 oz Highball (rocks)</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In a shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Grand Cadillac Margarita</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.25 oz Espolon Blanco</li>
+            <li>.75 oz Grand Marnier</li>
+            <li><em>(rest of recipe not visible in source)</em></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TEQUILA -->
+  <section class="category-block" data-category="tequila">
+    <div class="category-header">
+      <h2 class="category-title">Tequila & Agave</h2>
+      <div class="category-line"></div>
+      <span class="category-count">2 recipes</span>
+    </div>
+    <div class="recipes-grid">
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Fresh Melon Paloma</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Casamigos Blanco</li>
+            <li>.5 oz Lime Juice</li>
+            <li>.75 oz Monin Rock Melon Cantaloupe</li>
+            <li>3 oz Q Mixers Grapefruit Soda (Topped)</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Lime Wedge</span>
+            <span class="meta-item"><strong>Glass:</strong> 14 oz Collins</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In a shaker with ice, combine tequila, lime juice, & monin, shake well. Strain into glass with fresh ice, top with Grapefruit Soda. Garnish with lime wedge.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Teremana Ranch Water</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Teremana Blanco</li>
+            <li>.75 oz Lime Juice</li>
+            <li>4 oz Rambler Sparkling Water (topped)</li>
+            <li>Tajin or Salt Rim Optional</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Lime Wedge</span>
+            <span class="meta-item"><strong>Glass:</strong> 14 oz Collins</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">Build in glass with ice. Add tequila, lime juice, and top with Rambler. Garnish with lime wedge.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- VODKA -->
+  <section class="category-block" data-category="vodka">
+    <div class="category-header">
+      <h2 class="category-title">Vodka Drinks</h2>
+      <div class="category-line"></div>
+      <span class="category-count">6 recipes</span>
+    </div>
+    <div class="recipes-grid">
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Espresso Martini</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1 oz Absolut Vanilia</li>
+            <li>.5 oz Kahlua</li>
+            <li>.5 oz Frangelico</li>
+            <li>.25 oz Finest Call Espresso</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> 3 Coffee Beans</span>
+            <span class="meta-item"><strong>Glass:</strong> Martini</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In a shaker with ice, combine all ingredients, shake well. Strain into chilled martini glass. Garnish with 3 coffee beans.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Sex on Gunthers Street</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>.5 oz Skyy Vodka</li>
+            <li>.5 oz DeKuyper Melon</li>
+            <li>.5 oz Malibu</li>
+            <li>.5 oz DeKuyper Peachtree</li>
+            <li>2 oz Cranberry Juice</li>
+            <li>2 oz Pineapple Juice</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Orange Slice & Cherry</span>
+            <span class="meta-item"><strong>Glass:</strong> 14 oz Collins</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In shaker with ice, combine all ingredients, shake. Strain into glass over fresh ice. Garnish with Orange Slice & Cherry.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Tito's Blueberry Lemonade</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Tito's</li>
+            <li>.5 oz DeKuyper Triple Sec</li>
+            <li>.5 oz Blueberry Réal</li>
+            <li>2 oz Lemon Sour</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Lemon Wedge</span>
+            <span class="meta-item"><strong>Glass:</strong> 14 oz Collins</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In shaker with ice, combine all ingredients, shake well. Strain into glass over fresh ice. Garnish with Lemon Wedge.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Hibiscus Mule</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Wheatley Vodka</li>
+            <li>.5 oz Lime Juice</li>
+            <li>4 oz Q-Mixers Hibiscus Ginger Beer (topped)</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Lime Wedge</span>
+            <span class="meta-item"><strong>Glass:</strong> Copper Mule Mug</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">Build in glass — fill mug to top with ice, add vodka & lime juice, top with Hibiscus Ginger Beer. Garnish with lime wedge.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Cucumber Cooler</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Western Son Cucumber</li>
+            <li>.75 oz Lemon Juice</li>
+            <li>.75 oz Simple</li>
+            <li>5–7 Mint Leaves</li>
+            <li>3 oz Soda (Topped)</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Mint Sprig</span>
+            <span class="meta-item"><strong>Glass:</strong> 14 oz Collins</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In shaker with ice, add Vodka, lemon juice, simple, & mint. Shake well. Strain into glass with fresh ice, top with soda. Garnish with mint sprig.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Maker's Hot Honey Lemonade</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Maker's Mark</li>
+            <li>.5 oz Monin Hot Honey</li>
+            <li>3 oz Lemon Sour</li>
+            <li>8–10 Mint Leaves</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Lemon Wedge</span>
+            <span class="meta-item"><strong>Glass:</strong> 14 oz Collins</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In shaker with ice; combine all ingredients, shake well. Strain into glass over fresh ice. Garnish with lemon wedge.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHISKEY HIGHBALLS -->
+  <section class="category-block" data-category="whiskey">
+    <div class="category-header">
+      <h2 class="category-title">Whiskey Highballs</h2>
+      <div class="category-line"></div>
+      <span class="category-count">1 recipe</span>
+    </div>
+    <div class="recipes-grid">
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Garrison Brothers HoneyDew Highball</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1.5 oz Garrison Brothers Honey Dew Whiskey</li>
+            <li>4 oz Q-Mixers Soda</li>
+            <li>Fat Ice</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Lemon Wheel</span>
+            <span class="meta-item"><strong>Glass:</strong> Old Fashioned</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In glass, add Fat Ice Cube, add whiskey & top with Q-Mixers Soda. Garnish with Lemon Wheel.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WINE-BASED -->
+  <section class="category-block" data-category="wine">
+    <div class="category-header">
+      <h2 class="category-title">Wine-Based</h2>
+      <div class="category-line"></div>
+      <span class="category-count">1 recipe</span>
+    </div>
+    <div class="recipes-grid">
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Wildberry Sangria</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>4 oz Apothic Crush Red Wine</li>
+            <li>.5 oz Monin Wild Berry</li>
+            <li>.25 oz Monin Vanilla</li>
+            <li>1 oz Lemon Sour</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Orange Slice</span>
+            <span class="meta-item"><strong>Glass:</strong> Large Wine</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In shaker with ice, combine all ingredients, shake. Strain into glass with fresh ice. Garnish with Orange Slice.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RUM & TROPICAL -->
+  <section class="category-block" data-category="rum">
+    <div class="category-header">
+      <h2 class="category-title">Rum & Tropical</h2>
+      <div class="category-line"></div>
+      <span class="category-count">1 recipe</span>
+    </div>
+    <div class="recipes-grid">
+
+      <div class="card">
+        <div class="card-header" onclick="toggle(this)">
+          <span class="card-name">Raspberry Piña Colada</span>
+          <span class="card-toggle">+</span>
+        </div>
+        <div class="card-body">
+          <p class="section-label">Ingredients</p>
+          <ul class="ingredients">
+            <li>1 oz Bacardi Raspberry</li>
+            <li>1 oz Malibu</li>
+            <li>1 oz Pineapple Juice</li>
+            <li>.75 oz Coco Réal</li>
+            <li>.25 oz Grenadine</li>
+          </ul>
+          <p class="section-label">Garnish & Glass</p>
+          <div class="meta-row">
+            <span class="meta-item"><strong>Garnish:</strong> Cherry & Lemon Wedge</span>
+            <span class="meta-item"><strong>Glass:</strong> 14 oz Collins</span>
+          </div>
+          <p class="section-label">Method</p>
+          <p class="instructions">In shaker with ice, combine all ingredients, shake well. Strain into glass over fresh ice. Garnish with Cherry & Lemon Wedge.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>2024 Specialty Cocktail Reference &nbsp;·&nbsp; For Staff Use Only</p>
+</footer>
+
+<script>
+  function toggle(header) {
+    const card = header.parentElement;
+    card.classList.toggle('open');
+  }
+
+  // Filter tabs
+  document.getElementById('filterBar').addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.category-block').forEach(section => {
+      if (filter === 'all' || section.dataset.category === filter) {
+        section.classList.remove('hidden');
+      } else {
+        section.classList.add('hidden');
+      }
+    });
+  });
+</script>
+</body>
+</html>

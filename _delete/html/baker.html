@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gunthers — Full Bar Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0e0c09;
+    --dark: #141209;
+    --card: #1a1813;
+    --border: #332e24;
+    --gold: #e0b84e;
+    --gold-light: #f0d080;
+    --gold-dim: #9a7e40;
+    --cream: #f5efe0;
+    --muted: #a89a80;
+    --draft-color: #5ca8e0;
+    --bottle-color: #82d050;
+    --ipa-color: #e09060;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--black); color:var(--cream); font-family:'DM Mono',monospace; min-height:100vh; overflow-x:hidden; letter-spacing:0.01em; }
+  /* No noise texture - removed for astigmatism readability */
+
+  .hero { position:relative; text-align:center; padding:80px 40px 50px; border-bottom:2px solid var(--border); overflow:hidden; }
+  .hero::before { content:''; position:absolute; top:-60px; left:50%; transform:translateX(-50%); width:600px; height:600px; background:radial-gradient(ellipse,rgba(224,184,78,0.1) 0%,transparent 70%); pointer-events:none; }
+  .hero-eyebrow { font-family:'DM Mono',monospace; font-size:13px; letter-spacing:0.25em; color:var(--muted); text-transform:uppercase; margin-bottom:24px; animation:fadeUp 0.8s ease both; font-weight:400; }
+  .hero-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(90px,18vw,200px); line-height:0.88; color:var(--gold); letter-spacing:0.04em; animation:fadeUp 0.8s 0.1s ease both; }
+  .hero-subtitle { font-style:normal; font-weight:400; font-size:15px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-top:20px; animation:fadeUp 0.8s 0.2s ease both; font-family:'DM Mono',monospace; }
+  .hero-rule { display:flex; align-items:center; gap:16px; margin:40px auto 0; max-width:300px; animation:fadeUp 0.8s 0.3s ease both; }
+  .hero-rule::before,.hero-rule::after { content:''; flex:1; height:1px; }
+  .hero-rule::before { background:linear-gradient(to right,transparent,var(--gold-dim)); }
+  .hero-rule::after  { background:linear-gradient(to left,transparent,var(--gold-dim)); }
+  .hero-rule span { font-family:'DM Mono',monospace; font-size:10px; color:var(--gold-dim); letter-spacing:0.2em; }
+
+  /* LEGEND */
+  .legend { display:flex; justify-content:center; gap:28px; flex-wrap:wrap; padding:14px 40px; background:var(--dark); border-bottom:2px solid var(--border); }
+  .legend-item { display:flex; align-items:center; gap:10px; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.12em; color:var(--cream); text-transform:uppercase; font-weight:400; }
+  .legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .legend-dot.draft  { background:var(--draft-color); }
+  .legend-dot.bottle { background:var(--bottle-color); }
+  .legend-dot.ipa    { background:var(--ipa-color); }
+
+  /* SUMMARY NAV */
+  .summary-bar { display:flex; justify-content:center; flex-wrap:wrap; border-bottom:2px solid var(--border); }
+  .summary-item { padding:22px 32px; border-right:1px solid var(--border); text-align:center; text-decoration:none; transition:background 0.2s; }
+  .summary-item:last-child { border-right:none; }
+  .summary-item:hover { background:rgba(224,184,78,0.08); }
+  .summary-item .emoji { font-size:22px; display:block; margin-bottom:8px; }
+  .summary-item .label { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.15em; color:var(--muted); text-transform:uppercase; display:block; margin-bottom:6px; font-weight:400; }
+  .summary-item .count { font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--gold); line-height:1; }
+
+  /* LAYOUT */
+  .container { max-width:1400px; margin:0 auto; padding:60px 40px; }
+
+  /* SECTION HEADER */
+  .section-header { display:flex; align-items:center; gap:20px; margin-bottom:36px; padding-bottom:16px; border-bottom:2px solid var(--border); }
+  .section-emoji { font-size:30px; }
+  .section-title { font-family:'Bebas Neue',sans-serif; font-size:52px; color:var(--gold); letter-spacing:0.04em; line-height:1; }
+  .section-count { font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); letter-spacing:0.12em; margin-left:auto; font-weight:400; }
+
+  /* SUB SECTION */
+  .sub-section { margin-bottom:44px; }
+  .sub-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
+  .sub-title { font-family:'DM Mono',monospace; font-size:14px; letter-spacing:0.15em; color:var(--cream); text-transform:uppercase; white-space:nowrap; font-weight:400; }
+
+  /* Format badges on sub-headers */
+  .badge { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; padding:4px 10px; border-radius:3px; text-transform:uppercase; white-space:nowrap; font-weight:400; }
+  .badge.draft  { color:var(--draft-color);  background:rgba(92,168,224,0.15); border:1px solid rgba(92,168,224,0.4); }
+  .badge.bottle { color:var(--bottle-color); background:rgba(130,208,80,0.15); border:1px solid rgba(130,208,80,0.4); }
+
+  .sub-count { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:0.1em; padding:4px 10px; border:1px solid var(--border); border-radius:3px; }
+  .sub-line { flex:1; height:1px; background:var(--border); min-width:20px; }
+
+  /* GRID */
+  .grid    { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:5px; }
+  .grid-sm { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:5px; }
+
+  /* ITEM */
+  .item { padding:18px 22px; background:var(--card); border:1px solid var(--border); font-size:18px; font-weight:400; color:var(--cream); line-height:1.7; transition:all 0.18s; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; transform:scaleY(0); transition:transform 0.18s; transform-origin:bottom; }
+  .item:hover { background:#222018; color:var(--gold-light); border-color:var(--gold-dim); }
+  .item:hover::before { transform:scaleY(1); }
+
+  /* Accent bar colors by type */
+  .item::before               { background:var(--gold); }
+  .item.is-draft::before      { background:var(--draft-color); }
+  .item.is-bottle::before     { background:var(--bottle-color); }
+  .item.is-ipa.is-draft::before   { background:var(--ipa-color); }
+  .item.is-ipa.is-bottle::before  { background:var(--ipa-color); }
+  .item.is-ipa::before        { background:var(--ipa-color); }
+
+  .item-name { flex:1; font-family:'Cormorant Garamond',serif; font-size:19px; letter-spacing:0.02em; font-weight:400; }
+  .item-tags { display:flex; gap:5px; align-items:center; flex-shrink:0; }
+
+  /* Inline tags on items */
+  .tag { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.05em; border-radius:3px; padding:4px 8px; white-space:nowrap; font-weight:400; }
+  .tag.draft  { color:var(--draft-color);  border:1px solid rgba(92,168,224,0.4); }
+  .tag.bottle { color:var(--bottle-color); border:1px solid rgba(130,208,80,0.4); }
+  .tag.ipa    { color:var(--ipa-color);    border:1px solid rgba(224,144,96,0.5); }
+
+  /* DIVIDER */
+  .divider { display:flex; align-items:center; gap:16px; margin:60px 0; }
+  .divider::before,.divider::after { content:''; flex:1; height:1px; background:var(--border); }
+  .divider span { font-family:'DM Mono',monospace; font-size:12px; color:var(--gold-dim); letter-spacing:0.2em; }
+
+  /* SUMMARY TABLE */
+  .total-section { margin-top:80px; padding-top:60px; border-top:2px solid var(--border); }
+  .total-title { font-family:'Bebas Neue',sans-serif; font-size:42px; color:var(--gold); letter-spacing:0.06em; margin-bottom:32px; text-align:center; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  thead tr { background:var(--card); border-bottom:2px solid var(--gold-dim); }
+  thead th { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.15em; color:var(--gold); text-transform:uppercase; padding:16px 20px; text-align:left; font-weight:400; }
+  thead th:last-child { text-align:right; }
+  tbody tr { border-bottom:1px solid var(--border); transition:background 0.15s; }
+  tbody tr:hover { background:rgba(224,184,78,0.06); }
+  tbody td { padding:13px 20px; font-weight:400; color:var(--cream); font-size:14px; font-family:'DM Mono',monospace; letter-spacing:0.02em; }
+  tbody td:last-child { text-align:right; font-size:13px; color:var(--gold); }
+  .total-row { background:var(--card) !important; border-top:2px solid var(--gold-dim) !important; }
+  .total-row td { font-family:'Bebas Neue',sans-serif !important; font-size:22px !important; color:var(--gold) !important; padding:18px 20px !important; }
+
+  /* FOOTER */
+  footer { text-align:center; padding:50px 40px; border-top:2px solid var(--border); margin-top:60px; }
+  footer p { font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.2em; color:var(--muted); text-transform:uppercase; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .animate { animation:fadeUp 0.45s ease both; }
+  html { scroll-behavior:smooth; }
+
+  @media(max-width:768px){
+    .hero{padding:60px 24px 40px;}
+    .container{padding:40px 20px;}
+    .summary-bar{display:grid;grid-template-columns:repeat(3,1fr);}
+    .summary-item{border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+    .section-title{font-size:36px;}
+    .grid,.grid-sm{grid-template-columns:1fr 1fr;}
+    .legend{gap:14px;}
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--card); border: 1px solid var(--gold-dim);
+    max-width: 480px; width: 100%; border-radius: 4px;
+    padding: 32px 28px; position: relative;
+    transform: translateY(16px); transition: transform 0.2s;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-overlay.active .modal { transform: translateY(0); }
+  .modal-close {
+    position: absolute; top: 14px; right: 16px;
+    background: none; border: none; color: var(--muted);
+    font-size: 22px; cursor: pointer; line-height: 1;
+    font-family: 'DM Mono', monospace;
+  }
+  .modal-close:hover { color: var(--gold); }
+  .modal-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; color: var(--gold-dim); text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 36px;
+    color: var(--gold); letter-spacing: 0.04em; line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .modal-rule { height: 1px; background: var(--border); margin-bottom: 20px; }
+  .modal-section-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.18em; color: var(--gold-dim); text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .modal-ingredients { list-style: none; margin-bottom: 20px; }
+  .modal-ingredients li {
+    font-family: 'DM Mono', monospace; font-size: 15px;
+    color: var(--cream); padding: 8px 0; border-bottom: 1px solid rgba(51,46,36,0.5);
+    display: flex; gap: 10px; align-items: baseline;
+  }
+  .modal-ingredients li::before { content: '—'; color: var(--gold-dim); flex-shrink: 0; }
+  .modal-instructions {
+    font-family: 'DM Mono', monospace; font-size: 15px;
+    color: var(--muted); line-height: 1.85;
+  }
+  .item.has-recipe { cursor: pointer; }
+  .item.has-recipe .item-name::after { content: ' ›'; color: var(--gold-dim); font-size: 11px; }
+
+  /* Accessibility improvements for astigmatism */
+  body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Slightly increase sizes and weight of common UI text for clarity */
+  .hero-eyebrow, .hero-subtitle, .legend-item, .summary-item .label, .section-count, .sub-count,
+  thead th, tbody td, footer p, .sub-title, .item, .item-name, .tag, .badge {
+    font-weight: 700;
+  }
+
+  /* Tweak small labels and item sizes for better legibility */
+  .summary-item .label, .legend-item, .sub-title, thead th, footer p { font-size: 13px; }
+  .item { font-size: 20px; line-height: 1.9; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="hero-eyebrow">Full Bar Menu · Complete Inventory</p>
+  <h1 class="hero-title">Gunthers</h1>
+  <p class="hero-subtitle">Every pour, every glass</p>
+  <div class="hero-rule"><span>✦</span></div>
+</header>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><span class="legend-dot draft"></span>Draft (D prefix)</div>
+  <div class="legend-item"><span class="legend-dot bottle"></span>Bottle / Can (no D prefix)</div>
+  <div class="legend-item"><span class="legend-dot ipa"></span>IPA</div>
+</div>
+
+<!-- NAV -->
+<nav class="summary-bar">
+  <a href="#beer"      class="summary-item"><span class="emoji">🍺</span><span class="label">Beer</span><span class="count">93</span></a>
+  <a href="#domestic-beers" class="summary-item"><span class="emoji">🇺🇸</span><span class="label">Domestic</span><span class="count">30</span></a>
+  <a href="#wine"      class="summary-item"><span class="emoji">🍷</span><span class="label">Wine</span><span class="count">28</span></a>
+  <a href="#mocktails" class="summary-item"><span class="emoji">🍹</span><span class="label">Mocktails</span><span class="count">14</span></a>
+  <a href="#liquor"    class="summary-item"><span class="emoji">🥃</span><span class="label">Liquor</span><span class="count">112</span></a>
+  <a href="#cocktails" class="summary-item"><span class="emoji">🍸</span><span class="label">Cocktails</span><span class="count">35</span></a>
+  <a href="#specialty" class="summary-item"><span class="emoji">🌟</span><span class="label">Specialty</span><span class="count">57</span></a>
+  <a href="#shots"     class="summary-item"><span class="emoji">🔥</span><span class="label">Shots</span><span class="count">43</span></a>
+  <a href="#ipas"      class="summary-item"><span class="emoji">🍺</span><span class="label">IPAs</span><span class="count">9</span></a>
+</nav>
+
+<main class="container">
+
+<!-- ═══════════════════════════════ BEER ═══════════════════════════════ -->
+<section id="beer">
+  <div class="section-header">
+    <span class="section-emoji">🍺</span>
+    <h2 class="section-title">Beer</h2>
+    <span class="section-count">93 items · 9 IPAs</span>
+  </div>
+
+  <!-- Domestic Beers Overview -->
+  <div class="sub-section" id="domestic-beers">
+    <div class="sub-header">
+      <span class="sub-title">🇺🇸 Domestic Beers</span>
+      <span class="sub-count">30 · Draft &amp; Bottle/Can</span>
+      <span class="sub-line"></span>
+    </div>
+    <div class="grid-sm">
+      <!-- Domestic Drafts -->
+      <div class="item is-draft"><span class="item-name">D Bud Lt</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Coors Lt</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Lone Star</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Michelob Ultra</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Miller Lite</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Shiner Bock</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Yuengling</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Yuengling Flight</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <!-- Domestic Bottles & Cans -->
+      <div class="item is-bottle"><span class="item-name">Bud Light</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Budweiser</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Carbliss Assorted</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Coors Light</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">High Noon Assorted</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">JD Down Home Punch</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Michelob Ultra</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Miller Lite</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Nutrl Assorted</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">PBR</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Sam Adam's Boston Lager</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Shiner Bock</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Shiner Lt Blonde</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Shiner Oktoberfest</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle is-ipa"><span class="item-name">Stone IPA</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Truly Pineapple</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Truly Strawberry</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Truly Wild Berry</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Twisted Tea</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">White Claw Black Cherry</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Yuengling Lager</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Modelo Especial</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+    </div>
+  </div>
+
+  <div class="divider"><span>· · ·</span></div>
+
+  <!-- Domestic Draft -->
+  <div class="sub-section">
+    <div class="sub-header">
+      <span class="sub-title">Domestic</span>
+      <span class="badge draft">Draft</span>
+      <span class="sub-count">8</span>
+      <span class="sub-line"></span>
+    </div>
+    <div class="grid-sm">
+      <div class="item is-draft"><span class="item-name">D Bud Lt</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Coors Lt</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Lone Star</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Michelob Ultra</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Miller Lite</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Shiner Bock</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Yuengling</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Yuengling Flight</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+    </div>
+  </div>
+
+  <!-- Craft & Import Draft -->
+  <div class="sub-section">
+    <div class="sub-header">
+      <span class="sub-title">Craft &amp; Import</span>
+      <span class="badge draft">Draft</span>
+      <span class="sub-count">26 · 7 IPAs</span>
+      <span class="sub-line"></span>
+    </div>
+    <div class="grid-sm">
+      <div class="item is-draft"><span class="item-name">D Angry Orchard</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Blue Moon</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Dogfish Head 60 Minute</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Dos Equis</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Ghost in the Machine</span><span class="item-tags"><span class="tag ipa">DIPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Guinness</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Harp</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Heineken</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Hopadillo</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Karbach Yuletide Confessions</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Lagunitas IPA</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Love St</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Modelo Especial</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Pacifico</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Pumpkinator</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Real Ale Fresh Kicks</span><span class="item-tags"><span class="tag ipa">Hazy IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Sam Smith Chocolate Porter</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Sierra Nevada Hazy Little Thing</span><span class="item-tags"><span class="tag ipa">Hazy IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Shiner Cheer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D St. Arn Art Car IPA</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D St. Arnold Oktoberfest</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D St. Arnold Spring Bock</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D St. Arnold Strawberry Cider</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Stella Artois</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Sunny Little Thing</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">D Twisted Tea</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+    </div>
+  </div>
+
+  <!-- Domestic Bottle & Can -->
+  <div class="sub-section">
+    <div class="sub-header">
+      <span class="sub-title">Domestic</span>
+      <span class="badge bottle">Bottle / Can</span>
+      <span class="sub-count">22 · 1 IPA</span>
+      <span class="sub-line"></span>
+    </div>
+    <div class="grid-sm">
+      <div class="item is-bottle"><span class="item-name">Bud Light</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Budweiser</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Carbliss Assorted</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Coors Light</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">High Noon Assorted</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">JD Down Home Punch</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Michelob Ultra</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Miller Lite</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Modelo Especial</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Nutrl Assorted</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">PBR</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Sam Adam's Boston Lager</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Shiner Bock</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Shiner Lt Blonde</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Shiner Oktoberfest</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle is-ipa"><span class="item-name">Stone IPA</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Truly Pineapple</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Truly Strawberry</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Truly Wild Berry</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Twisted Tea</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">White Claw Black Cherry</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Yuengling Lager</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+    </div>
+  </div>
+
+  <!-- Import/Craft Bottle & Can -->
+  <div class="sub-section">
+    <div class="sub-header">
+      <span class="sub-title">Import / Craft</span>
+      <span class="badge bottle">Bottle / Can</span>
+      <span class="sub-count">14 · 1 IPA</span>
+      <span class="sub-line"></span>
+    </div>
+    <div class="grid-sm">
+      <div class="item is-bottle"><span class="item-name">Angry Orchard Mango Peach</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Austin Eastcider Blood Orange</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Austin Eastcider Original</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Boddington's</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Corona</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Corona Premier</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle is-ipa"><span class="item-name">Dogfish Head 90 Minute</span><span class="item-tags"><span class="tag ipa">Imperial IPA</span><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Dos Equis</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Harp</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Heineken</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Heineken Silver</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Newcastle</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Smithwick's</span><span class="item-tags"><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle"><span class="item-name">Strongbow</span><span class="item-tags"><span class="tag bottle">Can</span></span></div>
+    </div>
+  </div>
+
+  <!-- Beer Cocktails -->
+  <div class="sub-section">
+    <div class="sub-header">
+      <span class="sub-title">Beer Cocktails</span>
+      <span class="sub-count">7</span>
+      <span class="sub-line"></span>
+    </div>
+    <div class="grid-sm">
+      <div class="item"><span class="item-name">Black &amp; Tan</span></div>
+      <div class="item"><span class="item-name">Black Castle</span></div>
+      <div class="item"><span class="item-name">Half &amp; Half</span></div>
+      <div class="item"><span class="item-name">ICB</span></div>
+      <div class="item"><span class="item-name">Michelada</span></div>
+      <div class="item"><span class="item-name">Shandy</span></div>
+      <div class="item"><span class="item-name">Snake Bite</span></div>
+    </div>
+  </div>
+
+  <!-- Big Beer Domestic Draft -->
+  <div class="sub-section">
+    <div class="sub-header">
+      <span class="sub-title">Big Beer — Domestic</span>
+      <span class="badge draft">Draft</span>
+      <span class="sub-count">11</span>
+      <span class="sub-line"></span>
+    </div>
+    <div class="grid-sm">
+      <div class="item is-draft"><span class="item-name">Bud Light Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Coors Light Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Dos XX Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Karbach Lager Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Karbach Love Street Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Lone Star Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Mango Cart Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Michelob Ultra Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Miller Light Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Shiner Bock Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Shiner Seasonal Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+    </div>
+  </div>
+
+  <!-- Big Beer Import/Craft Draft -->
+  <div class="sub-section">
+    <div class="sub-header">
+      <span class="sub-title">Big Beer — Import / Craft</span>
+      <span class="badge draft">Draft</span>
+      <span class="sub-count">5</span>
+      <span class="sub-line"></span>
+    </div>
+    <div class="grid-sm">
+      <div class="item is-draft"><span class="item-name">Blue Moon Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Modelo Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Saint Arnold Seasonal Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Yuengling Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft"><span class="item-name">Yuengling Flight Big Beer</span><span class="item-tags"><span class="tag draft">Draft</span></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span>✦</span></div>
+
+<!-- ═══════════════════════════════ WINE ═══════════════════════════════ -->
+<section id="wine">
+  <div class="section-header">
+    <span class="section-emoji">🍷</span>
+    <h2 class="section-title">Wine</h2>
+    <span class="section-count">28 items</span>
+  </div>
+  <div class="sub-section">
+    <div class="sub-header"><span class="sub-title">By the Glass</span><span class="sub-count">15</span><span class="sub-line"></span></div>
+    <div class="grid">
+      <div class="item"><span class="item-name">G Alamos Malbec</span></div><div class="item"><span class="item-name">G Apothic Crush</span></div><div class="item"><span class="item-name">G Barefoot Cabernet</span></div><div class="item"><span class="item-name">G Barefoot Chardonnay</span></div><div class="item"><span class="item-name">G Barefoot Merlot</span></div><div class="item"><span class="item-name">G Barefoot Pinot Grigio</span></div><div class="item"><span class="item-name">G Barefoot White Zinfandel</span></div><div class="item"><span class="item-name">G Chateau Ste Michelle Reisling</span></div><div class="item"><span class="item-name">G Ecco Domani Pinot Grigio</span></div><div class="item"><span class="item-name">G Kendall Jackson Chardonnay</span></div><div class="item"><span class="item-name">G Oyster Bay Pinot Noir</span></div><div class="item"><span class="item-name">G Prophecy Rose</span></div><div class="item"><span class="item-name">G Seven Daughters Moscato</span></div><div class="item"><span class="item-name">G Starborough Sauvignon Blanc</span></div><div class="item"><span class="item-name">G Story Point Cabernet</span></div>
+    </div>
+  </div>
+  <div class="sub-section">
+    <div class="sub-header"><span class="sub-title">By the Bottle</span><span class="sub-count">13</span><span class="sub-line"></span></div>
+    <div class="grid">
+      <div class="item"><span class="item-name">B Alamos Malbec</span></div><div class="item"><span class="item-name">B Apothic Crush</span></div><div class="item"><span class="item-name">B Cupcake Moscato Split</span></div><div class="item"><span class="item-name">B Ecco Domani Pinot Grigio</span></div><div class="item"><span class="item-name">B House Champagne</span></div><div class="item"><span class="item-name">B Kendall Jackson Chardonnay</span></div><div class="item"><span class="item-name">B La Marca Prosecco Split</span></div><div class="item"><span class="item-name">B Mumm Napa Split</span></div><div class="item"><span class="item-name">B Prophecy Rose</span></div><div class="item"><span class="item-name">B Seven Daughters Moscato</span></div><div class="item"><span class="item-name">B Starborough Sauvignon Blanc</span></div><div class="item"><span class="item-name">B Storypoint Cabernet</span></div><div class="item"><span class="item-name">Oyster Bay Pinot Noir</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span>✦</span></div>
+
+<!-- ══════════════════════════ MOCKTAILS ══════════════════════════ -->
+<section id="mocktails">
+  <div class="section-header">
+    <span class="section-emoji">🍹</span>
+    <h2 class="section-title">Mocktails</h2>
+    <span class="section-count">14 items</span>
+  </div>
+  <div class="grid">
+    <div class="item"><span class="item-name">0.0 Michelada</span></div><div class="item"><span class="item-name">Cinderella</span></div><div class="item"><span class="item-name">Cuddles on Gunthers St.</span></div><div class="item"><span class="item-name">Juice Spritzer</span></div><div class="item"><span class="item-name">Lavender Grapefruit Mocktail</span></div><div class="item"><span class="item-name">Michelada/Virgin Mary</span></div><div class="item"><span class="item-name">No-Jito</span></div><div class="item"><span class="item-name">Red Bull Watermelon Wave</span></div><div class="item"><span class="item-name">Rosemary Smash</span></div><div class="item"><span class="item-name">Sober Sunrise</span></div><div class="item"><span class="item-name">Sweet Sunrise</span></div><div class="item"><span class="item-name">Virgin Mary</span></div><div class="item"><span class="item-name">Virgin Mojito</span></div><div class="item"><span class="item-name">Wild Berry Spritz</span></div>
+  </div>
+</section>
+
+<div class="divider"><span>✦</span></div>
+
+<!-- ═══════════════════════════════ LIQUOR ═══════════════════════════════ -->
+<section id="liquor">
+  <div class="section-header">
+    <span class="section-emoji">🥃</span>
+    <h2 class="section-title">Liquor</h2>
+    <span class="section-count">112 items</span>
+  </div>
+
+  <div class="sub-section">
+    <div class="sub-header"><span class="sub-title">Vodka</span><span class="sub-count">25</span><span class="sub-line"></span></div>
+    <div class="grid-sm">
+      <div class="item"><span class="item-name">Absolut</span></div><div class="item"><span class="item-name">Absolut Citron</span></div><div class="item"><span class="item-name">Absolut Vanil</span></div><div class="item"><span class="item-name">Aspen</span></div><div class="item"><span class="item-name">Deep Eddy Lemon</span></div><div class="item"><span class="item-name">Deep Eddy Lime</span></div><div class="item"><span class="item-name">Deep Eddy Peach</span></div><div class="item"><span class="item-name">Deep Eddy Ruby Red</span></div><div class="item"><span class="item-name">Deep Eddy Sweet Tea</span></div><div class="item"><span class="item-name">Grey Goose</span></div><div class="item"><span class="item-name">Ketel One</span></div><div class="item"><span class="item-name">Skyy</span></div><div class="item"><span class="item-name">Skyy Raspberry</span></div><div class="item"><span class="item-name">Skyy Watermelon</span></div><div class="item"><span class="item-name">Stoli</span></div><div class="item"><span class="item-name">Svedka Mango Pineapple</span></div><div class="item"><span class="item-name">Three Olives</span></div><div class="item"><span class="item-name">Tito's</span></div><div class="item"><span class="item-name">Well Vodka</span></div><div class="item"><span class="item-name">Western Son Blueberry</span></div><div class="item"><span class="item-name">Western Son Cucumber</span></div><div class="item"><span class="item-name">Western Son Peach</span></div><div class="item"><span class="item-name">Western Son Prickly Pear</span></div><div class="item"><span class="item-name">Western Son Watermelon</span></div><div class="item"><span class="item-name">Wheatly</span></div>
+    </div>
+  </div>
+
+  <div class="sub-section">
+    <div class="sub-header"><span class="sub-title">Gin</span><span class="sub-count">6</span><span class="sub-line"></span></div>
+    <div class="grid-sm">
+      <div class="item"><span class="item-name">Beefeater</span></div><div class="item"><span class="item-name">Bombay Sapphire</span></div><div class="item"><span class="item-name">Fords</span></div><div class="item"><span class="item-name">Hendrick's</span></div><div class="item"><span class="item-name">Tanqueray</span></div><div class="item"><span class="item-name">Well Gin</span></div>
+    </div>
+  </div>
+
+  <div class="sub-section">
+    <div class="sub-header"><span class="sub-title">Rum</span><span class="sub-count">9</span><span class="sub-line"></span></div>
+    <div class="grid-sm">
+      <div class="item"><span class="item-name">Bacardi</span></div><div class="item"><span class="item-name">Bacardi Lime</span></div><div class="item"><span class="item-name">Bacardi Raspberry</span></div><div class="item"><span class="item-name">Captain Morgan</span></div><div class="item"><span class="item-name">Cruzan Strawberry</span></div><div class="item"><span class="item-name">Malibu</span></div><div class="item"><span class="item-name">Myers Dark</span></div><div class="item"><span class="item-name">Parrot Bay Coconut Rum</span></div><div class="item"><span class="item-name">Well Rum</span></div>
+    </div>
+  </div>
+
+  <div class="sub-section">
+    <div class="sub-header"><span class="sub-title">Tequila</span><span class="sub-count">16</span><span class="sub-line"></span></div>
+    <div class="grid-sm">
+      <div class="item"><span class="item-name">1800 Reposado</span></div><div class="item"><span class="item-name">Altos Plata</span></div><div class="item"><span class="item-name">Camarena Silver</span></div><div class="item"><span class="item-name">Cantera Negra Coffee</span></div><div class="item"><span class="item-name">Casamigos Blanco</span></div><div class="item"><span class="item-name">Casamigos Reposado</span></div><div class="item"><span class="item-name">DJ 1942</span></div><div class="item"><span class="item-name">Don Julio Silver</span></div><div class="item"><span class="item-name">Espolon Silver</span></div><div class="item"><span class="item-name">Flecha Azul Blanco</span></div><div class="item"><span class="item-name">Ghost Tequila</span></div><div class="item"><span class="item-name">Hornitos Plata</span></div><div class="item"><span class="item-name">Jose Cuervo</span></div><div class="item"><span class="item-name">Patron Silver</span></div><div class="item"><span class="item-name">Teramana</span></div><div class="item"><span class="item-name">Well Tequila</span></div>
+    </div>
+  </div>
+
+  <div class="sub-section">
+    <div class="sub-header"><span class="sub-title">Bourbon</span><span class="sub-count">28</span><span class="sub-line"></span></div>
+    <div class="grid-sm">
+      <div class="item"><span class="item-name">Angel's Envy</span></div><div class="item"><span class="item-name">Buffalo Trace</span></div><div class="item"><span class="item-name">Bulleit Rye</span></div><div class="item"><span class="item-name">Canadian Club</span></div><div class="item"><span class="item-name">Crown Chocolate</span></div><div class="item"><span class="item-name">Crown Peach</span></div><div class="item"><span class="item-name">Crown Royal</span></div><div class="item"><span class="item-name">Eagle Rare</span></div><div class="item"><span class="item-name">Gentleman's Jack</span></div><div class="item"><span class="item-name">Howler Head</span></div><div class="item"><span class="item-name">Jack Apple</span></div><div class="item"><span class="item-name">Jack Daniels</span></div><div class="item"><span class="item-name">Jack Honey</span></div><div class="item"><span class="item-name">Jameson</span></div><div class="item"><span class="item-name">Jameson Black Barrel</span></div><div class="item"><span class="item-name">Jameson Orange</span></div><div class="item"><span class="item-name">Jim Beam</span></div><div class="item"><span class="item-name">Knob Creek Rye</span></div><div class="item"><span class="item-name">Kurvball</span></div><div class="item"><span class="item-name">Makers Mark</span></div><div class="item"><span class="item-name">Paddy's</span></div><div class="item"><span class="item-name">Rich and Rare</span></div><div class="item"><span class="item-name">Skrewball</span></div><div class="item"><span class="item-name">Southern Comfort</span></div><div class="item"><span class="item-name">TX Whiskey</span></div><div class="item"><span class="item-name">Well Bourbon</span></div><div class="item"><span class="item-name">Wild Turkey</span></div><div class="item"><span class="item-name">Woodford Reserve</span></div>
+    </div>
+  </div>
+
+  <div class="sub-section">
+    <div class="sub-header"><span class="sub-title">Scotch</span><span class="sub-count">10</span><span class="sub-line"></span></div>
+    <div class="grid-sm">
+      <div class="item"><span class="item-name">Chivas</span></div><div class="item"><span class="item-name">Dewars</span></div><div class="item"><span class="item-name">Glenlivet 12</span></div><div class="item"><span class="item-name">Hennessy</span></div><div class="item"><span class="item-name">JW Black</span></div><div class="item"><span class="item-name">JW Red</span></div><div class="item"><span class="item-name">Loch Lomond 12 yr</span></div><div class="item"><span class="item-name">Monkey Shoulder</span></div><div class="item"><span class="item-name">The Macallan 12</span></div><div class="item"><span class="item-name">Well Scotch</span></div>
+    </div>
+  </div>
+
+  <div class="sub-section">
+    <div class="sub-header"><span class="sub-title">Cordials</span><span class="sub-count">18</span><span class="sub-line"></span></div>
+    <div class="grid-sm">
+      <div class="item"><span class="item-name">Amaretto</span></div><div class="item"><span class="item-name">Aperol</span></div><div class="item"><span class="item-name">Campari</span></div><div class="item"><span class="item-name">Fire Ball Blazing Apple</span></div><div class="item"><span class="item-name">Fireball</span></div><div class="item"><span class="item-name">Frangelico</span></div><div class="item"><span class="item-name">GoldSchlager</span></div><div class="item"><span class="item-name">Grand Marnier</span></div><div class="item"><span class="item-name">Hennessy VSOP</span></div><div class="item"><span class="item-name">House Irish Cream</span></div><div class="item"><span class="item-name">Jager Cold Brew</span></div><div class="item"><span class="item-name">Jagermeister</span></div><div class="item"><span class="item-name">Kamora Coffee Liqueur</span></div><div class="item"><span class="item-name">Peach Schnapps</span></div><div class="item"><span class="item-name">Rumpleminze</span></div><div class="item"><span class="item-name">St. Germain</span></div><div class="item"><span class="item-name">Tuaca</span></div><div class="item"><span class="item-name">Watermelon Schnapps</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span>✦</span></div>
+
+<!-- ══════════════════════════ COCKTAILS ══════════════════════════ -->
+<section id="cocktails">
+  <div class="section-header">
+    <span class="section-emoji">🍸</span>
+    <h2 class="section-title">Cocktails</h2>
+    <span class="section-count">35 items</span>
+  </div>
+  <div class="grid">
+    <div class="item"><span class="item-name">Amaretto Sour</span></div><div class="item"><span class="item-name">Appletini</span></div><div class="item"><span class="item-name">Bay Breeze</span></div><div class="item"><span class="item-name">Black Russian</span></div><div class="item"><span class="item-name">Bloody Mary</span></div><div class="item"><span class="item-name">Blue Hawaiian</span></div><div class="item"><span class="item-name">Cape Cod</span></div><div class="item"><span class="item-name">Chocolate Martini</span></div><div class="item"><span class="item-name">Cosmopolitan</span></div><div class="item"><span class="item-name">Cubra Libra</span></div><div class="item"><span class="item-name">Fuzzy Navel</span></div><div class="item"><span class="item-name">Gimlet</span></div><div class="item"><span class="item-name">Greyhound</span></div><div class="item"><span class="item-name">Hurricane</span></div><div class="item"><span class="item-name">Irish Coffee</span></div><div class="item"><span class="item-name">Kahlua &amp; Cream</span></div><div class="item"><span class="item-name">Kahlua Coffee</span></div><div class="item"><span class="item-name">L.I. Iced Tea</span></div><div class="item"><span class="item-name">Lemon Drop Martini</span></div><div class="item"><span class="item-name">Lynchburg Lemonade</span></div><div class="item"><span class="item-name">Madras</span></div><div class="item"><span class="item-name">Manhattan</span></div><div class="item"><span class="item-name">Margarita</span></div><div class="item"><span class="item-name">Martini</span></div><div class="item"><span class="item-name">Melon Ball</span></div><div class="item"><span class="item-name">Mimosa</span></div><div class="item"><span class="item-name">Mind Eraser</span></div><div class="item"><span class="item-name">Moscow Mule</span></div><div class="item"><span class="item-name">Negroni</span></div><div class="item"><span class="item-name">Old Fashioned</span></div><div class="item"><span class="item-name">Ranch Water</span></div><div class="item"><span class="item-name">Raspberry L.I. Tea</span></div><div class="item"><span class="item-name">Tequila Sunrise</span></div><div class="item"><span class="item-name">Whiskey Sour</span></div><div class="item"><span class="item-name">White Russian</span></div>
+  </div>
+</section>
+
+<div class="divider"><span>✦</span></div>
+
+<!-- ══════════════════════════ SPECIALTY ══════════════════════════ -->
+<section id="specialty">
+  <div class="section-header">
+    <span class="section-emoji">🌟</span>
+    <h2 class="section-title">Specialty Drinks</h2>
+    <span class="section-count">57 items</span>
+  </div>
+  <div class="grid">
+    <div class="item"><span class="item-name">Altos Strawberry Rita</span></div><div class="item"><span class="item-name">Bacardi Superior Mojito</span></div><div class="item"><span class="item-name">Belmont Buffalo</span></div><div class="item"><span class="item-name">Blackberry Smash</span></div><div class="item"><span class="item-name">Boozeberry Punch</span></div><div class="item"><span class="item-name">Casamigos Passion Fruit Mint Rita</span></div><div class="item"><span class="item-name">Christmas Cosmo</span></div><div class="item"><span class="item-name">Cold Brew Espresso Martini</span></div><div class="item"><span class="item-name">Cucumber Cooler</span></div><div class="item"><span class="item-name">Espolòn Watermelon Rita</span></div><div class="item"><span class="item-name">Firebox Margarita</span></div><div class="item"><span class="item-name">Fords Strawberry Gimlet</span></div><div class="item"><span class="item-name">Fresh Melon Paloma</span></div><div class="item"><span class="item-name">Funky Monkey</span></div><div class="item"><span class="item-name">Garrison Brothers Honeydew Highball</span></div><div class="item"><span class="item-name">Gin and Juice</span></div><div class="item"><span class="item-name">Grand Cadillac Margarita</span></div><div class="item"><span class="item-name">Heart Break Martini</span></div><div class="item"><span class="item-name">Hibiscus Mule</span></div><div class="item"><span class="item-name">Island Time</span></div><div class="item"><span class="item-name">Jameson Sangria</span></div><div class="item"><span class="item-name">JD Apple Margarita</span></div><div class="item"><span class="item-name">Jolly Jack</span></div><div class="item"><span class="item-name">Lump O' Coal</span></div><div class="item"><span class="item-name">Maker's Hot Honey Lemonade</span></div><div class="item"><span class="item-name">Maker's Mark Gold Rush</span></div><div class="item"><span class="item-name">Maliblue Bull</span></div><div class="item"><span class="item-name">One Bourbon, Once Scotch, One Beer</span></div><div class="item"><span class="item-name">Patrón Perrier Ranch Water</span></div><div class="item"><span class="item-name">Perfect Patrón Rita</span></div><div class="item"><span class="item-name">Premium LIT</span></div><div class="item"><span class="item-name">Prickly Pear Margarita</span></div><div class="item"><span class="item-name">Raspberry Cosmo</span></div><div class="item"><span class="item-name">Raspberry Piña Colada</span></div><div class="item"><span class="item-name">Red Flag Rita</span></div><div class="item"><span class="item-name">Santa's Night Cap</span></div><div class="item"><span class="item-name">Sex On Gunthers St.</span></div><div class="item"><span class="item-name">Side Piece</span></div><div class="item"><span class="item-name">Skinny Red Bull Watermelon Marga...</span></div><div class="item"><span class="item-name">SoCo Hurricane</span></div><div class="item"><span class="item-name">Solo Spritzer</span></div><div class="item"><span class="item-name">Southside Martini</span></div><div class="item"><span class="item-name">Sparkling Peach Rita</span></div><div class="item"><span class="item-name">Spicy Paloma</span></div><div class="item"><span class="item-name">Spicy Pineapple Margarita</span></div><div class="item"><span class="item-name">St. Patrick's Day Punch Trashcan</span></div><div class="item"><span class="item-name">Swedish Mule</span></div><div class="item"><span class="item-name">Tequila Does</span></div><div class="item"><span class="item-name">Teremana Ranch Water</span></div><div class="item"><span class="item-name">The OG Rita</span></div><div class="item"><span class="item-name">The People's Margarita</span></div><div class="item"><span class="item-name">Tito's Blueberry Lemonade</span></div><div class="item"><span class="item-name">Tropical Heat Rita</span></div><div class="item"><span class="item-name">TX Old Fashioned</span></div><div class="item"><span class="item-name">Watermelon Cucumber Lemonade</span></div><div class="item"><span class="item-name">Whiskey LIT</span></div><div class="item"><span class="item-name">Wildberry Sangria</span></div>
+  </div>
+</section>
+
+<div class="divider"><span>✦</span></div>
+
+<!-- ══════════════════════════ SHOTS ══════════════════════════ -->
+<section id="shots">
+  <div class="section-header">
+    <span class="section-emoji">🔥</span>
+    <h2 class="section-title">Shots</h2>
+    <span class="section-count">43 items</span>
+  </div>
+  <div class="grid-sm">
+    <div class="item"><span class="item-name">2 Liquor</span></div><div class="item"><span class="item-name">3 Liquor</span></div><div class="item"><span class="item-name">3 Wisemen</span></div><div class="item"><span class="item-name">4 Horsemen</span></div><div class="item"><span class="item-name">Alabama Slammer</span></div><div class="item"><span class="item-name">B-52</span></div><div class="item"><span class="item-name">B-53</span></div><div class="item"><span class="item-name">Blow Job</span></div><div class="item"><span class="item-name">Bull Blaster</span></div><div class="item"><span class="item-name">Buttery Nipple</span></div><div class="item"><span class="item-name">Chocolate Cake</span></div><div class="item"><span class="item-name">Green Tea Shot</span></div><div class="item"><span class="item-name">ICB</span></div><div class="item"><span class="item-name">Jello Shot</span></div><div class="item"><span class="item-name">Kamikazi</span></div><div class="item"><span class="item-name">Lemon Drop</span></div><div class="item"><span class="item-name">Liquid Cocaine</span></div><div class="item"><span class="item-name">Mexican Candy</span></div><div class="item"><span class="item-name">Oatmeal Cookie</span></div><div class="item"><span class="item-name">Orange Tea</span></div><div class="item"><span class="item-name">Paddy's Green Tea Shot</span></div><div class="item"><span class="item-name">Piece of A**</span></div><div class="item"><span class="item-name">Pineapple Upside Down Cake</span></div><div class="item"><span class="item-name">Purple Hooter</span></div><div class="item"><span class="item-name">Red Headed Slut</span></div><div class="item"><span class="item-name">Red Snapper</span></div><div class="item"><span class="item-name">Royal F***</span></div><div class="item"><span class="item-name">Screaming Orgasm</span></div><div class="item"><span class="item-name">Sex on the Beach</span></div><div class="item"><span class="item-name">Sex with a Gator</span></div><div class="item"><span class="item-name">SoCo Lime</span></div><div class="item"><span class="item-name">Star F**ker</span></div><div class="item"><span class="item-name">Starburst</span></div><div class="item"><span class="item-name">Starry Night</span></div><div class="item"><span class="item-name">Tooter</span></div><div class="item"><span class="item-name">Tuaca Bomb</span></div><div class="item"><span class="item-name">Tuaca Lemon Drop</span></div><div class="item"><span class="item-name">Under Current</span></div><div class="item"><span class="item-name">Vegas Bomb</span></div><div class="item"><span class="item-name">Washington Apple</span></div><div class="item"><span class="item-name">Water Moccasin</span></div><div class="item"><span class="item-name">White Tea Shot</span></div><div class="item"><span class="item-name">Woo Woo</span></div>
+  </div>
+</section>
+
+<div class="divider"><span>✦</span></div>
+
+<!-- ══════════════════════════ IPAs ══════════════════════════ -->
+<section id="ipas">
+  <div class="section-header">
+    <span class="section-emoji">🍺</span>
+    <h2 class="section-title">IPAs</h2>
+    <span class="section-count">9 items</span>
+  </div>
+
+  <!-- Draft IPAs -->
+  <div class="sub-section">
+    <div class="sub-header">
+      <span class="sub-title">Draft</span>
+      <span class="badge draft">Draft</span>
+      <span class="sub-count">7</span>
+      <span class="sub-line"></span>
+    </div>
+    <div class="grid-sm">
+      <div class="item is-draft is-ipa"><span class="item-name">D Dogfish Head 60 Minute</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Ghost in the Machine</span><span class="item-tags"><span class="tag ipa">DIPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Hopadillo</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Lagunitas IPA</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Real Ale Fresh Kicks</span><span class="item-tags"><span class="tag ipa">Hazy IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D Sierra Nevada Hazy Little Thing</span><span class="item-tags"><span class="tag ipa">Hazy IPA</span><span class="tag draft">Draft</span></span></div>
+      <div class="item is-draft is-ipa"><span class="item-name">D St. Arn Art Car IPA</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag draft">Draft</span></span></div>
+    </div>
+  </div>
+
+  <!-- Bottle / Can IPAs -->
+  <div class="sub-section">
+    <div class="sub-header">
+      <span class="sub-title">Bottle / Can</span>
+      <span class="badge bottle">Bottle / Can</span>
+      <span class="sub-count">2</span>
+      <span class="sub-line"></span>
+    </div>
+    <div class="grid-sm">
+      <div class="item is-bottle is-ipa"><span class="item-name">Dogfish Head 90 Minute</span><span class="item-tags"><span class="tag ipa">Imperial IPA</span><span class="tag bottle">Bottle</span></span></div>
+      <div class="item is-bottle is-ipa"><span class="item-name">Stone IPA</span><span class="item-tags"><span class="tag ipa">IPA</span><span class="tag bottle">Bottle</span></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span>✦</span></div>
+
+<!-- ══════════════════════════ SUMMARY TABLE ══════════════════════════ -->
+<section class="total-section">
+  <h2 class="total-title">Overall Summary</h2>
+  <table>
+    <thead>
+      <tr><th>Category</th><th>Subcategory</th><th>Format</th><th>Count</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>🍺 Beer</td><td>Domestic</td><td><span class="tag draft">Draft</span></td><td>8</td></tr>
+      <tr><td>🍺 Beer</td><td>Craft &amp; Import</td><td><span class="tag draft">Draft</span></td><td>26</td></tr>
+      <tr><td>🍺 Beer</td><td>Domestic</td><td><span class="tag bottle">Bottle / Can</span></td><td>22</td></tr>
+      <tr><td>🍺 Beer</td><td>Import / Craft</td><td><span class="tag bottle">Bottle / Can</span></td><td>14</td></tr>
+      <tr><td>🍺 Beer</td><td>Beer Cocktails</td><td>—</td><td>7</td></tr>
+      <tr><td>🍺 Beer</td><td>Big Beer — Domestic</td><td><span class="tag draft">Draft</span></td><td>11</td></tr>
+      <tr><td>🍺 Beer</td><td>Big Beer — Import / Craft</td><td><span class="tag draft">Draft</span></td><td>5</td></tr>
+      <tr><td>🍷 Wine</td><td>By the Glass</td><td>—</td><td>15</td></tr>
+      <tr><td>🍷 Wine</td><td>By the Bottle</td><td>—</td><td>13</td></tr>
+      <tr><td>🍹 Mocktails</td><td>—</td><td>—</td><td>14</td></tr>
+      <tr><td>🥃 Liquor</td><td>Vodka</td><td>—</td><td>25</td></tr>
+      <tr><td>🥃 Liquor</td><td>Gin</td><td>—</td><td>6</td></tr>
+      <tr><td>🥃 Liquor</td><td>Rum</td><td>—</td><td>9</td></tr>
+      <tr><td>🥃 Liquor</td><td>Tequila</td><td>—</td><td>16</td></tr>
+      <tr><td>🥃 Liquor</td><td>Bourbon</td><td>—</td><td>28</td></tr>
+      <tr><td>🥃 Liquor</td><td>Scotch</td><td>—</td><td>10</td></tr>
+      <tr><td>🥃 Liquor</td><td>Cordials</td><td>—</td><td>18</td></tr>
+      <tr><td>🍸 Cocktails</td><td>—</td><td>—</td><td>35</td></tr>
+      <tr><td>🌟 Specialty Drinks</td><td>—</td><td>—</td><td>57</td></tr>
+      <tr><td>🔥 Shots</td><td>—</td><td>—</td><td>43</td></tr>
+      <tr class="total-row"><td>TOTAL</td><td></td><td></td><td>382</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</main>
+
+<footer>
+  <p>Gunthers · Full Bar Inventory · 382 Items · 9 IPAs</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.classList.add('animate');
+        }, i * 18);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.04 });
+
+  document.querySelectorAll('.item').forEach(el => {
+    el.style.opacity = '0';
+    observer.observe(el);
+  });
+</script>
+
+<!-- RECIPE MODAL -->
+<div class="modal-overlay" id="recipeModal">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-label" id="modalLabel">Recipe</div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-rule"></div>
+    <div class="modal-section-label">Ingredients</div>
+    <ul class="modal-ingredients" id="modalIngredients"></ul>
+    <div class="modal-section-label">Instructions</div>
+    <p class="modal-instructions" id="modalInstructions"></p>
+  </div>
+</div>
+
+<script>
+const recipes = {
+  // ── COCKTAILS ──
+  "Amaretto Sour": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz Amaretto","0.75 oz fresh lemon juice","0.5 oz simple syrup","1 egg white (optional)","Garnish: orange slice & cherry"],
+    instructions: "Dry shake all ingredients (without ice) vigorously for 10 seconds. Add ice and shake again. Strain into a rocks glass over fresh ice. Garnish with an orange slice and a cherry."
+  },
+  "Appletini": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz vodka","1 oz sour apple schnapps","0.5 oz triple sec","Splash of lime juice","Garnish: apple slice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and strain into a chilled martini glass. Garnish with a thin apple slice."
+  },
+  "Bay Breeze": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz vodka","3 oz cranberry juice","2 oz pineapple juice"],
+    instructions: "Fill a highball glass with ice. Add vodka, then pineapple juice, then cranberry juice. Stir gently and garnish with a lime wedge."
+  },
+  "Black Russian": {
+    label: "Cocktail",
+    ingredients: ["2 oz vodka","1 oz coffee liqueur (Kahlua)"],
+    instructions: "Fill a rocks glass with ice. Pour vodka over ice, then add the coffee liqueur. Stir gently."
+  },
+  "Bloody Mary": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz vodka","3 oz tomato juice","0.5 oz lemon juice","2 dashes Worcestershire sauce","2 dashes hot sauce","Pinch of salt & black pepper","Pinch of celery salt","Garnish: celery stalk, lemon wedge, olives"],
+    instructions: "Combine all ingredients in a shaker with ice. Roll back and forth between shaker and glass to mix. Pour into a tall glass filled with ice. Garnish generously."
+  },
+  "Blue Hawaiian": {
+    label: "Cocktail",
+    ingredients: ["1 oz white rum","1 oz blue curaçao","2 oz pineapple juice","1 oz coconut cream","Garnish: pineapple, cherry"],
+    instructions: "Blend all ingredients with 1 cup of ice until smooth. Pour into a hurricane or highball glass. Garnish with pineapple and a cherry."
+  },
+  "Cape Cod": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz vodka","4 oz cranberry juice","Splash of lime juice"],
+    instructions: "Fill a highball glass with ice. Add vodka and cranberry juice. Squeeze in a splash of lime juice and stir. Garnish with a lime wedge."
+  },
+  "Chocolate Martini": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz vodka","1 oz chocolate liqueur","0.5 oz Irish cream","Chocolate syrup for rim"],
+    instructions: "Rim a chilled martini glass with chocolate syrup. Combine vodka, chocolate liqueur, and Irish cream in a shaker with ice. Shake well and strain into the prepared glass."
+  },
+  "Cosmopolitan": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz citron vodka","0.75 oz triple sec","0.75 oz fresh lime juice","1 oz cranberry juice","Garnish: lime twist"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake vigorously and strain into a chilled cocktail glass. Garnish with a flamed or regular lime twist."
+  },
+  "Cubra Libra": {
+    label: "Cocktail",
+    ingredients: ["2 oz rum","4 oz cola","0.5 oz fresh lime juice","Garnish: lime wedge"],
+    instructions: "Fill a highball glass with ice. Add rum and lime juice, then top with cola. Stir gently and garnish with a lime wedge."
+  },
+  "Fuzzy Navel": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz peach schnapps","4 oz orange juice"],
+    instructions: "Fill a highball glass with ice. Add peach schnapps and orange juice. Stir gently and garnish with an orange slice."
+  },
+  "Gimlet": {
+    label: "Cocktail",
+    ingredients: ["2 oz gin (or vodka)","0.75 oz fresh lime juice","0.75 oz simple syrup","Garnish: lime wheel"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and strain into a chilled cocktail glass or over ice in a rocks glass. Garnish with a lime wheel."
+  },
+  "Greyhound": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz vodka (or gin)","4 oz grapefruit juice"],
+    instructions: "Fill a highball glass with ice. Add vodka and top with fresh grapefruit juice. Stir and garnish with a grapefruit wedge. (Add a salted rim for a Salty Dog.)"
+  },
+  "Hurricane": {
+    label: "Cocktail",
+    ingredients: ["2 oz light rum","2 oz dark rum","2 oz passion fruit juice","1 oz orange juice","0.5 oz fresh lime juice","1 tbsp simple syrup","1 tbsp grenadine","Garnish: orange slice & cherry"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and pour into a hurricane glass filled with ice. Garnish with an orange slice and cherry."
+  },
+  "Irish Coffee": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz Irish whiskey","6 oz hot brewed coffee","1–2 tsp brown sugar","Heavy whipped cream on top"],
+    instructions: "Warm a glass with hot water, then discard. Add whiskey and sugar to the glass. Pour in hot coffee and stir to dissolve sugar. Float lightly whipped cream on top by pouring it over the back of a spoon. Do not stir."
+  },
+  "Kahlua & Cream": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz Kahlua","2 oz heavy cream"],
+    instructions: "Fill a rocks glass with ice. Pour Kahlua over ice, then gently pour cream on top. Stir lightly or leave layered."
+  },
+  "Kahlua Coffee": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz Kahlua","6 oz hot coffee","Whipped cream"],
+    instructions: "Pour Kahlua into a warm coffee glass. Add hot coffee and stir. Top with whipped cream. Optionally dust with cocoa or cinnamon."
+  },
+  "L.I. Iced Tea": {
+    label: "Cocktail",
+    ingredients: ["0.5 oz vodka","0.5 oz tequila","0.5 oz white rum","0.5 oz gin","0.5 oz triple sec","0.75 oz fresh lemon juice","0.75 oz simple syrup","Splash of cola","Garnish: lemon wedge"],
+    instructions: "Combine all spirits, lemon juice, and simple syrup in a shaker with ice. Shake and pour into a tall glass over ice. Top with a splash of cola for color. Garnish with a lemon wedge."
+  },
+  "Lemon Drop Martini": {
+    label: "Cocktail",
+    ingredients: ["2 oz citron vodka","0.75 oz triple sec","1 oz fresh lemon juice","0.5 oz simple syrup","Sugar rim"],
+    instructions: "Rim a chilled martini glass with sugar. Combine all ingredients in a shaker with ice and shake vigorously. Strain into the prepared glass. Garnish with a lemon twist."
+  },
+  "Lynchburg Lemonade": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz Jack Daniel's Tennessee Whiskey","1 oz triple sec","1 oz fresh lemon juice","3 oz lemon-lime soda"],
+    instructions: "Combine whiskey, triple sec, and lemon juice in a shaker with ice. Shake and strain into a glass over ice. Top with lemon-lime soda and garnish with a lemon wedge."
+  },
+  "Madras": {
+    label: "Cocktail",
+    ingredients: ["1.5 oz vodka","2 oz cranberry juice","2 oz orange juice"],
+    instructions: "Fill a highball glass with ice. Add vodka, cranberry juice, and orange juice. Stir gently and garnish with an orange or lime wedge."
+  },
+  "Manhattan": {
+    label: "Cocktail",
+    ingredients: ["2 oz rye or bourbon whiskey","1 oz sweet vermouth","2 dashes Angostura bitters","Garnish: Luxardo cherry"],
+    instructions: "Combine whiskey, vermouth, and bitters in a mixing glass with ice. Stir for about 30 seconds until well chilled. Strain into a chilled cocktail glass. Garnish with a cherry."
+  },
+  "Margarita": {
+    label: "Cocktail",
+    ingredients: ["2 oz tequila","1 oz triple sec","1 oz fresh lime juice","Salt for rim"],
+    instructions: "Rim a rocks or margarita glass with salt. Combine tequila, triple sec, and lime juice in a shaker with ice. Shake well and strain over fresh ice (or blend). Garnish with a lime wheel."
+  },
+  "Martini": {
+    label: "Cocktail",
+    ingredients: ["2.5 oz gin (or vodka)","0.5 oz dry vermouth","Garnish: olive or lemon twist"],
+    instructions: "Combine gin and vermouth in a mixing glass with ice. Stir until well chilled. Strain into a chilled martini glass. Garnish with an olive or lemon twist."
+  },
+  "Melon Ball": {
+    label: "Cocktail",
+    ingredients: ["1 oz vodka","1 oz Midori melon liqueur","3 oz pineapple juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and strain into a glass over ice. Garnish with a melon ball or pineapple slice."
+  },
+  "Mimosa": {
+    label: "Cocktail",
+    ingredients: ["3 oz chilled champagne or prosecco","3 oz fresh orange juice"],
+    instructions: "Pour chilled orange juice into a champagne flute. Top gently with champagne. Do not stir. Garnish with an orange slice if desired."
+  },
+  "Mind Eraser": {
+    label: "Cocktail",
+    ingredients: ["1 oz vodka","1 oz coffee liqueur (Kahlua)","Club soda to top"],
+    instructions: "Fill a rocks glass with ice. Pour vodka and Kahlua over ice, then top with club soda. Serve with a straw and drink all at once."
+  },
+  "Moscow Mule": {
+    label: "Cocktail",
+    ingredients: ["2 oz vodka","4 oz ginger beer","0.5 oz fresh lime juice","Garnish: lime wedge & mint"],
+    instructions: "Fill a copper mug with ice. Add vodka and lime juice, then top with ginger beer. Stir gently and garnish with a lime wedge and fresh mint."
+  },
+  "Negroni": {
+    label: "Cocktail",
+    ingredients: ["1 oz gin","1 oz Campari","1 oz sweet vermouth","Garnish: orange peel"],
+    instructions: "Combine all ingredients in a mixing glass with ice. Stir until well chilled. Strain into a rocks glass over a large ice cube. Express an orange peel over the drink and use as garnish."
+  },
+  "Old Fashioned": {
+    label: "Cocktail",
+    ingredients: ["2 oz Buffalo Trace","3 Dash Angostura Bitters",".25 oz Turbinado Simple","Fat Ice Cube","Garnish: Orange Peel & Luxardo Cherry","Glass: Old Fashioned"],
+    instructions: "Build in glass. Add whiskey, bitters, simple then Fat Ice Cube, stir in glass with bar spoon. Add orange peel & Luxardo Cherry. DO NOT muddle fruit. Do not build in mixing glass with ice, then strain into glass — this dilutes the cocktail."
+  },
+  "Ranch Water": {
+    label: "Cocktail",
+    ingredients: ["2 oz tequila blanco","1 oz fresh lime juice","Topo Chico (sparkling mineral water) to top"],
+    instructions: "Pour tequila and lime juice into a chilled bottle of Topo Chico or a glass over ice. Top with Topo Chico. Stir gently and garnish with a lime wedge."
+  },
+  "Raspberry L.I. Tea": {
+    label: "Cocktail",
+    ingredients: ["0.5 oz vodka","0.5 oz tequila","0.5 oz white rum","0.5 oz gin","0.5 oz raspberry liqueur","0.75 oz fresh lemon juice","0.75 oz simple syrup","Raspberry lemonade to top"],
+    instructions: "Combine spirits, lemon juice, and syrup in a shaker with ice. Shake and pour into a tall glass over ice. Top with raspberry lemonade and garnish with fresh raspberries."
+  },
+  "Tequila Sunrise": {
+    label: "Cocktail",
+    ingredients: ["2 oz tequila","4 oz orange juice","0.5 oz grenadine","Garnish: orange slice & cherry"],
+    instructions: "Fill a highball glass with ice. Add tequila, then orange juice and stir. Slowly pour grenadine down the side of the glass so it sinks to the bottom — do not stir. Garnish with an orange slice and cherry."
+  },
+  "Whiskey Sour": {
+    label: "Cocktail",
+    ingredients: ["2 oz bourbon whiskey","0.75 oz fresh lemon juice","0.75 oz simple syrup","1 egg white (optional)","Garnish: cherry & lemon wheel"],
+    instructions: "Dry shake all ingredients without ice to emulsify the egg white. Add ice and shake again vigorously. Strain into a rocks glass over ice or up in a coupe. Garnish with a cherry and lemon wheel."
+  },
+  "White Russian": {
+    label: "Cocktail",
+    ingredients: ["2 oz vodka","1 oz coffee liqueur (Kahlua)","1 oz heavy cream"],
+    instructions: "Fill a rocks glass with ice. Add vodka and Kahlua. Float heavy cream on top by pouring it over the back of a spoon. Stir lightly before drinking."
+  },
+
+  // ── SPECIALTY ──
+  "Altos Strawberry Rita": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Olmeca Altos Plata Tequila",".75 oz Lime Juice",".5 oz Monin Agave Nectar",".5 oz Finest Call Strawberry","Sugar, Salt, or Tajin Rim Optional","Garnish: Lime Wedge","Glass: 14 oz Collins"],
+    instructions: "In shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice. Garnish with lime wedge."
+  },
+  "Bacardi Superior Mojito": {
+    label: "Specialty",
+    ingredients: ["2 oz Bacardi Superior rum","1 oz fresh lime juice","0.75 oz simple syrup","8–10 fresh mint leaves","Club soda to top","Garnish: mint sprig & lime wheel"],
+    instructions: "Gently muddle mint with lime juice and simple syrup in a glass. Add rum and fill with ice. Top with club soda and stir gently. Garnish with fresh mint and a lime wheel."
+  },
+  "Belmont Buffalo": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Buffalo Trace bourbon","1 oz peach schnapps","1 oz orange juice","Splash of grenadine"],
+    instructions: "Combine bourbon, peach schnapps, and OJ in a shaker with ice. Shake well and pour into a glass over ice. Add a splash of grenadine and garnish with an orange slice."
+  },
+  "Blackberry Smash": {
+    label: "Specialty",
+    ingredients: ["2 oz vodka or bourbon","6 fresh blackberries","4 fresh mint leaves","0.75 oz fresh lemon juice","0.75 oz simple syrup","Club soda splash"],
+    instructions: "Muddle blackberries and mint in a shaker. Add spirit, lemon juice, simple syrup, and ice. Shake vigorously. Strain into a rocks glass over ice. Top with a splash of club soda. Garnish with fresh blackberries and mint."
+  },
+  "Boozeberry Punch": {
+    label: "Specialty",
+    ingredients: ["1.5 oz vodka","1 oz blueberry schnapps","2 oz cranberry juice","1 oz lemonade","Splash of club soda"],
+    instructions: "Combine vodka, schnapps, cranberry juice, and lemonade in a shaker with ice. Shake and pour into a glass over ice. Top with club soda. Garnish with fresh blueberries."
+  },
+  "Casamigos Passion Fruit Mint Rita": {
+    label: "Specialty",
+    ingredients: ["2 oz Casamigos Blanco tequila","1 oz passion fruit purée","0.75 oz fresh lime juice","0.5 oz agave nectar","4 fresh mint leaves","Salt rim"],
+    instructions: "Muddle mint leaves with agave nectar in a shaker. Add tequila, passion fruit purée, lime juice, and ice. Shake well and double-strain into a salt-rimmed glass over fresh ice. Garnish with mint and a lime wheel."
+  },
+  "Christmas Cosmo": {
+    label: "Specialty",
+    ingredients: ["1.5 oz citron vodka","0.5 oz cranberry vodka","0.5 oz triple sec","1 oz cranberry juice","0.5 oz fresh lime juice","Garnish: sugared cranberries & rosemary"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake vigorously and strain into a chilled coupe or martini glass. Garnish with sugared cranberries and a sprig of rosemary."
+  },
+  "Cold Brew Espresso Martini": {
+    label: "Specialty",
+    ingredients: ["1 oz Absolut Vanilia",".5 oz Kahlua",".5 oz Frangelico",".25 oz Finest Call Espresso","Garnish: 3 Coffee Beans","Glass: Martini"],
+    instructions: "In a shaker with ice, combine all ingredients, shake well. Strain into chilled martini glass. Garnish with 3 coffee beans."
+  },
+  "Cucumber Cooler": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Western Son Cucumber",".75 oz Lemon Juice",".75 oz Simple","5–7 Mint Leaves","3 oz Soda (Topped)","Garnish: Mint Sprig","Glass: 14 oz Collins"],
+    instructions: "In shaker with ice, add Vodka, lemon juice, simple, & mint. Shake well. Strain into glass with fresh ice, top with soda. Garnish with mint sprig."
+  },
+  "Espolòn Watermelon Rita": {
+    label: "Specialty",
+    ingredients: ["2 oz Espolòn Silver tequila","1 oz fresh lime juice","2 oz watermelon juice","0.5 oz triple sec","0.5 oz agave nectar","Tajín or salt rim"],
+    instructions: "Blend or juice fresh watermelon and strain. Combine all ingredients in a shaker with ice. Shake well and strain into a Tajín-rimmed glass over fresh ice. Garnish with a watermelon wedge."
+  },
+  "Firebox Margarita": {
+    label: "Specialty",
+    ingredients: ["2 oz Kurvball","1.5 oz Pineapple Juice",".25 oz Monin Hot Honey","2 oz Margarita Mix","Hot Honey Rim Optional (Tajin Rim Optional)","Glass: 14 oz Collins"],
+    instructions: "In a shaker with ice, combine all ingredients, shake well. Strain into glass over fresh ice."
+  },
+  "Fords Strawberry Gimlet": {
+    label: "Specialty",
+    ingredients: ["2 oz Fords gin","1 oz fresh lime juice","0.75 oz simple syrup","3–4 fresh strawberries","Garnish: strawberry & lime"],
+    instructions: "Muddle strawberries in a shaker. Add gin, lime juice, simple syrup, and ice. Shake vigorously and double-strain into a chilled coupe. Garnish with a fresh strawberry and lime wheel."
+  },
+  "Fresh Melon Paloma": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Casamigos Blanco",".5 oz Lime Juice",".75 oz Monin Rock Melon Cantaloupe","3 oz Q Mixers Grapefruit Soda (Topped)","Garnish: Lime Wedge","Glass: 14 oz Collins"],
+    instructions: "In a shaker with ice, combine tequila, lime juice, & monin, shake well. Strain into glass with fresh ice, top with Grapefruit Soda. Garnish with lime wedge."
+  },
+  "Funky Monkey": {
+    label: "Specialty",
+    ingredients: ["1 oz vodka","1 oz banana liqueur","1 oz chocolate liqueur","1 oz Irish cream","1 oz heavy cream"],
+    instructions: "Combine all ingredients in a blender with a cup of ice. Blend until smooth. Pour into a chilled glass. Garnish with a drizzle of chocolate sauce and a banana slice."
+  },
+  "Garrison Brothers Honeydew Highball": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Garrison Brothers Honey Dew Whiskey","4 oz Q-Mixers Soda","Fat Ice","Garnish: Lemon Wheel","Glass: Old Fashioned"],
+    instructions: "In glass, add Fat Ice Cube, add whiskey & top with Q-Mixers Soda. Garnish with Lemon Wheel."
+  },
+  "Gin and Juice": {
+    label: "Specialty",
+    ingredients: ["2 oz gin","2 oz fresh orange juice","2 oz fresh grapefruit juice"],
+    instructions: "Fill a highball glass with ice. Add gin, then pour in the orange and grapefruit juice. Stir gently and garnish with an orange wedge."
+  },
+  "Grand Cadillac Margarita": {
+    label: "Specialty",
+    ingredients: ["1.25 oz Espolon Blanco",".75 oz Grand Marnier","Glass: Margarita"],
+    instructions: "In a shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice."
+  },
+  "Heart Break Martini": {
+    label: "Specialty",
+    ingredients: ["1.5 oz raspberry vodka","0.5 oz raspberry liqueur","1 oz cranberry juice","0.5 oz fresh lemon juice","0.25 oz grenadine"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake vigorously and strain into a chilled martini glass. Garnish with a sugared rim and fresh raspberries."
+  },
+  "Hibiscus Mule": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Wheatley Vodka",".5 oz Lime Juice","4 oz Q-Mixers Hibiscus Ginger Beer (topped)","Garnish: Lime Wedge","Glass: Copper Mule Mug"],
+    instructions: "Build in glass — fill mug to top with ice, add vodka & lime juice, top with Hibiscus Ginger Beer. Garnish with lime wedge."
+  },
+  "Island Time": {
+    label: "Specialty",
+    ingredients: ["1 oz coconut rum","1 oz Malibu","1 oz pineapple juice","1 oz mango juice","Splash of grenadine","Splash of lime juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and pour into a glass over ice. Garnish with a pineapple wedge and a cherry."
+  },
+  "Jameson Sangria": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Jameson Irish whiskey","3 oz red wine","1 oz brandy","2 oz orange juice","0.5 oz simple syrup","Club soda splash","Fruit garnish: orange, lemon, berries"],
+    instructions: "Combine whiskey, wine, brandy, OJ, and syrup in a pitcher or shaker with ice. Stir well. Pour into a wine glass over ice and top with a splash of club soda. Garnish with sliced fruit."
+  },
+  "JD Apple Margarita": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Jack Apple","0.5 oz triple sec","1 oz fresh lime juice","1 oz apple cider","0.5 oz simple syrup","Cinnamon sugar rim"],
+    instructions: "Rim a glass with cinnamon sugar. Combine all ingredients in a shaker with ice. Shake well and strain into the prepared glass over fresh ice. Garnish with an apple fan and cinnamon stick."
+  },
+  "Jolly Jack": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Jack Daniel's","1 oz peach schnapps","2 oz cranberry juice","1 oz ginger ale"],
+    instructions: "Combine Jack Daniel's, peach schnapps, and cranberry juice in a shaker with ice. Shake and pour into a glass over ice. Top with ginger ale and garnish with a lime wedge."
+  },
+  "Lump O' Coal": {
+    label: "Specialty",
+    ingredients: ["1 oz black vodka (or charcoal-infused vodka)","1 oz black raspberry liqueur","1 oz cranberry juice","0.5 oz fresh lemon juice","Black sugar rim"],
+    instructions: "Rim a glass with black sugar. Combine all ingredients in a shaker with ice. Shake well and strain into the rimmed glass over ice. Garnish with black candy or a raspberry."
+  },
+  "Maker's Hot Honey Lemonade": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Maker's Mark",".5 oz Monin Hot Honey","3 oz Lemon Sour","8–10 Mint Leaves","Garnish: Lemon Wedge","Glass: 14 oz Collins"],
+    instructions: "In shaker with ice; combine all ingredients, shake well. Strain into glass over fresh ice. Garnish with lemon wedge."
+  },
+  "Maker's Mark Gold Rush": {
+    label: "Specialty",
+    ingredients: ["2 oz Maker's Mark bourbon","0.75 oz honey syrup","0.75 oz fresh lemon juice","Garnish: lemon twist"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and strain into a rocks glass over a large ice cube. Garnish with a lemon twist."
+  },
+  "Maliblue Bull": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Malibu coconut rum","0.5 oz blue curaçao","Red Bull (tropical or original) to top"],
+    instructions: "Pour Malibu and blue curaçao over ice in a tall glass. Top with Red Bull. Stir gently and garnish with a pineapple slice."
+  },
+  "One Bourbon, Once Scotch, One Beer": {
+    label: "Specialty",
+    ingredients: ["1.5 oz bourbon","1.5 oz scotch","1 beer of choice"],
+    instructions: "Serve the bourbon neat or on the rocks in one glass, scotch in a second glass, and the beer in a pint glass. Sip and enjoy in sequence — or all at once. The classic George Thorogood experience."
+  },
+  "Patrón Perrier Ranch Water": {
+    label: "Specialty",
+    ingredients: ["2 oz Patrón Silver tequila","1 oz fresh lime juice","Perrier sparkling water to top"],
+    instructions: "Pour tequila and lime juice into a highball glass or bottle over ice. Top with Perrier and garnish with a lime wheel. Keep it simple — that's the point."
+  },
+  "Perfect Patrón Rita": {
+    label: "Specialty",
+    ingredients: ["1 oz Patron Silver",".5 oz DeKuyper Triple Sec","4 oz Margarita Mix","Garnish: Lime Wedge","Glass: 14 oz Collins"],
+    instructions: "In shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice. Garnish with lime wedge."
+  },
+  "Premium LIT": {
+    label: "Specialty",
+    ingredients: ["0.75 oz Grey Goose vodka","0.75 oz Casamigos tequila","0.75 oz Bacardi Superior rum","0.75 oz Hendrick's gin","0.75 oz Cointreau","1 oz fresh lemon juice","0.5 oz simple syrup","Splash of Fever-Tree cola","Garnish: lemon wedge"],
+    instructions: "Combine all spirits, lemon juice, and simple syrup in a shaker with ice. Shake and strain into a tall glass over ice. Top with a splash of cola. Garnish with a lemon wedge."
+  },
+  "Prickly Pear Margarita": {
+    label: "Specialty",
+    ingredients: ["2 oz tequila blanco","1 oz triple sec","1 oz fresh lime juice","1 oz prickly pear syrup","Salt and chili rim"],
+    instructions: "Rim a glass with chili-salt. Combine all ingredients in a shaker with ice. Shake well and strain into the prepared glass over fresh ice. Garnish with a lime wheel and cactus fruit slice."
+  },
+  "Raspberry Cosmo": {
+    label: "Specialty",
+    ingredients: ["1.5 oz raspberry vodka","0.5 oz triple sec","1 oz raspberry purée or juice","0.75 oz fresh lime juice","Garnish: raspberries & lime twist"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake vigorously and double-strain into a chilled cocktail glass. Garnish with fresh raspberries and a lime twist."
+  },
+  "Raspberry Piña Colada": {
+    label: "Specialty",
+    ingredients: ["1 oz Bacardi Raspberry","1 oz Malibu","1 oz Pineapple Juice",".75 oz Coco Réal",".25 oz Grenadine","Garnish: Cherry & Lemon Wedge","Glass: 14 oz Collins"],
+    instructions: "In shaker with ice, combine all ingredients, shake well. Strain into glass over fresh ice. Garnish with Cherry & Lemon Wedge."
+  },
+  "Red Flag Rita": {
+    label: "Specialty",
+    ingredients: ["2 oz tequila","1 oz triple sec","1 oz fresh lime juice","Splash of grenadine","Splash of hot sauce","Tajín rim"],
+    instructions: "Rim a glass with Tajín. Combine tequila, triple sec, lime juice, and hot sauce in a shaker with ice. Shake and strain into the rimmed glass over ice. Add a splash of grenadine for color. Garnish with a jalapeño slice."
+  },
+  "Santa's Night Cap": {
+    label: "Specialty",
+    ingredients: ["1.5 oz peppermint vodka","1 oz chocolate liqueur","1 oz Irish cream","Whipped cream & candy cane garnish"],
+    instructions: "Combine vodka, chocolate liqueur, and Irish cream in a shaker with ice. Shake well and strain into a festive glass. Top with whipped cream and garnish with a mini candy cane."
+  },
+  "Sex On Gunthers St.": {
+    label: "Specialty",
+    ingredients: [".5 oz Skyy Vodka",".5 oz DeKuyper Melon",".5 oz Malibu",".5 oz DeKuyper Peachtree","2 oz Cranberry Juice","2 oz Pineapple Juice","Garnish: Orange Slice & Cherry","Glass: 14 oz Collins"],
+    instructions: "In shaker with ice, combine all ingredients, shake. Strain into glass over fresh ice. Garnish with Orange Slice & Cherry."
+  },
+  "Side Piece": {
+    label: "Specialty",
+    ingredients: ["1.5 oz tequila","0.5 oz Aperol","1 oz fresh grapefruit juice","0.5 oz fresh lime juice","0.5 oz agave nectar","Salt rim"],
+    instructions: "Rim a rocks glass with salt. Combine all ingredients in a shaker with ice. Shake well and strain into the prepared glass over a large ice cube. Garnish with a grapefruit wedge."
+  },
+  "Skinny Red Bull Watermelon Margarita": {
+    label: "Specialty",
+    ingredients: ["1.5 oz tequila blanco","1 oz fresh lime juice","0.5 oz agave nectar","Red Bull Watermelon (sugar-free) to top","Salt or Tajín rim"],
+    instructions: "Rim a glass with salt or Tajín. Combine tequila, lime juice, and agave in a shaker with ice. Shake and strain over fresh ice. Top with Red Bull Watermelon. Garnish with a lime wedge."
+  },
+  "SoCo Hurricane": {
+    label: "Specialty",
+    ingredients: ["1 oz Southern Comfort","1 oz light rum","1 oz dark rum","1 oz passion fruit juice","1 oz orange juice","0.5 oz fresh lime juice","0.5 oz grenadine","Garnish: orange slice & cherry"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and pour into a hurricane glass over ice. Garnish with an orange slice and cherry."
+  },
+  "Solo Spritzer": {
+    label: "Specialty",
+    ingredients: ["2 oz Solo (or preferred spirit)","3 oz prosecco or sparkling wine","1 oz fresh citrus juice","Garnish: citrus twist & fresh herbs"],
+    instructions: "Combine spirit and citrus juice in a glass over ice. Top with prosecco. Stir very gently to preserve bubbles. Garnish with a citrus twist and herb sprig."
+  },
+  "Southside Martini": {
+    label: "Specialty",
+    ingredients: ["2 oz gin","1 oz fresh lime juice","0.75 oz simple syrup","8 fresh mint leaves","Garnish: mint sprig"],
+    instructions: "Combine gin, lime juice, simple syrup, and mint in a shaker with ice. Shake vigorously and double-strain into a chilled martini glass. Garnish with a fresh mint sprig."
+  },
+  "Sparkling Peach Rita": {
+    label: "Specialty",
+    ingredients: ["2 oz tequila blanco","0.5 oz peach schnapps","1 oz fresh lime juice","0.5 oz agave nectar","2 oz peach purée","Cava or prosecco to top","Salt rim"],
+    instructions: "Rim a glass with salt. Combine tequila, schnapps, lime juice, agave, and peach purée in a shaker with ice. Shake and strain into the prepared glass. Top with sparkling wine. Garnish with a peach slice."
+  },
+  "Spicy Paloma": {
+    label: "Specialty",
+    ingredients: ["2 oz tequila blanco","1 oz fresh grapefruit juice","0.5 oz fresh lime juice","0.5 oz agave nectar","2 jalapeño slices","Grapefruit soda to top","Chili-salt rim"],
+    instructions: "Muddle jalapeño in a shaker. Add tequila, grapefruit juice, lime juice, and agave with ice. Shake vigorously and double-strain into a chili-salted glass over ice. Top with grapefruit soda. Garnish with a jalapeño slice and grapefruit wedge."
+  },
+  "Spicy Pineapple Margarita": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Casamigos Repo","1 oz Pineapple Juice",".5 oz Lime Juice",".5 oz Monin Hot Honey","2 Dash Angostura Bitters","Salt or Tajin Rim Optional","Glass: 9 oz Highball (rocks)"],
+    instructions: "In a shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice."
+  },
+  "St. Patrick's Day Punch Trashcan": {
+    label: "Specialty",
+    ingredients: ["0.5 oz vodka","0.5 oz peach schnapps","0.5 oz blue curaçao","0.5 oz gin","0.5 oz rum","0.5 oz Midori","Red Bull to top (turns green with blue curaçao!)"],
+    instructions: "Combine all spirits in a large glass over ice. Drop an open can of Red Bull into the glass (the 'trashcan'). The blue curaçao and Red Bull create the signature green color. Serve immediately."
+  },
+  "Swedish Mule": {
+    label: "Specialty",
+    ingredients: ["2 oz Absolut Vodka","0.5 oz elderflower liqueur","0.75 oz fresh lime juice","Ginger beer to top","Garnish: cucumber, mint, lime"],
+    instructions: "Fill a copper mug or highball glass with ice. Add vodka, elderflower liqueur, and lime juice. Top with ginger beer and stir gently. Garnish with cucumber slices, fresh mint, and a lime wheel."
+  },
+  "Tequila Does": {
+    label: "Specialty",
+    ingredients: ["1.5 oz tequila blanco","1 oz Licor 43 (or vanilla liqueur)","1 oz pineapple juice","0.5 oz fresh lime juice","Splash of grenadine"],
+    instructions: "Combine tequila, Licor 43, pineapple juice, and lime juice in a shaker with ice. Shake well and strain into a glass over ice. Add a splash of grenadine for color. Garnish with a lime wheel."
+  },
+  "Teremana Ranch Water": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Teremana Blanco",".75 oz Lime Juice","4 oz Rambler Sparkling Water (topped)","Tajin or Salt Rim Optional","Garnish: Lime Wedge","Glass: 14 oz Collins"],
+    instructions: "Build in glass with ice. Add tequila, lime juice, and top with Rambler. Garnish with lime wedge."
+  },
+  "The OG Rita": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Hornitos Blanco",".75 oz Cointreau",".75 oz Lime Juice","Salt or Tajin Rim Optional","Garnish: Lime Wedge","Glass: 9 oz Highball (rocks)"],
+    instructions: "In a shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice. Garnish with lime wedge."
+  },
+  "The People's Margarita": {
+    label: "Specialty",
+    ingredients: ["2 oz house tequila","1 oz triple sec","1 oz fresh lime juice","0.5 oz simple syrup","Salt rim"],
+    instructions: "Rim a glass with salt. Shake all ingredients with ice and strain into the prepared glass over fresh ice. Clean, simple, crowd-pleasing. Garnish with a lime wedge."
+  },
+  "Tito's Blueberry Lemonade": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Tito's",".5 oz DeKuyper Triple Sec",".5 oz Blueberry Réal","2 oz Lemon Sour","Garnish: Lemon Wedge","Glass: 14 oz Collins"],
+    instructions: "In shaker with ice, combine all ingredients, shake well. Strain into glass over fresh ice. Garnish with Lemon Wedge."
+  },
+  "Tropical Heat Rita": {
+    label: "Specialty",
+    ingredients: ["1.5 oz Ghost Tequila",".75 oz Finest Call Mango",".75 oz Lime Juice",".25 oz Réal Passion Fruit Syrup","Salt or Tajin Rim Optional","Glass: 9 oz Highball (rocks)"],
+    instructions: "In a shaker with ice, combine all ingredients, shake well. Strain into glass with fresh ice."
+  },
+  "TX Old Fashioned": {
+    label: "Specialty",
+    ingredients: ["2 oz TX Blended Whiskey",".25 oz Turbinado Simple","2 Dash Angostura Bitters","2 Dash Orange Bitters","Fat Ice Cube","Garnish: Orange Peel & Luxardo Cherry","Glass: Old Fashioned"],
+    instructions: "Build in glass. Add whiskey, bitters, simple then Fat Ice Cube, stir in glass with bar spoon. Add orange peel & Luxardo Cherry. DO NOT muddle fruit."
+  },
+  "Watermelon Cucumber Lemonade": {
+    label: "Specialty",
+    ingredients: ["1.5 oz vodka (or cucumber vodka)","2 oz fresh watermelon juice","1 oz fresh lemon juice","0.5 oz simple syrup","3 cucumber slices","Club soda splash"],
+    instructions: "Muddle cucumber in a shaker. Add vodka, watermelon juice, lemon juice, simple syrup, and ice. Shake vigorously and double-strain into a glass over ice. Top with a splash of club soda. Garnish with a watermelon wedge and cucumber ribbon."
+  },
+  "Whiskey LIT": {
+    label: "Specialty",
+    ingredients: ["0.75 oz bourbon","0.75 oz rye or Irish whiskey","0.5 oz triple sec","0.75 oz fresh lemon juice","0.5 oz simple syrup","Cola to top"],
+    instructions: "Combine whiskeys, triple sec, lemon juice, and syrup in a shaker with ice. Shake and strain into a tall glass over ice. Top with cola. Garnish with a lemon wedge."
+  },
+  "Wildberry Sangria": {
+    label: "Specialty",
+    ingredients: ["4 oz Apothic Crush Red Wine",".5 oz Monin Wild Berry",".25 oz Monin Vanilla","1 oz Lemon Sour","Garnish: Orange Slice","Glass: Large Wine"],
+    instructions: "In shaker with ice, combine all ingredients, shake. Strain into glass with fresh ice. Garnish with Orange Slice."
+  },
+
+  // ── SHOTS ──
+  "3 Wisemen": {
+    label: "Shot",
+    ingredients: ["0.5 oz Jack Daniel's","0.5 oz Jim Beam","0.5 oz Johnnie Walker"],
+    instructions: "Combine all three whiskeys in a shot glass. Shoot. Respect the three wise men."
+  },
+  "4 Horsemen": {
+    label: "Shot",
+    ingredients: ["0.5 oz Jim Beam","0.5 oz Jack Daniel's","0.5 oz Johnnie Walker","0.5 oz José Cuervo"],
+    instructions: "Layer or combine all four spirits in a shot glass. A whiskey-tequila ride that hits hard."
+  },
+  "Alabama Slammer": {
+    label: "Shot",
+    ingredients: ["0.5 oz Southern Comfort","0.5 oz Amaretto","0.5 oz sloe gin","Splash of orange juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and strain into a shot glass."
+  },
+  "B-52": {
+    label: "Shot",
+    ingredients: ["0.5 oz Kahlua","0.5 oz Irish cream (Baileys)","0.5 oz Grand Marnier"],
+    instructions: "Layer carefully in a shot glass: pour Kahlua first, then slowly layer Irish cream over the back of a spoon, then Grand Marnier on top. Light the top layer on fire optionally. Shoot through a straw or let the layers mix."
+  },
+  "B-53": {
+    label: "Shot",
+    ingredients: ["0.5 oz Kahlua","0.5 oz Irish cream (Baileys)","0.5 oz Absolut Vodka"],
+    instructions: "Layer Kahlua on the bottom, then Irish cream in the middle, and top with vodka. A cleaner, boozier take on the B-52."
+  },
+  "Blow Job": {
+    label: "Shot",
+    ingredients: ["0.75 oz Irish cream or Kahlua","Whipped cream on top"],
+    instructions: "Pour Irish cream into a shot glass. Top generously with whipped cream. You must pick up the glass with your mouth and no hands to drink it."
+  },
+  "Bull Blaster": {
+    label: "Shot",
+    ingredients: ["1 oz vodka","Red Bull to top"],
+    instructions: "Pour vodka into a shot glass. Drop the shot into a glass of Red Bull and chug — or serve the shot alongside the Red Bull."
+  },
+  "Buttery Nipple": {
+    label: "Shot",
+    ingredients: ["0.75 oz butterscotch schnapps","0.75 oz Irish cream"],
+    instructions: "Pour butterscotch schnapps into a shot glass. Slowly layer Irish cream on top over the back of a spoon. Shoot with both layers intact."
+  },
+  "Chocolate Cake": {
+    label: "Shot",
+    ingredients: ["0.75 oz Frangelico (hazelnut liqueur)","0.75 oz citron vodka","Lemon wedge rolled in sugar"],
+    instructions: "Combine Frangelico and citron vodka in a shaker. Strain into a shot glass. Shoot the drink, then immediately bite the sugared lemon wedge. It magically tastes like chocolate cake."
+  },
+  "Green Tea Shot": {
+    label: "Shot",
+    ingredients: ["0.5 oz Jameson Irish Whiskey","0.5 oz peach schnapps","0.5 oz sour mix","Splash of Sprite"],
+    instructions: "Combine Jameson, peach schnapps, and sour mix in a shaker with ice. Shake well and strain into a shot glass. Top with a splash of Sprite. Does not contain actual green tea."
+  },
+  "ICB": {
+    label: "Shot / Beer Cocktail",
+    ingredients: ["1 oz Irish cream","1 oz Kahlua","Draft beer (typically stout)"],
+    instructions: "Layer Irish cream and Kahlua in a shot glass. Drop the shot into a pint of beer and drink quickly. A classic Irish Car Bomb variation."
+  },
+  "Jello Shot": {
+    label: "Shot",
+    ingredients: ["1 cup boiling water","1 packet (3 oz) flavored Jell-O","1 cup vodka or other spirit (chilled)"],
+    instructions: "Dissolve Jell-O in boiling water. Let cool slightly and stir in cold vodka. Pour into small plastic cups and refrigerate until set (at least 2 hours). Peel and shoot."
+  },
+  "Kamikazi": {
+    label: "Shot",
+    ingredients: ["1 oz vodka","0.5 oz triple sec","0.5 oz fresh lime juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and strain into a shot glass. Crisp and citrusy."
+  },
+  "Lemon Drop": {
+    label: "Shot",
+    ingredients: ["1.5 oz citron vodka","0.5 oz triple sec","0.5 oz fresh lemon juice","Sugar rim"],
+    instructions: "Rim a shot glass with sugar. Shake all ingredients with ice and strain into the rimmed glass. Bright, sweet, and tart."
+  },
+  "Liquid Cocaine": {
+    label: "Shot",
+    ingredients: ["0.5 oz Jagermeister","0.5 oz Rumpleminze peppermint schnapps","0.5 oz Bacardi 151 (or high-proof rum)"],
+    instructions: "Combine all ingredients and pour into a shot glass. The peppermint, herbal, and high-proof combination hits fast."
+  },
+  "Mexican Candy": {
+    label: "Shot",
+    ingredients: ["1 oz tequila silver","0.5 oz watermelon schnapps","Splash of hot sauce (Valentina or Cholula)","Tajín or chili-sugar rim"],
+    instructions: "Rim a shot glass with Tajín. Combine tequila and watermelon schnapps in a shaker with ice. Shake and strain into the rimmed glass. Add a few drops of hot sauce on top."
+  },
+  "Oatmeal Cookie": {
+    label: "Shot",
+    ingredients: ["0.5 oz Butterscotch schnapps","0.5 oz Jagermeister","0.5 oz Irish cream","0.5 oz Goldschlager"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake gently and strain into a shot glass. Tastes remarkably like an oatmeal cookie."
+  },
+  "Orange Tea": {
+    label: "Shot",
+    ingredients: ["0.75 oz Jameson Irish Whiskey","0.75 oz peach schnapps","Splash of orange juice","Splash of sweet tea or iced tea"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake and strain into a shot glass. A Southern twist on the Green Tea Shot."
+  },
+  "Paddy's Green Tea Shot": {
+    label: "Shot",
+    ingredients: ["0.5 oz Paddy's Irish Whiskey","0.5 oz peach schnapps","0.5 oz sour mix","Splash of Sprite"],
+    instructions: "Shake whiskey, schnapps, and sour mix with ice. Strain into a shot glass and top with Sprite. Gunthers's take on the classic green tea shot using Paddy's."
+  },
+  "Piece of A**": {
+    label: "Shot",
+    ingredients: ["0.75 oz Kahlua","0.75 oz Malibu coconut rum"],
+    instructions: "Layer Kahlua on the bottom and Malibu on top in a shot glass. Smooth, sweet, and tropical."
+  },
+  "Pineapple Upside Down Cake": {
+    label: "Shot",
+    ingredients: ["1 oz pineapple vodka (or vanilla vodka)","0.5 oz butterscotch schnapps","Splash of pineapple juice","Splash of grenadine"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and strain into a shot glass. Garnish with a tiny pineapple slice if feeling fancy."
+  },
+  "Purple Hooter": {
+    label: "Shot",
+    ingredients: ["1 oz vodka","0.5 oz Chambord or raspberry liqueur","Splash of lime juice","Splash of club soda"],
+    instructions: "Shake vodka, Chambord, and lime juice with ice. Strain into a shot glass and top with a tiny splash of club soda."
+  },
+  "Red Headed Slut": {
+    label: "Shot",
+    ingredients: ["1 oz Jagermeister","1 oz peach schnapps","Cranberry juice to top"],
+    instructions: "Combine Jager and peach schnapps in a shaker with ice. Shake and strain into a shot glass. Top with a splash of cranberry juice for that signature red hue."
+  },
+  "Red Snapper": {
+    label: "Shot",
+    ingredients: ["1 oz Crown Royal whiskey","1 oz amaretto","Splash of cranberry juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake and strain into a shot glass."
+  },
+  "Royal F***": {
+    label: "Shot",
+    ingredients: ["0.75 oz Crown Royal","0.75 oz Peach Schnapps","Splash of cranberry juice"],
+    instructions: "Combine Crown Royal and peach schnapps in a shaker. Strain into a shot glass and add a splash of cranberry. A regal, peachy, and slightly tart shooter."
+  },
+  "Screaming Orgasm": {
+    label: "Shot",
+    ingredients: ["0.5 oz vodka","0.5 oz Kahlua","0.5 oz Amaretto","0.5 oz Irish cream"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake well and strain into a shot glass. Rich, creamy, and worth the name."
+  },
+  "Sex on the Beach": {
+    label: "Shot",
+    ingredients: ["0.75 oz vodka","0.75 oz peach schnapps","Splash of cranberry juice","Splash of orange juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake and strain into a shot glass."
+  },
+  "Sex with a Gator": {
+    label: "Shot",
+    ingredients: ["0.75 oz Midori melon liqueur","0.75 oz Malibu coconut rum","Splash of pineapple juice","Splash of Jagermeister float"],
+    instructions: "Combine Midori, Malibu, and pineapple juice in a shaker with ice. Shake and strain into a shot glass. Float a small splash of Jager on top."
+  },
+  "SoCo Lime": {
+    label: "Shot",
+    ingredients: ["1.5 oz Southern Comfort","0.5 oz fresh lime juice (or Rose's lime)"],
+    instructions: "Combine Southern Comfort and lime juice in a shaker with ice. Shake and strain into a shot glass. Simple, sweet, and slightly sour."
+  },
+  "Star F**ker": {
+    label: "Shot",
+    ingredients: ["0.5 oz Goldschläger","0.5 oz Jagermeister","0.5 oz Rumpleminze"],
+    instructions: "Combine all three in a shaker with ice. Shake and strain. The gold flakes, herbal bitterness, and peppermint create an unforgettable combination."
+  },
+  "Starburst": {
+    label: "Shot",
+    ingredients: ["0.75 oz strawberry vodka","0.75 oz peach schnapps","Splash of cranberry juice","Splash of lemon-lime soda"],
+    instructions: "Combine strawberry vodka and peach schnapps with a splash of cranberry in a shaker with ice. Shake and strain into a shot glass. Top with a tiny splash of lemon-lime soda."
+  },
+  "Starry Night": {
+    label: "Shot",
+    ingredients: ["0.75 oz blue curaçao","0.75 oz coconut rum","Splash of pineapple juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake and strain into a shot glass. Beautiful blue-tropical flavor."
+  },
+  "Tooter": {
+    label: "Shot",
+    ingredients: ["0.75 oz peach schnapps","0.75 oz watermelon schnapps","Splash of cranberry juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake and strain into a shot glass."
+  },
+  "Tuaca Bomb": {
+    label: "Shot",
+    ingredients: ["1 oz Tuaca (Italian vanilla-citrus liqueur)","Red Bull or beer to drop into"],
+    instructions: "Pour Tuaca into a shot glass. Drop into a glass of Red Bull (or a light beer). Chug the combination."
+  },
+  "Tuaca Lemon Drop": {
+    label: "Shot",
+    ingredients: ["1 oz Tuaca","0.5 oz fresh lemon juice","Sugar rim","Sugared lemon wedge"],
+    instructions: "Rim a shot glass with sugar. Shake Tuaca and lemon juice with ice. Strain into the rimmed glass. Shoot, then bite the sugared lemon wedge. The vanilla-citrus of Tuaca makes it uniquely smooth."
+  },
+  "Under Current": {
+    label: "Shot",
+    ingredients: ["0.75 oz Malibu coconut rum","0.75 oz blue curaçao","Splash of pineapple juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake and strain into a shot glass. Tropical and oceanic."
+  },
+  "Vegas Bomb": {
+    label: "Shot",
+    ingredients: ["1 oz Crown Royal whiskey","0.5 oz peach schnapps","Cranberry juice","Red Bull to drop into"],
+    instructions: "Combine Crown Royal, peach schnapps, and a splash of cranberry in a shot glass. Drop into a glass of Red Bull and chug immediately. What happens in Vegas..."
+  },
+  "Washington Apple": {
+    label: "Shot",
+    ingredients: ["1 oz Crown Royal","0.5 oz sour apple schnapps","Splash of cranberry juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake and strain into a shot glass. Crisp, sweet, and slightly tart."
+  },
+  "Water Moccasin": {
+    label: "Shot",
+    ingredients: ["0.75 oz Crown Royal","0.75 oz peach schnapps","Splash of sour mix"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake and strain into a shot glass."
+  },
+  "White Tea Shot": {
+    label: "Shot",
+    ingredients: ["0.5 oz vodka","0.5 oz peach schnapps","0.5 oz white cranberry juice","Splash of lemon-lime soda"],
+    instructions: "Combine vodka, schnapps, and white cranberry juice in a shaker with ice. Shake and strain into a shot glass. Top with a small splash of Sprite."
+  },
+  "Woo Woo": {
+    label: "Shot",
+    ingredients: ["0.75 oz vodka","0.75 oz peach schnapps","Splash of cranberry juice"],
+    instructions: "Combine all ingredients in a shaker with ice. Shake and strain into a shot glass. The Woo Woo in shot form."
+  }
+};
+
+// Add has-recipe class and click handlers to matching items
+document.querySelectorAll('.item').forEach(el => {
+  const nameEl = el.querySelector('.item-name');
+  if (!nameEl) return;
+  const name = nameEl.textContent.replace(' ›','').trim();
+  const recipe = recipes[name];
+  if (recipe) {
+    el.classList.add('has-recipe');
+    el.addEventListener('click', () => openModal(name, recipe));
+  }
+});
+
+const overlay = document.getElementById('recipeModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalLabel = document.getElementById('modalLabel');
+const modalIngredients = document.getElementById('modalIngredients');
+const modalInstructions = document.getElementById('modalInstructions');
+
+function openModal(name, recipe) {
+  modalLabel.textContent = recipe.label;
+  modalTitle.textContent = name;
+  modalIngredients.innerHTML = recipe.ingredients.map(i => `<li>${i}</li>`).join('');
+  modalInstructions.textContent = recipe.instructions;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

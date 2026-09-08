@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Alcohol Encyclopedia</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@300;400;600;700&family=IM+Fell+English+SC&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --amber: #d4790a;
+    --amber-light: #f0a030;
+    --amber-dim: #8a4f08;
+    --cream: #f5ede0;
+    --cream-dark: #ede0cc;
+    --paper: #f9f3ea;
+    --ink: #2a1e0f;
+    --ink-light: #5a4028;
+    --ink-dim: #9a7a55;
+    --bg: #f2e8d5;
+    --surface: #faf5ed;
+    --surface2: #f0e8d6;
+    --border: rgba(139, 90, 40, 0.2);
+    --red: #8b2a10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--ink);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 70%, rgba(212, 121, 10, 0.12) 0%, transparent 60%),
+      radial-gradient(circle at 70% 30%, rgba(212, 121, 10, 0.08) 0%, transparent 50%),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 80px,
+        rgba(255,255,255,0.015) 80px,
+        rgba(255,255,255,0.015) 81px
+      );
+  }
+
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid rgba(212, 121, 10, 0.4);
+    padding: 0.4rem 1.5rem;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4rem;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeIn 1.5s ease;
+  }
+
+  .hero-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: clamp(3rem, 9vw, 8rem);
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.0;
+    letter-spacing: 0.05rem;
+    animation: slideUp 1s ease forwards;
+  }
+
+  .hero-title .accent {
+    color: var(--amber-light);
+    display: block;
+  }
+
+  .hero-rule {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 2rem auto;
+    width: 300px;
+    animation: fadeIn 2s ease;
+  }
+
+  .hero-rule::before,
+  .hero-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(212, 121, 10, 0.4);
+  }
+
+  .hero-rule span {
+    color: var(--amber);
+    font-size: 1.2rem;
+  }
+
+  .hero-sub {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: rgba(245, 237, 224, 0.5);
+    animation: fadeIn 2.5s ease;
+  }
+
+  .hero-nav {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.5rem;
+    animation: fadeIn 3s ease;
+  }
+
+  .hero-nav a {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25rem;
+    color: var(--amber-dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .hero-nav a:hover { color: var(--amber-light); }
+  .hero-nav span { color: rgba(212, 121, 10, 0.3); }
+
+  /* ─── STICKY NAV ─── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(42, 30, 15, 0.97);
+    backdrop-filter: blur(10px);
+    padding: 0.7rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(212, 121, 10, 0.2);
+  }
+
+  .sticky-nav a {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.2rem;
+    color: rgba(212, 121, 10, 0.6);
+    text-decoration: none;
+    padding: 0.3rem 0.6rem;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .sticky-nav a:hover { color: var(--amber-light); }
+
+  /* ─── LAYOUT ─── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  section {
+    padding: 5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .section-tag {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4rem;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-family: 'IM Fell English SC', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  h2 .gold { color: var(--amber); }
+
+  h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h4 {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.25rem;
+    text-transform: uppercase;
+    color: var(--amber-dim);
+    margin: 1.5rem 0 0.5rem;
+  }
+
+  /* ─── DRINK CARDS (big) ─── */
+  .drink-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .drink-card {
+    background: var(--surface);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+
+  .drink-card:hover { background: var(--cream); }
+
+  .drink-card::before {
+    content: attr(data-abv);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(212, 121, 10, 0.06);
+    position: absolute;
+    top: -0.5rem;
+    right: 0.5rem;
+    line-height: 1;
+    letter-spacing: -0.1rem;
+  }
+
+  .drink-emoji {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .drink-name {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 1.6rem;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+
+  .drink-abv {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25rem;
+    color: var(--amber);
+    margin-bottom: 1rem;
+    display: block;
+    text-transform: uppercase;
+  }
+
+  .drink-process {
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    font-style: italic;
+    padding: 0.75rem 1rem;
+    background: rgba(212, 121, 10, 0.05);
+    border-left: 2px solid rgba(212, 121, 10, 0.3);
+    margin-bottom: 1rem;
+  }
+
+  .drink-types {
+    font-size: 0.9rem;
+    color: var(--ink-light);
+  }
+
+  .drink-type-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2rem;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    display: block;
+    margin: 0.75rem 0 0.25rem;
+  }
+
+  .type-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .type-item {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    color: var(--ink-light);
+  }
+
+  .type-name {
+    font-weight: 700;
+    color: var(--ink);
+    min-width: 120px;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.82rem;
+  }
+
+  /* ─── GRAIN / FERMENTATION ─── */
+  .grain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .grain-card {
+    background: var(--surface);
+    padding: 1.75rem;
+  }
+
+  .grain-name {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 1.2rem;
+    color: var(--amber);
+    margin-bottom: 0.25rem;
+  }
+
+  .grain-used {
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+    font-style: italic;
+    margin-bottom: 0.75rem;
+  }
+
+  .grain-flavor {
+    font-size: 0.88rem;
+    color: var(--ink-light);
+  }
+
+  .grain-stat {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .grain-starch {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--amber);
+  }
+
+  .grain-starch-label {
+    font-size: 0.75rem;
+    color: var(--ink-dim);
+  }
+
+  /* ─── PHASE TIMELINE ─── */
+  .timeline {
+    position: relative;
+    padding-left: 3rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--amber), transparent);
+  }
+
+  .phase {
+    position: relative;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .phase::before {
+    content: '';
+    position: absolute;
+    left: -2.5rem;
+    top: 1.5rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--amber);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--amber);
+  }
+
+  .phase-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3rem;
+    color: var(--amber);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .phase-title {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .phase-body {
+    font-size: 0.9rem;
+    color: var(--ink-light);
+  }
+
+  /* ─── TABLE ─── */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .styled-table thead th {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25rem;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(139, 90, 40, 0.3);
+    background: var(--surface2);
+  }
+
+  .styled-table tbody td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(139, 90, 40, 0.1);
+    color: var(--ink-light);
+    vertical-align: top;
+  }
+
+  .styled-table tbody td:first-child {
+    font-weight: 700;
+    color: var(--ink);
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.85rem;
+  }
+
+  .styled-table tbody tr:hover td { background: rgba(212, 121, 10, 0.03); }
+
+  /* ─── CALLOUT ─── */
+  .callout {
+    border: 1px solid rgba(212, 121, 10, 0.25);
+    background: rgba(212, 121, 10, 0.05);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink-light);
+    position: relative;
+  }
+
+  .callout::before {
+    content: '"';
+    font-family: 'IM Fell English SC', serif;
+    font-size: 4rem;
+    color: rgba(212, 121, 10, 0.15);
+    position: absolute;
+    top: -0.5rem;
+    left: 0.75rem;
+    line-height: 1;
+  }
+
+  .callout strong { color: var(--amber-dim); font-style: normal; }
+
+  /* ─── STORAGE TABLE ─── */
+  .storage-cell-good { color: #2d7a3a; font-size: 0.85rem; }
+  .storage-cell-warn { color: var(--amber-dim); font-size: 0.85rem; }
+  .storage-cell-bad  { color: var(--red); font-size: 0.85rem; }
+
+  /* ─── RULES LIST ─── */
+  .golden-rules {
+    counter-reset: rules;
+    list-style: none;
+  }
+
+  .golden-rules li {
+    counter-increment: rules;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .golden-rules li::before {
+    content: counter(rules);
+    font-family: 'IM Fell English SC', serif;
+    font-size: 2rem;
+    color: var(--amber);
+    opacity: 0.5;
+    line-height: 1.1;
+    min-width: 1.5rem;
+    text-align: center;
+  }
+
+  .rule-body strong {
+    display: block;
+    font-family: 'Libre Baskerville', serif;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+
+  .rule-body span { font-size: 0.9rem; color: var(--ink-dim); }
+
+  /* ─── YEAST CARDS ─── */
+  .yeast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .yeast-card {
+    background: var(--surface);
+    padding: 1.75rem;
+  }
+
+  .yeast-name {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 1.1rem;
+    color: var(--amber-dim);
+    margin-bottom: 0.15rem;
+  }
+
+  .yeast-latin {
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .yeast-stat {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    margin-bottom: 0.3rem;
+  }
+
+  .yeast-stat strong { color: var(--ink); }
+
+  /* ─── ABSINTHE / SPECIAL ─── */
+  .spirit-spotlight {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+
+  .spirit-spotlight::after {
+    content: attr(data-spirit);
+    font-family: 'IM Fell English SC', serif;
+    font-size: 5rem;
+    color: rgba(212, 121, 10, 0.08);
+    position: absolute;
+    bottom: 0;
+    right: 1rem;
+    line-height: 1;
+  }
+
+  .spotlight-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 1.5rem;
+    color: var(--amber-light);
+    margin-bottom: 1rem;
+  }
+
+  .spotlight-body { font-size: 0.95rem; color: rgba(245, 237, 224, 0.7); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    text-align: center;
+    padding: 5rem 2rem;
+  }
+
+  .footer-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 2.5rem;
+    color: var(--amber);
+    margin-bottom: 1rem;
+    letter-spacing: 0.1rem;
+  }
+
+  .footer-sub {
+    font-style: italic;
+    color: rgba(245, 237, 224, 0.4);
+    font-size: 1rem;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .drink-grid { grid-template-columns: 1fr; }
+    .grain-grid { grid-template-columns: 1fr; }
+    .yeast-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">A Complete Reference</div>
+  <h1 class="hero-title">
+    The Alcohol
+    <span class="accent">Encyclopedia</span>
+  </h1>
+  <div class="hero-rule"><span>✦</span></div>
+  <p class="hero-sub">Everything you need to know about what's in your glass</p>
+  <nav class="hero-nav">
+    <a href="#fermented">Fermented</a><span>·</span>
+    <a href="#spirits">Spirits</a><span>·</span>
+    <a href="#grains">Grains</a><span>·</span>
+    <a href="#fermentation">Fermentation</a><span>·</span>
+    <a href="#storage">Storage</a>
+  </nav>
+</div>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <a href="#fermented">Beer</a>
+  <a href="#fermented">Wine</a>
+  <a href="#fermented">Sake</a>
+  <a href="#spirits">Whiskey</a>
+  <a href="#spirits">Rum</a>
+  <a href="#spirits">Tequila</a>
+  <a href="#spirits">Gin</a>
+  <a href="#spirits">Vodka</a>
+  <a href="#spirits">Brandy</a>
+  <a href="#grains">Grains</a>
+  <a href="#fermentation">Fermentation</a>
+  <a href="#storage">Storage</a>
+</nav>
+
+<!-- FERMENTED DRINKS -->
+<section id="fermented">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">The Originals</span>
+      <h2>Fermented <span class="gold">Drinks</span></h2>
+    </div>
+
+    <div class="drink-grid reveal">
+
+      <!-- BEER -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🍺</span>
+        <div class="drink-name">Beer</div>
+        <span class="drink-abv">4–12% ABV</span>
+        <div class="drink-process">Mash grains → boil with hops → ferment → age → bottle</div>
+        <div class="drink-types">
+          <span class="drink-type-label">Lagers (cold-fermented, crisp)</span>
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Pilsner</span> Golden, hoppy, clean — Czech/German</div>
+            <div class="type-item"><span class="type-name">Helles/Bock</span> Maltier, breadier</div>
+          </div>
+          <span class="drink-type-label">Ales (warm-fermented, fruity)</span>
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">IPA</span> Hop bomb — citrus, pine, hazy or double</div>
+            <div class="type-item"><span class="type-name">Stout</span> Black, roasted barley, coffee/chocolate</div>
+            <div class="type-item"><span class="type-name">Wheat Beer</span> Smooth, cloudy — Hefeweizen or Witbier</div>
+            <div class="type-item"><span class="type-name">Sour</span> Tart/acidic from wild yeast or bacteria</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WINE -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🍷</span>
+        <div class="drink-name">Wine</div>
+        <span class="drink-abv">9–16% ABV</span>
+        <div class="drink-process">Red: crush → ferment WITH skins → press → age<br>White: press → ferment WITHOUT skins → age</div>
+        <div class="drink-types">
+          <span class="drink-type-label">Reds</span>
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Cabernet</span> Full-bodied, black currant, high tannins</div>
+            <div class="type-item"><span class="type-name">Pinot Noir</span> Light, delicate, cherry, low tannins</div>
+            <div class="type-item"><span class="type-name">Syrah</span> Bold, pepper, dark fruit</div>
+          </div>
+          <span class="drink-type-label">Whites</span>
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Chardonnay</span> Unoaked = crisp; oaked = butter/vanilla</div>
+            <div class="type-item"><span class="type-name">Sauvignon Blanc</span> Crisp, citrus, grass, high acid</div>
+          </div>
+          <span class="drink-type-label">Fortified (15–22% ABV)</span>
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Port</span> Sweet Portuguese; Ruby = young, Tawny = aged</div>
+            <div class="type-item"><span class="type-name">Sherry</span> Spanish; Fino = dry, PX = sweet/syrupy</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAKE -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🍶</span>
+        <div class="drink-name">Sake</div>
+        <span class="drink-abv">15–20% ABV</span>
+        <div class="drink-process">Polish rice → steam → add koji mold → ferment (starch converts AND ferments simultaneously)</div>
+        <div class="drink-types">
+          <span class="drink-type-label">Quality Grades</span>
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Junmai</span> 70% rice remaining</div>
+            <div class="type-item"><span class="type-name">Ginjo</span> 60% remaining — refined</div>
+            <div class="type-item"><span class="type-name">Daiginjo</span> 50% remaining — premium</div>
+          </div>
+          <div class="callout" style="margin-top: 1rem; padding: 0.75rem 1rem;">More polishing = higher grade = higher price</div>
+        </div>
+      </div>
+
+      <!-- CIDER & MEAD -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🍎</span>
+        <div class="drink-name">Cider & Mead</div>
+        <span class="drink-abv">Cider 4–8% · Mead 8–20%</span>
+        <div class="drink-types">
+          <span class="drink-type-label">Hard Cider</span>
+          <div class="type-row">
+            <div class="type-item">Press cider apples → ferment → carbonate (optional). Uses bittersweet, tannic apple varieties — not eating apples.</div>
+          </div>
+          <span class="drink-type-label">Mead — Honey Wine</span>
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Melomel</span> Fruit added</div>
+            <div class="type-item"><span class="type-name">Metheglin</span> Spiced</div>
+            <div class="type-item"><span class="type-name">Braggot</span> Mead + beer hybrid</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SPIRITS -->
+<section id="spirits">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">The Distilled</span>
+      <h2>Spirits <span class="gold">Guide</span></h2>
+    </div>
+
+    <div class="drink-grid reveal">
+
+      <!-- WHISKEY -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🥃</span>
+        <div class="drink-name">Whiskey</div>
+        <span class="drink-abv">40–50% ABV</span>
+        <div class="drink-process">Mash grains → ferment → distill → age in barrels (months to decades)</div>
+        <div class="drink-types">
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Bourbon</span> 51%+ corn, new charred oak, vanilla/caramel</div>
+            <div class="type-item"><span class="type-name">Scotch</span> Malted barley, 3+ years; Islay = smoky, Speyside = fruity</div>
+            <div class="type-item"><span class="type-name">Irish</span> Triple-distilled, smooth, honey/vanilla</div>
+            <div class="type-item"><span class="type-name">Rye</span> 51%+ rye grain, spicy, peppery, dry</div>
+            <div class="type-item"><span class="type-name">Japanese</span> Scotch-like, refined, Mizunara oak notes</div>
+            <div class="type-item"><span class="type-name">Tennessee</span> Like bourbon, filtered through maple charcoal</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RUM -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🏴‍☠️</span>
+        <div class="drink-name">Rum</div>
+        <span class="drink-abv">40% ABV</span>
+        <div class="drink-process">Ferment molasses (or cane juice) → distill → age optional → bottle</div>
+        <div class="drink-types">
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">White/Silver</span> Unaged, light, for cocktails</div>
+            <div class="type-item"><span class="type-name">Gold/Amber</span> 1–3 years oak, caramel, vanilla</div>
+            <div class="type-item"><span class="type-name">Dark</span> 5+ years, rich molasses and toffee</div>
+            <div class="type-item"><span class="type-name">Spiced</span> Infused with cinnamon, vanilla, nutmeg</div>
+            <div class="type-item"><span class="type-name">Agricole</span> Fresh cane juice, grassy, funky, French Caribbean</div>
+            <div class="type-item"><span class="type-name">Overproof</span> 50–75% ABV — handle with care</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEQUILA -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🌵</span>
+        <div class="drink-name">Tequila & Mezcal</div>
+        <span class="drink-abv">Tequila 40% · Mezcal 40–55%</span>
+        <div class="drink-process">Harvest agave (7–10yr plant) → cook hearts → crush → ferment → distill</div>
+        <div class="drink-types">
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Blanco</span> Unaged, pure agave: crisp, peppery, herbaceous</div>
+            <div class="type-item"><span class="type-name">Reposado</span> 2–12 months, pale gold, smooth</div>
+            <div class="type-item"><span class="type-name">Añejo</span> 1–3 years, amber, butterscotch, complex</div>
+            <div class="type-item"><span class="type-name">Extra Añejo</span> 3+ years, ultra-smooth, whiskey-like</div>
+          </div>
+          <div class="callout" style="margin-top: 1rem; padding: 0.75rem 1rem;">⚠️ <strong>100% agave only.</strong> "Mixto" (51% agave) = avoid.</div>
+          <div class="type-row" style="margin-top: 0.5rem;">
+            <div class="type-item"><span class="type-name">Mezcal</span> Any agave, pit-roasted → smoky, earthy, complex</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GIN -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🌲</span>
+        <div class="drink-name">Gin</div>
+        <span class="drink-abv">40–47% ABV</span>
+        <div class="drink-process">Distill neutral grain spirit with juniper berries + botanicals</div>
+        <div class="drink-types">
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">London Dry</span> Juniper-forward, no sugar (Tanqueray, Beefeater)</div>
+            <div class="type-item"><span class="type-name">Plymouth</span> Earthier, sweeter — one distillery only</div>
+            <div class="type-item"><span class="type-name">Old Tom</span> Slightly sweetened, 18th century style</div>
+            <div class="type-item"><span class="type-name">Genever</span> Dutch original, malty, whiskey-like</div>
+            <div class="type-item"><span class="type-name">Contemporary</span> Botanicals shine over juniper (Hendrick's: cucumber/rose)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VODKA -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">⚪</span>
+        <div class="drink-name">Vodka</div>
+        <span class="drink-abv">40% ABV</span>
+        <div class="drink-process">Ferment base → distill 3+ times → charcoal filter → dilute with water</div>
+        <div class="drink-types">
+          <span class="drink-type-label">Base Ingredients</span>
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Grain</span> Wheat, rye, or corn — clean and crisp</div>
+            <div class="type-item"><span class="type-name">Potato</span> Creamy, rich texture</div>
+            <div class="type-item"><span class="type-name">Grape</span> Slightly fruity, silky</div>
+          </div>
+          <div class="callout" style="margin-top: 1rem; padding: 0.75rem 1rem;"><strong>Goal</strong>: pure, neutral, odorless, flavorless spirit. The base material subtly shapes the texture.</div>
+        </div>
+      </div>
+
+      <!-- BRANDY -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🍇</span>
+        <div class="drink-name">Brandy & Cognac</div>
+        <span class="drink-abv">35–60% ABV</span>
+        <div class="drink-process">Ferment fruit (grapes, apples, pears) → distill → age in oak</div>
+        <div class="drink-types">
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Cognac</span> France; VS (2yr) → VSOP (4yr) → XO (10yr)</div>
+            <div class="type-item"><span class="type-name">Armagnac</span> More rustic, earthy, prune, spice</div>
+            <div class="type-item"><span class="type-name">Calvados</span> Apple brandy, France, baked apple/caramel</div>
+            <div class="type-item"><span class="type-name">Pisco</span> Unaged grape brandy, Peru/Chile</div>
+            <div class="type-item"><span class="type-name">Grappa</span> Italian, from grape pomace, strong/aromatic</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABSINTHE -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🌿</span>
+        <div class="drink-name">Absinthe</div>
+        <span class="drink-abv">45–74% ABV</span>
+        <div class="drink-process">Neutral spirit + wormwood + anise + fennel + herbs → distilled</div>
+        <div class="drink-types">
+          <div class="callout" style="padding: 0.75rem 1rem;">Dilute with cold water — it turns cloudy (louching). Optionally poured over a sugar cube. Tastes of licorice, herbal bitterness.</div>
+        </div>
+      </div>
+
+      <!-- LIQUEURS -->
+      <div class="drink-card" data-abv="ABV">
+        <span class="drink-emoji">🍫</span>
+        <div class="drink-name">Liqueurs</div>
+        <span class="drink-abv">15–55% ABV</span>
+        <div class="drink-process">Base spirit + sugar + flavoring = sweet, flavored alcohol</div>
+        <div class="drink-types">
+          <div class="type-row">
+            <div class="type-item"><span class="type-name">Nut</span> Amaretto (almond), Frangelico (hazelnut)</div>
+            <div class="type-item"><span class="type-name">Coffee</span> Kahlúa (sweet), Tia Maria (less sweet)</div>
+            <div class="type-item"><span class="type-name">Citrus</span> Cointreau, Grand Marnier, Limoncello</div>
+            <div class="type-item"><span class="type-name">Cream</span> Baileys (whiskey + cream), RumChata</div>
+            <div class="type-item"><span class="type-name">Herbal</span> Chartreuse (130 herbs), Fernet-Branca (bitter)</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- GRAINS -->
+<section id="grains">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">The Foundation</span>
+      <h2>Grains: <span class="gold">The Foundation</span></h2>
+    </div>
+
+    <div class="grain-grid reveal">
+      <div class="grain-card">
+        <div class="grain-name">Barley</div>
+        <div class="grain-used">Beer · Scotch · Irish Whiskey</div>
+        <div class="grain-flavor">Nutty, bready, slightly sweet. Contains enzymes that convert its own starches to sugar — making it the most efficient brewing grain.</div>
+        <div class="grain-stat">
+          <span class="grain-starch">60–65%</span>
+          <span class="grain-starch-label">starch content</span>
+        </div>
+      </div>
+      <div class="grain-card">
+        <div class="grain-name">Corn</div>
+        <div class="grain-used">Bourbon · Tennessee Whiskey · Many Vodkas</div>
+        <div class="grain-flavor">Sweet, mild, vanilla notes. Highest starch content of any grain — cheap, abundant in America, produces smooth and sweet spirits.</div>
+        <div class="grain-stat">
+          <span class="grain-starch">70–75%</span>
+          <span class="grain-starch-label">starch content</span>
+        </div>
+      </div>
+      <div class="grain-card">
+        <div class="grain-name">Rye</div>
+        <div class="grain-used">Rye Whiskey · Some Bourbons · Some Vodkas</div>
+        <div class="grain-flavor">Spicy, peppery, dry, bold. Adds complexity and bite to whiskey. Creates a thick, sticky mash that's difficult to work with.</div>
+        <div class="grain-stat">
+          <span class="grain-starch">55–60%</span>
+          <span class="grain-starch-label">starch content</span>
+        </div>
+      </div>
+      <div class="grain-card">
+        <div class="grain-name">Wheat</div>
+        <div class="grain-used">Wheat Beer · Wheated Bourbon · Some Vodkas</div>
+        <div class="grain-flavor">Soft, smooth, slightly sweet, light. Creates gentle and approachable spirits — the character of Maker's Mark bourbon.</div>
+        <div class="grain-stat">
+          <span class="grain-starch">60–65%</span>
+          <span class="grain-starch-label">starch content</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Grain Flavor Contributions</h3>
+    <table class="styled-table reveal">
+      <thead><tr><th>Grain</th><th>What it brings</th></tr></thead>
+      <tbody>
+        <tr><td>Corn</td><td>Sweetness, vanilla, mild flavor — bourbon's smooth foundation</td></tr>
+        <tr><td>Rye</td><td>Spicy bite, peppery notes, dryness — backbone of rye whiskey</td></tr>
+        <tr><td>Wheat</td><td>Soft, gentle, smooth — makes "wheated" bourbon like Maker's Mark</td></tr>
+        <tr><td>Barley</td><td>Nutty, malty, bready — foundation of Scotch and beer</td></tr>
+        <tr><td>Malted Barley</td><td>Sweeter, richer than raw barley — provides enzymes for ALL other grains</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout reveal">
+      <strong>Why bourbon is mostly corn:</strong> It's cheap, abundant in America, and produces a sweet, smooth whiskey that ages well in charred oak.<br><br>
+      <strong>Why Scotch is all barley:</strong> Tradition, terroir, and barley grows well in Scotland's cool climate.
+    </div>
+  </div>
+</section>
+
+<!-- FERMENTATION -->
+<section id="fermentation">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">The Science</span>
+      <h2>Fermentation: <span class="gold">Where the Magic Happens</span></h2>
+    </div>
+
+    <div class="callout reveal" style="font-size: 1rem;">
+      Yeast (single-celled fungus) metabolizes sugar without oxygen, producing <strong>ethanol, carbon dioxide, and heat</strong> as byproducts.<br>
+      <code style="background: rgba(0,0,0,0.06); padding: 0.15rem 0.4rem; border-radius: 2px; font-size: 0.9rem;">C₆H₁₂O₆ → 2 C₂H₅OH + 2 CO₂</code>
+    </div>
+
+    <h3>The Yeast</h3>
+    <div class="yeast-grid reveal">
+      <div class="yeast-card">
+        <div class="yeast-name">Ale Yeast</div>
+        <div class="yeast-latin">Saccharomyces cerevisiae</div>
+        <div class="yeast-stat"><strong>Temp:</strong> 60–75°F (warm) · Top-fermenting</div>
+        <div class="yeast-stat"><strong>Flavor:</strong> Fruity esters — banana, apple, pear</div>
+        <div class="yeast-stat"><strong>Used in:</strong> Ales, wine, whiskey, sake</div>
+        <div class="yeast-stat"><strong>Personality:</strong> Fast, aggressive, flavorful</div>
+      </div>
+      <div class="yeast-card">
+        <div class="yeast-name">Lager Yeast</div>
+        <div class="yeast-latin">Saccharomyces pastorianus</div>
+        <div class="yeast-stat"><strong>Temp:</strong> 45–55°F (cold) · Bottom-fermenting</div>
+        <div class="yeast-stat"><strong>Flavor:</strong> Clean, crisp, very subtle</div>
+        <div class="yeast-stat"><strong>Used in:</strong> Lagers, pilsners</div>
+        <div class="yeast-stat"><strong>Personality:</strong> Slow, patient, neutral</div>
+      </div>
+      <div class="yeast-card">
+        <div class="yeast-name">Wild Yeast & Bacteria</div>
+        <div class="yeast-latin">Brettanomyces · Lactobacillus · Pediococcus</div>
+        <div class="yeast-stat"><strong>Brett:</strong> Funky, earthy, farmhouse — leather, barnyard, tropical</div>
+        <div class="yeast-stat"><strong>Lacto:</strong> Sour, tart (same as yogurt bacteria)</div>
+        <div class="yeast-stat"><strong>Used in:</strong> Sour beers, natural wine, farmhouse ales</div>
+      </div>
+    </div>
+
+    <h3>The Four Phases</h3>
+    <div class="timeline reveal">
+      <div class="phase">
+        <span class="phase-label">Phase 1 · 0–24 hours</span>
+        <div class="phase-title">Lag — Yeast Waking Up</div>
+        <div class="phase-body">Nothing visible yet. Yeast absorbs oxygen, builds cell walls, multiplies, acclimates to temperature. Critical to get conditions right here.</div>
+      </div>
+      <div class="phase">
+        <span class="phase-label">Phase 2 · 1–4 days</span>
+        <div class="phase-title">Exponential Growth — The Main Event</div>
+        <div class="phase-body">Heavy bubbling, thick foam (krausen), temperature rising. Alcohol, CO₂, and flavor compounds (esters, phenols) are actively being produced. Temperature control here makes or breaks the final flavor.</div>
+      </div>
+      <div class="phase">
+        <span class="phase-label">Phase 3 · 3–7 days</span>
+        <div class="phase-title">Stationary — Cleaning Up</div>
+        <div class="phase-body">Bubbling slows, foam collapses, liquid starts clearing. Final sugars convert, yeast reabsorbs off-flavors, yeast settles to the bottom.</div>
+      </div>
+      <div class="phase">
+        <span class="phase-label">Phase 4 · Days to Years</span>
+        <div class="phase-title">Conditioning — Dormant &amp; Done</div>
+        <div class="phase-body">Clear liquid, sediment layer, no activity. Beer: 1–4 weeks. Spirits: ready to distill. Wine: months to years as complexity develops.</div>
+      </div>
+    </div>
+
+    <h3>Temperature &amp; Flavor</h3>
+    <table class="styled-table reveal">
+      <thead><tr><th>Drink</th><th>Ideal Range</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td>Ales</td><td>60–72°F</td><td>60–65°F = crisper; 68–72°F = fruitier, more esters</td></tr>
+        <tr><td>Lagers</td><td>45–55°F</td><td>Slow (2–3× longer), crisp, clean, minimal off-flavors</td></tr>
+        <tr><td>Whiskey</td><td>70–85°F</td><td>Warmer = faster with more flavor compounds</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Yeast Alcohol Tolerance</h3>
+    <table class="styled-table reveal">
+      <thead><tr><th>Yeast Type</th><th>Max ABV</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Standard Ale</td><td>8–12%</td><td>Gets "drunk," stops</td></tr>
+        <tr><td>Wine Yeast</td><td>12–16%</td><td>Alcohol toxicity limit</td></tr>
+        <tr><td>Champagne Yeast</td><td>16–18%</td><td>High tolerance</td></tr>
+        <tr><td>Distiller's Yeast</td><td>18–20%</td><td>Bred for spirits production</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- STORAGE -->
+<section id="storage">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">The Care</span>
+      <h2>Storage & <span class="gold">Shelf Life</span></h2>
+    </div>
+
+    <h3>Unopened Bottles</h3>
+    <table class="styled-table reveal">
+      <thead><tr><th>Type</th><th>Shelf Life</th><th>Storage</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Vodka / Gin</td><td class="storage-cell-good">Indefinitely</td><td>Cool, dark, upright</td><td>Freezer OK</td></tr>
+        <tr><td>Whiskey</td><td class="storage-cell-good">Indefinitely</td><td>Cool, dark, upright</td><td>NO freezer — dulls flavor</td></tr>
+        <tr><td>Rum / Tequila</td><td class="storage-cell-good">Indefinitely</td><td>Cool, dark, upright</td><td>Blancos fade faster</td></tr>
+        <tr><td>Red Wine</td><td class="storage-cell-warn">1–3 years*</td><td>Horizontal, cool, dark</td><td>*Varies widely by type</td></tr>
+        <tr><td>White Wine</td><td class="storage-cell-warn">1–2 years</td><td>Horizontal, cool, dark</td><td>Age-worthy whites last longer</td></tr>
+        <tr><td>Champagne</td><td class="storage-cell-warn">3–4 years</td><td>Horizontal, cool</td><td>Vintage: 10+ years</td></tr>
+        <tr><td>Beer (IPA)</td><td class="storage-cell-bad">2–3 months</td><td>Upright, cold, dark</td><td>Hops fade fast — drink fresh</td></tr>
+        <tr><td>Beer (Stout)</td><td class="storage-cell-warn">1 year</td><td>Upright, cool, dark</td><td>Barleywines improve with age</td></tr>
+        <tr><td>Vermouth</td><td class="storage-cell-warn">3–4 years</td><td>Upright, cool</td><td>Refrigerate after opening</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Opened Bottles</h3>
+    <table class="styled-table reveal">
+      <thead><tr><th>Type</th><th>Use By</th><th>Storage</th></tr></thead>
+      <tbody>
+        <tr><td>Spirits (40%+ ABV)</td><td class="storage-cell-good">1–2 years</td><td>Tight seal, upright, cool/dark. Transfer to smaller bottle when low.</td></tr>
+        <tr><td>Red Wine</td><td class="storage-cell-warn">3–5 days</td><td>Recork, cool/dark place. Heavier reds last longer.</td></tr>
+        <tr><td>White / Rosé</td><td class="storage-cell-warn">3–5 days</td><td>Refrigerate immediately. Higher acid = longer life.</td></tr>
+        <tr><td>Sparkling / Champagne</td><td class="storage-cell-bad">1–3 days</td><td>Champagne stopper, refrigerate, upright.</td></tr>
+        <tr><td>Vermouth</td><td class="storage-cell-warn">1–3 months</td><td>Refrigerate! Dry = 1 month. Sweet = 2–3 months.</td></tr>
+        <tr><td>Beer</td><td class="storage-cell-bad">Same day</td><td>Drink it or pour it out. CO₂ escapes, oxidation sets in.</td></tr>
+        <tr><td>Sake</td><td class="storage-cell-bad">1–2 weeks</td><td>Refrigerate immediately. Delicate flavors fade fast.</td></tr>
+        <tr><td>Cream Liqueurs</td><td class="storage-cell-warn">6 months</td><td>Refrigerate. Check for curdling or separation.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The Golden Rules of Storage</h3>
+    <ol class="golden-rules reveal">
+      <li>
+        <div class="rule-body">
+          <strong>High proof = low risk</strong>
+          <span>Spirits last almost forever. Bacteria and mold cannot survive at 40%+ ABV.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rule-body">
+          <strong>Wine needs care</strong>
+          <span>Cool, dark, horizontal when unopened. Refrigerate immediately once opened.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rule-body">
+          <strong>Vermouth is wine</strong>
+          <span>Refrigerate after opening. Most people forget this — old vermouth ruins cocktails.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rule-body">
+          <strong>Beer is perishable</strong>
+          <span>Drink fresh, especially IPAs. Hops fade fast, carbonation escapes, oxidation sets in quickly.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rule-body">
+          <strong>Air is the enemy</strong>
+          <span>Less air in the bottle means slower degradation. Transfer to smaller bottles when low.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rule-body">
+          <strong>Heat kills flavor</strong>
+          <span>Never store above 75°F for extended periods. Even spirits will lose nuance.</span>
+        </div>
+      </li>
+      <li>
+        <div class="rule-body">
+          <strong>When in doubt, smell it</strong>
+          <span>Your nose is your best quality indicator. Vinegar, cardboard, or mustiness? Pour it out.</span>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-title">The Alcohol Encyclopedia</div>
+  <p class="footer-sub">Now you know what's actually in your glass 🍻</p>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

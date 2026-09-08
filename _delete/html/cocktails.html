@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Classic Cocktail Recipes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #f5f0e8;
+      --card: #faf7f2;
+      --dark: #1a1208;
+      --brown: #3d2b1a;
+      --amber: #c47b20;
+      --amber-light: #e8a43a;
+      --red: #8b2020;
+      --green: #2a4a2e;
+      --text: #2d2010;
+      --text-muted: #7a6548;
+      --border: #ddd0b8;
+      --shadow: rgba(61, 43, 26, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--dark);
+      color: #f5f0e8;
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(196,123,32,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(139,32,32,0.15) 0%, transparent 60%);
+    }
+
+    header .inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+
+    header .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber-light);
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    header p {
+      color: rgba(245,240,232,0.6);
+      font-size: 1rem;
+      font-style: italic;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--brown);
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav::-webkit-scrollbar { display: none; }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      white-space: nowrap;
+      padding: 0 1rem;
+    }
+
+    nav a {
+      display: block;
+      padding: 0.9rem 1.1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.65);
+      text-decoration: none;
+      transition: color 0.2s;
+      border-bottom: 2px solid transparent;
+    }
+
+    nav a:hover {
+      color: var(--amber-light);
+      border-bottom-color: var(--amber-light);
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    /* ── Section headers ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 3.5rem 0 2rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--brown);
+    }
+
+    .section-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--amber);
+      color: white;
+      white-space: nowrap;
+    }
+
+    /* ── Card grid ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px var(--shadow);
+    }
+
+    /* Image area */
+    .card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: var(--dark);
+      display: block;
+    }
+
+    .card-img-placeholder {
+      width: 100%;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      background: linear-gradient(135deg, var(--dark), var(--brown));
+    }
+
+    /* Card content */
+    .card-body {
+      padding: 1.4rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-category {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+
+    .card-method {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      background: var(--dark);
+      color: var(--amber-light);
+      letter-spacing: 0.08em;
+    }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.25rem;
+      line-height: 1.2;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    /* Ingredients */
+    .ingredients-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .ingredients {
+      list-style: none;
+      margin-bottom: 1rem;
+    }
+
+    .ingredients li {
+      font-size: 13.5px;
+      padding: 0.2rem 0;
+      border-bottom: 1px dashed var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      color: var(--text);
+    }
+
+    .ingredients li:last-child { border-bottom: none; }
+
+    .ing-amount {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--amber);
+      white-space: nowrap;
+      min-width: 60px;
+    }
+
+    /* Steps toggle */
+    details {
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+      padding-top: 0.75rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+
+    summary::after {
+      content: '▸';
+      transition: transform 0.2s;
+    }
+
+    details[open] summary::after { transform: rotate(90deg); }
+
+    .steps {
+      margin-top: 0.75rem;
+      padding-left: 0;
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .steps li {
+      font-size: 13px;
+      padding: 0.35rem 0 0.35rem 1.8rem;
+      position: relative;
+      color: var(--text);
+      counter-increment: step;
+    }
+
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0.35rem;
+      width: 1.3rem;
+      height: 1.3rem;
+      background: var(--amber);
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* Garnish & Glass row */
+    .card-footer {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .card-pill {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .card-pill span { font-size: 13px; }
+
+    /* Variations */
+    .variations {
+      margin-top: 0.75rem;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .variations strong {
+      color: var(--brown);
+      font-weight: 500;
+    }
+
+    /* ── Index section ── */
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .index-group h4 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .index-group ul {
+      list-style: none;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* ── Ratios section ── */
+    .ratios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .ratio-card {
+      background: var(--dark);
+      color: #f5f0e8;
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    .ratio-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: var(--amber-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .ratio-card p {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      line-height: 1.9;
+      color: rgba(245,240,232,0.65);
+    }
+
+    .ratio-card p strong { color: var(--amber-light); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--dark);
+      color: rgba(245,240,232,0.4);
+      text-align: center;
+      padding: 2rem;
+      font-size: 12px;
+      font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <p class="eyebrow">Bartender's Reference Guide</p>
+    <h1>Classic Cocktail Recipes</h1>
+    <p>Essential drinks every bartender should know</p>
+  </div>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#spirit-forward">Spirit-Forward</a></li>
+    <li><a href="#sour-bright">Sour & Bright</a></li>
+    <li><a href="#sweet-easy">Sweet & Easy</a></li>
+    <li><a href="#light-refreshing">Light & Refreshing</a></li>
+    <li><a href="#bitter-complex">Bitter & Complex</a></li>
+    <li><a href="#rich-creamy">Rich & Creamy</a></li>
+    <li><a href="#index">By Spirit</a></li>
+    <li><a href="#ratios">Ratios</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- ── SPIRIT-FORWARD ── -->
+  <div class="section-header" id="spirit-forward">
+    <h2>Spirit-Forward</h2>
+    <span class="section-tag">Strong & Boozy</span>
+  </div>
+  <div class="cards">
+
+    <!-- Martini -->
+    <div class="card">
+      <img class="card-img" 
+           src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Martini_with_olive.jpg/400px-Martini_with_olive.jpg"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+           alt="Martini"/>
+      <div class="card-img-placeholder" style="display:none">🍸</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Spirit-Forward</span>
+          <span class="card-method">STIR</span>
+        </div>
+        <h3>Martini</h3>
+        <p class="card-subtitle">Classic Gin Martini</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2.5 oz</span> gin</li>
+          <li><span class="ing-amount">0.5 oz</span> dry vermouth</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Add gin and vermouth to mixing glass with ice</li>
+            <li>Stir 30–40 seconds until glass is frosty</li>
+            <li>Strain into chilled martini glass</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍋</span> Lemon twist or olives</span>
+          <span class="card-pill"><span>🥂</span> Martini or coupe</span>
+        </div>
+        <div class="variations">
+          <strong>Dirty →</strong> +0.5 oz olive brine &nbsp;|&nbsp; <strong>Vodka →</strong> swap gin
+        </div>
+      </div>
+    </div>
+
+    <!-- Manhattan -->
+    <div class="card">
+      <img class="card-img"
+           src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/A_Manhattan_Cocktail.jpg/400px-A_Manhattan_Cocktail.jpg"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+           alt="Manhattan"/>
+      <div class="card-img-placeholder" style="display:none">🥃</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Spirit-Forward</span>
+          <span class="card-method">STIR</span>
+        </div>
+        <h3>Manhattan</h3>
+        <p class="card-subtitle">The Classic New York Cocktail</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> rye whiskey</li>
+          <li><span class="ing-amount">1 oz</span> sweet vermouth</li>
+          <li><span class="ing-amount">2–3 dashes</span> Angostura bitters</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Add all ingredients to mixing glass with ice</li>
+            <li>Stir 30–40 seconds</li>
+            <li>Strain into chilled coupe</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍒</span> Luxardo cherry</span>
+          <span class="card-pill"><span>🥂</span> Coupe or Nick & Nora</span>
+        </div>
+        <div class="variations">
+          <strong>Rob Roy →</strong> Scotch &nbsp;|&nbsp; <strong>Perfect →</strong> half sweet/dry vermouth
+        </div>
+      </div>
+    </div>
+
+    <!-- Negroni -->
+    <div class="card">
+      <img class="card-img"
+           src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Negroni_with_orange_garnish.jpg/400px-Negroni_with_orange_garnish.jpg"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+           alt="Negroni"/>
+      <div class="card-img-placeholder" style="display:none">🍊</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Spirit-Forward</span>
+          <span class="card-method">STIR</span>
+        </div>
+        <h3>Negroni</h3>
+        <p class="card-subtitle">The Italian Bitter Classic</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">1 oz</span> gin</li>
+          <li><span class="ing-amount">1 oz</span> Campari</li>
+          <li><span class="ing-amount">1 oz</span> sweet vermouth</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Add all ingredients to mixing glass with ice</li>
+            <li>Stir 20–30 seconds</li>
+            <li>Strain over large ice cube in rocks glass</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍊</span> Orange peel</span>
+          <span class="card-pill"><span>🥃</span> Rocks glass</span>
+        </div>
+        <div class="variations">
+          <strong>Boulevardier →</strong> bourbon &nbsp;|&nbsp; <strong>Sbagliato →</strong> Prosecco
+        </div>
+      </div>
+    </div>
+
+    <!-- Old Fashioned -->
+    <div class="card">
+      <img class="card-img"
+           src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Old_Fashioned_Cocktail.jpg/400px-Old_Fashioned_Cocktail.jpg"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+           alt="Old Fashioned"/>
+      <div class="card-img-placeholder" style="display:none">🥃</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Spirit-Forward</span>
+          <span class="card-method">BUILD</span>
+        </div>
+        <h3>Old Fashioned</h3>
+        <p class="card-subtitle">The Original Cocktail</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> bourbon or rye</li>
+          <li><span class="ing-amount">0.25 oz</span> simple syrup</li>
+          <li><span class="ing-amount">2–3 dashes</span> Angostura bitters</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Add simple syrup and bitters to rocks glass</li>
+            <li>Add whiskey and large ice cube</li>
+            <li>Stir 20–30 seconds</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍊</span> Orange peel</span>
+          <span class="card-pill"><span>🥃</span> Rocks glass</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards -->
+
+  <!-- ── SOUR & BRIGHT ── -->
+  <div class="section-header" id="sour-bright">
+    <h2>Sour & Bright</h2>
+    <span class="section-tag" style="background:var(--green)">Citrus-Forward</span>
+  </div>
+  <div class="cards">
+
+    <!-- Whiskey Sour -->
+    <div class="card">
+      <img class="card-img"
+           src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/sixty-three/Whiskey_sour_2021.jpg/400px-Whiskey_sour_2021.jpg"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+           alt="Whiskey Sour"/>
+      <div class="card-img-placeholder" style="display:none">🍋</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sour & Bright</span>
+          <span class="card-method">SHAKE</span>
+        </div>
+        <h3>Whiskey Sour</h3>
+        <p class="card-subtitle">The Perfect Sour Template</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> bourbon or rye</li>
+          <li><span class="ing-amount">0.75 oz</span> fresh lemon juice</li>
+          <li><span class="ing-amount">0.75 oz</span> simple syrup</li>
+          <li><span class="ing-amount">0.5 oz</span> egg white (optional)</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Dry shake (no ice) 10 sec if using egg white</li>
+            <li>Add ice, shake hard 10–15 seconds</li>
+            <li>Strain over fresh ice</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍒</span> Cherry + orange</span>
+          <span class="card-pill"><span>🥃</span> Rocks glass</span>
+        </div>
+        <div class="variations">
+          <strong>NY Sour →</strong> float red wine &nbsp;|&nbsp; <strong>Boston →</strong> with egg white
+        </div>
+      </div>
+    </div>
+
+    <!-- Margarita -->
+    <div class="card">
+      <div class="card-img-placeholder">🍹</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sour & Bright</span>
+          <span class="card-method">SHAKE</span>
+        </div>
+        <h3>Margarita</h3>
+        <p class="card-subtitle">Mexico's Gift to the World</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> blanco tequila</li>
+          <li><span class="ing-amount">1 oz</span> fresh lime juice</li>
+          <li><span class="ing-amount">0.75 oz</span> Cointreau</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Optional: rim glass with salt</li>
+            <li>Shake all ingredients hard 10–15 seconds</li>
+            <li>Strain over fresh ice</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍋</span> Lime wedge</span>
+          <span class="card-pill"><span>🥃</span> Rocks glass</span>
+        </div>
+        <div class="variations">
+          <strong>Tommy's →</strong> agave nectar &nbsp;|&nbsp; <strong>Spicy →</strong> jalapeño
+        </div>
+      </div>
+    </div>
+
+    <!-- Daiquiri -->
+    <div class="card">
+      <img class="card-img"
+           src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Daiquiri_Cocktail.jpg/400px-Daiquiri_Cocktail.jpg"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+           alt="Daiquiri"/>
+      <div class="card-img-placeholder" style="display:none">🍹</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sour & Bright</span>
+          <span class="card-method">SHAKE</span>
+        </div>
+        <h3>Daiquiri</h3>
+        <p class="card-subtitle">Cuba's Classic</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> white rum</li>
+          <li><span class="ing-amount">1 oz</span> fresh lime juice</li>
+          <li><span class="ing-amount">0.75 oz</span> simple syrup</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Shake all ingredients hard 10–15 seconds</li>
+            <li>Strain into chilled coupe</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍋</span> Lime wheel</span>
+          <span class="card-pill"><span>🥂</span> Coupe</span>
+        </div>
+        <div class="variations">
+          <strong>Hemingway →</strong> grapefruit + maraschino &nbsp;|&nbsp; <strong>Frozen →</strong> blend
+        </div>
+      </div>
+    </div>
+
+    <!-- Cosmopolitan -->
+    <div class="card">
+      <div class="card-img-placeholder">💗</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sour & Bright</span>
+          <span class="card-method">SHAKE</span>
+        </div>
+        <h3>Cosmopolitan</h3>
+        <p class="card-subtitle">Sex and the City Made This Famous</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">1.5 oz</span> vodka</li>
+          <li><span class="ing-amount">1 oz</span> cranberry juice</li>
+          <li><span class="ing-amount">0.5 oz</span> fresh lime juice</li>
+          <li><span class="ing-amount">0.5 oz</span> Cointreau</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Shake all ingredients hard 10–15 seconds</li>
+            <li>Strain into chilled martini glass</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍋</span> Lime twist</span>
+          <span class="card-pill"><span>🥂</span> Martini glass</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tequila Sunrise -->
+    <div class="card">
+      <div class="card-img-placeholder">🌅</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sour & Bright</span>
+          <span class="card-method">BUILD</span>
+        </div>
+        <h3>Tequila Sunrise</h3>
+        <p class="card-subtitle">Gradient Perfection</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> blanco tequila</li>
+          <li><span class="ing-amount">4 oz</span> fresh orange juice</li>
+          <li><span class="ing-amount">0.5 oz</span> grenadine</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Fill highball glass with ice</li>
+            <li>Add tequila and orange juice, stir</li>
+            <li>Slowly pour grenadine down side — DO NOT STIR</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍊</span> Orange + cherry</span>
+          <span class="card-pill"><span>🥤</span> Highball</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lemon Drop -->
+    <div class="card">
+      <div class="card-img-placeholder">🍋</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sour & Bright</span>
+          <span class="card-method">SHAKE</span>
+        </div>
+        <h3>Lemon Drop</h3>
+        <p class="card-subtitle">Sweet, Tart & Sugared</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> vodka</li>
+          <li><span class="ing-amount">1 oz</span> fresh lemon juice</li>
+          <li><span class="ing-amount">0.5 oz</span> Cointreau</li>
+          <li><span class="ing-amount">0.5 oz</span> simple syrup</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Rim martini glass with sugar</li>
+            <li>Shake all ingredients hard 10–15 seconds</li>
+            <li>Strain into sugar-rimmed glass</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍋</span> Lemon twist</span>
+          <span class="card-pill"><span>🥂</span> Martini glass</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Long Island Iced Tea -->
+    <div class="card">
+      <div class="card-img-placeholder">🍹</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sour & Bright</span>
+          <span class="card-method">SHAKE + BUILD</span>
+        </div>
+        <h3>Long Island Iced Tea</h3>
+        <p class="card-subtitle">Dangerously Strong, Deceptively Smooth</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">0.5 oz ea.</span> vodka, rum, gin, tequila, Cointreau</li>
+          <li><span class="ing-amount">1 oz</span> fresh lemon juice</li>
+          <li><span class="ing-amount">0.5 oz</span> simple syrup</li>
+          <li><span class="ing-amount">splash</span> cola</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Shake all except cola hard 10–15 seconds</li>
+            <li>Strain into Collins glass over ice</li>
+            <li>Top with small splash of cola, stir gently</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍋</span> Lemon wedge</span>
+          <span class="card-pill"><span>🥤</span> Collins glass</span>
+        </div>
+        <div class="variations">⚠️ ~22% ABV — sip responsibly</div>
+      </div>
+    </div>
+
+    <!-- Sangria -->
+    <div class="card">
+      <div class="card-img-placeholder">🍷</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sour & Bright</span>
+          <span class="card-method">BATCH + CHILL</span>
+        </div>
+        <h3>Sangria</h3>
+        <p class="card-subtitle">Spanish Wine Punch — Serves 4–6</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">750 ml</span> Spanish red wine</li>
+          <li><span class="ing-amount">2 oz</span> brandy</li>
+          <li><span class="ing-amount">¼ cup</span> fresh orange juice</li>
+          <li><span class="ing-amount">2 tbsp</span> sugar</li>
+          <li><span class="ing-amount">—</span> orange, apple, lemon sliced</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Combine wine, brandy, OJ, and sugar in pitcher</li>
+            <li>Add fruit and cinnamon stick</li>
+            <li>Chill 4–24 hours</li>
+            <li>Serve over ice, optional club soda top</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍊</span> Orange slice</span>
+          <span class="card-pill"><span>🍷</span> Wine glass</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── SWEET & EASY ── -->
+  <div class="section-header" id="sweet-easy">
+    <h2>Sweet & Easy</h2>
+    <span class="section-tag" style="background:#b07030">Crowd-Pleasers</span>
+  </div>
+  <div class="cards">
+
+    <!-- Piña Colada -->
+    <div class="card">
+      <div class="card-img-placeholder">🍹</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sweet & Easy</span>
+          <span class="card-method">BLEND</span>
+        </div>
+        <h3>Piña Colada</h3>
+        <p class="card-subtitle">Tropical Paradise</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> white rum</li>
+          <li><span class="ing-amount">2 oz</span> pineapple juice</li>
+          <li><span class="ing-amount">1.5 oz</span> cream of coconut</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Blend all with 1–1.5 cups ice until smooth</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍍</span> Pineapple + cherry</span>
+          <span class="card-pill"><span>🥤</span> Hurricane glass</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- White Russian -->
+    <div class="card">
+      <div class="card-img-placeholder">🥛</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sweet & Easy</span>
+          <span class="card-method">BUILD</span>
+        </div>
+        <h3>White Russian</h3>
+        <p class="card-subtitle">The Big Lebowski's Favorite</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> vodka</li>
+          <li><span class="ing-amount">1 oz</span> Kahlúa</li>
+          <li><span class="ing-amount">1 oz</span> heavy cream</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Add vodka and Kahlúa to rocks glass over ice</li>
+            <li>Float cream on top</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🥃</span> Rocks glass</span>
+        </div>
+        <div class="variations"><strong>Black Russian →</strong> skip the cream</div>
+      </div>
+    </div>
+
+    <!-- Mai Tai -->
+    <div class="card">
+      <div class="card-img-placeholder">🏝️</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Sweet & Easy</span>
+          <span class="card-method">SHAKE</span>
+        </div>
+        <h3>Mai Tai</h3>
+        <p class="card-subtitle">Tiki Classic</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> aged rum</li>
+          <li><span class="ing-amount">0.75 oz</span> Cointreau</li>
+          <li><span class="ing-amount">0.75 oz</span> fresh lime juice</li>
+          <li><span class="ing-amount">0.5 oz</span> orgeat</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Shake all ingredients hard 10–15 seconds</li>
+            <li>Strain over crushed ice</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🌿</span> Mint + lime wheel</span>
+          <span class="card-pill"><span>🥃</span> Tiki mug</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── LIGHT & REFRESHING ── -->
+  <div class="section-header" id="light-refreshing">
+    <h2>Light & Refreshing</h2>
+    <span class="section-tag" style="background:var(--green)">Low ABV</span>
+  </div>
+  <div class="cards">
+
+    <!-- Mojito -->
+    <div class="card">
+      <img class="card-img"
+           src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Mojito_cocktail.jpg/400px-Mojito_cocktail.jpg"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+           alt="Mojito"/>
+      <div class="card-img-placeholder" style="display:none">🌿</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Light & Refreshing</span>
+          <span class="card-method">MUDDLE + BUILD</span>
+        </div>
+        <h3>Mojito</h3>
+        <p class="card-subtitle">Cuba's Refreshing Classic</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> white rum</li>
+          <li><span class="ing-amount">1 oz</span> fresh lime juice</li>
+          <li><span class="ing-amount">0.75 oz</span> simple syrup</li>
+          <li><span class="ing-amount">8–10</span> fresh mint leaves</li>
+          <li><span class="ing-amount">2–3 oz</span> club soda</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Gently muddle mint with simple syrup (don't shred!)</li>
+            <li>Add rum and lime juice</li>
+            <li>Fill with ice, top with club soda, stir gently</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🌿</span> Mint sprig + lime</span>
+          <span class="card-pill"><span>🥤</span> Collins glass</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gin & Tonic -->
+    <div class="card">
+      <div class="card-img-placeholder">🍸</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Light & Refreshing</span>
+          <span class="card-method">BUILD</span>
+        </div>
+        <h3>Gin & Tonic</h3>
+        <p class="card-subtitle">The British Classic</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> gin</li>
+          <li><span class="ing-amount">4–6 oz</span> tonic water</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Fill highball glass with ice</li>
+            <li>Add gin, top with tonic</li>
+            <li>Stir gently (1–2 stirs only)</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍋</span> Lime wedge</span>
+          <span class="card-pill"><span>🥤</span> Highball</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Moscow Mule -->
+    <div class="card">
+      <div class="card-img-placeholder">🍺</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Light & Refreshing</span>
+          <span class="card-method">BUILD</span>
+        </div>
+        <h3>Moscow Mule</h3>
+        <p class="card-subtitle">The Copper Mug Classic</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> vodka</li>
+          <li><span class="ing-amount">0.5 oz</span> fresh lime juice</li>
+          <li><span class="ing-amount">4–6 oz</span> ginger beer</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Fill copper mug with ice</li>
+            <li>Add vodka and lime juice</li>
+            <li>Top with ginger beer, stir gently</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍋</span> Lime wedge</span>
+          <span class="card-pill"><span>🥃</span> Copper mug</span>
+        </div>
+        <div class="variations">
+          <strong>Kentucky →</strong> bourbon &nbsp;|&nbsp; <strong>Dark & Stormy →</strong> dark rum
+        </div>
+      </div>
+    </div>
+
+    <!-- Tom Collins -->
+    <div class="card">
+      <div class="card-img-placeholder">🍋</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Light & Refreshing</span>
+          <span class="card-method">SHAKE + BUILD</span>
+        </div>
+        <h3>Tom Collins</h3>
+        <p class="card-subtitle">The Refreshing Gin Sour</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> gin</li>
+          <li><span class="ing-amount">1 oz</span> fresh lemon juice</li>
+          <li><span class="ing-amount">0.5 oz</span> simple syrup</li>
+          <li><span class="ing-amount">2–3 oz</span> club soda</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Shake gin, lemon, syrup with ice</li>
+            <li>Strain into Collins glass over fresh ice</li>
+            <li>Top with club soda, stir gently</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍋</span> Lemon wheel + cherry</span>
+          <span class="card-pill"><span>🥤</span> Collins glass</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paloma -->
+    <div class="card">
+      <div class="card-img-placeholder">🍊</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Light & Refreshing</span>
+          <span class="card-method">BUILD</span>
+        </div>
+        <h3>Paloma</h3>
+        <p class="card-subtitle">Mexico's Most Popular Cocktail</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> blanco tequila</li>
+          <li><span class="ing-amount">0.5 oz</span> fresh lime juice</li>
+          <li><span class="ing-amount">4 oz</span> grapefruit soda</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Optional: half-salt rim</li>
+            <li>Fill highball with ice, add tequila and lime</li>
+            <li>Top with grapefruit soda, stir gently</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍊</span> Grapefruit wedge</span>
+          <span class="card-pill"><span>🥤</span> Highball</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── BITTER & COMPLEX ── -->
+  <div class="section-header" id="bitter-complex">
+    <h2>Bitter & Complex</h2>
+    <span class="section-tag" style="background:var(--red)">Aperitifs</span>
+  </div>
+  <div class="cards">
+
+    <!-- Aperol Spritz -->
+    <div class="card">
+      <img class="card-img"
+           src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Aperol_Spritz_Cocktail.jpg/400px-Aperol_Spritz_Cocktail.jpg"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+           alt="Aperol Spritz"/>
+      <div class="card-img-placeholder" style="display:none">🍊</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Bitter & Complex</span>
+          <span class="card-method">BUILD</span>
+        </div>
+        <h3>Aperol Spritz</h3>
+        <p class="card-subtitle">Italian Summer</p>
+        <p class="ingredients-label">Ingredients — 3:2:1 ratio</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">3 oz</span> Prosecco</li>
+          <li><span class="ing-amount">2 oz</span> Aperol</li>
+          <li><span class="ing-amount">1 oz</span> club soda</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Fill wine glass with ice</li>
+            <li>Add in 3:2:1 ratio, stir gently</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍊</span> Orange slice</span>
+          <span class="card-pill"><span>🍷</span> Wine glass</span>
+        </div>
+        <div class="variations"><strong>Campari Spritz →</strong> swap Aperol for Campari (more bitter)</div>
+      </div>
+    </div>
+
+    <!-- Sazerac -->
+    <div class="card">
+      <div class="card-img-placeholder">🥃</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Bitter & Complex</span>
+          <span class="card-method">STIR + RINSE</span>
+        </div>
+        <h3>Sazerac</h3>
+        <p class="card-subtitle">New Orleans' Official Cocktail</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> rye whiskey</li>
+          <li><span class="ing-amount">0.25 oz</span> simple syrup</li>
+          <li><span class="ing-amount">3 dashes</span> Peychaud's bitters</li>
+          <li><span class="ing-amount">rinse</span> absinthe</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Rinse chilled rocks glass with absinthe, discard excess</li>
+            <li>Stir rye, syrup, and bitters with ice 30–40 seconds</li>
+            <li>Strain into glass (no ice)</li>
+            <li>Express lemon peel over drink, discard peel</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🍋</span> Lemon peel (discarded)</span>
+          <span class="card-pill"><span>🥃</span> Rocks glass</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── RICH & CREAMY ── -->
+  <div class="section-header" id="rich-creamy">
+    <h2>Rich & Creamy</h2>
+    <span class="section-tag" style="background:#5a3010">Dessert Drinks</span>
+  </div>
+  <div class="cards">
+
+    <!-- Espresso Martini -->
+    <div class="card">
+      <img class="card-img"
+           src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Espresso_martini_cocktail.jpg/400px-Espresso_martini_cocktail.jpg"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+           alt="Espresso Martini"/>
+      <div class="card-img-placeholder" style="display:none">☕</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Rich & Creamy</span>
+          <span class="card-method">SHAKE</span>
+        </div>
+        <h3>Espresso Martini</h3>
+        <p class="card-subtitle">Caffeinated Elegance</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">2 oz</span> vodka</li>
+          <li><span class="ing-amount">1 oz</span> Kahlúa</li>
+          <li><span class="ing-amount">1 oz</span> fresh espresso (cooled)</li>
+          <li><span class="ing-amount">0.25 oz</span> simple syrup</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Cool espresso to room temp first</li>
+            <li>Shake HARD 15–20 seconds (creates foam)</li>
+            <li>Strain into chilled martini glass</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>☕</span> 3 coffee beans</span>
+          <span class="card-pill"><span>🥂</span> Martini or coupe</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brandy Alexander -->
+    <div class="card">
+      <div class="card-img-placeholder">🍫</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-category">Rich & Creamy</span>
+          <span class="card-method">SHAKE</span>
+        </div>
+        <h3>Brandy Alexander</h3>
+        <p class="card-subtitle">Dessert in a Glass</p>
+        <p class="ingredients-label">Ingredients</p>
+        <ul class="ingredients">
+          <li><span class="ing-amount">1.5 oz</span> brandy or Cognac</li>
+          <li><span class="ing-amount">1 oz</span> dark crème de cacao</li>
+          <li><span class="ing-amount">1 oz</span> heavy cream</li>
+        </ul>
+        <details>
+          <summary>Method</summary>
+          <ol class="steps">
+            <li>Shake all ingredients hard 10–15 seconds</li>
+            <li>Strain into chilled coupe</li>
+          </ol>
+        </details>
+        <div class="card-footer">
+          <span class="card-pill"><span>🌰</span> Fresh nutmeg</span>
+          <span class="card-pill"><span>🥂</span> Coupe</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── BY SPIRIT INDEX ── -->
+  <div class="section-header" id="index">
+    <h2>Quick Index by Spirit</h2>
+  </div>
+  <div class="index-grid">
+    <div class="index-group">
+      <h4>🍶 Vodka</h4>
+      <ul>
+        <li>Vodka Martini</li><li>Cosmopolitan</li><li>Lemon Drop</li>
+        <li>White Russian</li><li>Moscow Mule</li><li>Espresso Martini</li>
+      </ul>
+    </div>
+    <div class="index-group">
+      <h4>🍸 Gin</h4>
+      <ul>
+        <li>Gin Martini</li><li>Gin & Tonic</li><li>Negroni</li>
+        <li>Tom Collins</li><li>Aviation</li><li>Gimlet</li>
+      </ul>
+    </div>
+    <div class="index-group">
+      <h4>🥃 Rum</h4>
+      <ul>
+        <li>Mojito</li><li>Daiquiri</li><li>Piña Colada</li>
+        <li>Mai Tai</li><li>Dark & Stormy</li>
+      </ul>
+    </div>
+    <div class="index-group">
+      <h4>🌵 Tequila</h4>
+      <ul>
+        <li>Margarita</li><li>Paloma</li><li>Tequila Sunrise</li>
+        <li>Long Island Iced Tea</li><li>Mexican Mule</li>
+      </ul>
+    </div>
+    <div class="index-group">
+      <h4>🥃 Whiskey</h4>
+      <ul>
+        <li>Old Fashioned</li><li>Manhattan</li><li>Whiskey Sour</li>
+        <li>Boulevardier</li><li>Sazerac</li><li>Mint Julep</li>
+      </ul>
+    </div>
+    <div class="index-group">
+      <h4>🍊 Aperitifs</h4>
+      <ul>
+        <li>Aperol Spritz</li><li>Campari Spritz</li><li>Negroni</li>
+      </ul>
+    </div>
+    <div class="index-group">
+      <h4>🍷 Brandy</h4>
+      <ul><li>Brandy Alexander</li><li>Sidecar</li></ul>
+    </div>
+    <div class="index-group">
+      <h4>🍷 Wine-Based</h4>
+      <ul><li>Sangria (Red)</li><li>White Sangria</li><li>Rosé Sangria</li></ul>
+    </div>
+  </div>
+
+  <!-- ── RATIOS ── -->
+  <div class="section-header" id="ratios">
+    <h2>The Golden Ratios</h2>
+  </div>
+  <div class="ratios-grid">
+    <div class="ratio-card">
+      <h4>Classic Sour</h4>
+      <p><strong>2 oz</strong> spirit<br><strong>0.75 oz</strong> citrus<br><strong>0.75 oz</strong> sweetener</p>
+    </div>
+    <div class="ratio-card">
+      <h4>Daiquiri / Margarita</h4>
+      <p><strong>2 oz</strong> spirit<br><strong>1 oz</strong> citrus<br><strong>0.75 oz</strong> sweetener</p>
+    </div>
+    <div class="ratio-card">
+      <h4>Equal Parts</h4>
+      <p>Negroni: <strong>1:1:1</strong><br>Last Word: <strong>¾:¾:¾:¾</strong></p>
+    </div>
+    <div class="ratio-card">
+      <h4>Martini Range</h4>
+      <p>Classic: <strong>5:1</strong><br>Dry: <strong>6:1 or rinse</strong><br>Wet: <strong>2:1</strong><br>50/50: <strong>equal</strong></p>
+    </div>
+    <div class="ratio-card">
+      <h4>Adjusting to Taste</h4>
+      <p>Too sweet → more citrus<br>Too sour → more syrup<br>Too strong → more mixer<br>Too bitter → add syrup</p>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>These are templates. Once you master them, adjust to your taste.</p>
+</footer>
+
+</body>
+</html>

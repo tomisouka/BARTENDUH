@@ -1,0 +1,3 @@
+cd rabbit/root/projeccts/onit/bartending
+rm -r bartending.zip 
+zip -r bartending.zip . -x "node_modules/*"
