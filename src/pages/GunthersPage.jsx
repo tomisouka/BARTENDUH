@@ -664,7 +664,7 @@ export default function GunthersPage() {
 
             <div className="gunthers-fade4" style={{ display:"flex",alignItems:"center",gap:16,margin:"30px auto 0",maxWidth:280 }}>
               <div style={{ flex:1,height:1,background:`linear-gradient(to right,transparent,${C.goldD})` }}/>
-              <span style={{ fontFamily:mono,fontSize:14,color:C.goldD,letterSpacing:"0.22em" }}>EST. BAKER ST.</span>
+              <span style={{ fontFamily:mono,fontSize:14,color:C.goldD,letterSpacing:"0.22em" }}>EST. Gunthers ST.</span>
               <div style={{ flex:1,height:1,background:`linear-gradient(to left,transparent,${C.goldD})` }}/>
             </div>
           </div>
