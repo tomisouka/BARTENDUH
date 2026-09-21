@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { T } from "./theme";
 
 import TechniquesPage  from "./pages/TechniquesPage";
@@ -22,8 +22,6 @@ import FlavorProfilesPage   from "./pages/FlavorProfilesPage";
 import WineRegionsPage      from "./pages/WineRegionsPage";
 import ModifiersPage           from "./pages/ModifiersPage";
 import CocktailKnowledgePage  from "./pages/CocktailKnowledgePage";
-import ImageManagerPage  from "./pages/ImageManagerPage";
-import TicketsPage       from "./pages/TicketsPage";
 import AllBrandsPage    from "./pages/AllBrandsPage";
 import CoffeeTreePage    from "./pages/CoffeeTreePage";
 import BrewMethodsPage   from "./pages/BrewMethodsPage";
@@ -32,6 +30,15 @@ import CoffeeQuizPage    from "./pages/CoffeeQuizPage";
 import CoffeeBrandsPage  from "./pages/CoffeeBrandsPage";
 import CoffeeBeansPage   from "./pages/CoffeeBeansPage";
 import TastingProfilePage from "./pages/TastingProfilePage";
+
+// ── Dev-only tools ──────────────────────────────────────────────────────────
+// Image Manager and Dev Tickets are local admin utilities. `import.meta.env.DEV`
+// is true under `pnpm dev` and false in `pnpm build`, so in the deployed site the
+// dynamic imports below are dead-code-eliminated: the pages aren't in the bundle,
+// aren't reachable from the menu, and can't be opened by visitors.
+const SHOW_TOOLS = import.meta.env.DEV;
+const ImageManagerPage = SHOW_TOOLS ? lazy(() => import("./pages/ImageManagerPage")) : null;
+const TicketsPage      = SHOW_TOOLS ? lazy(() => import("./pages/TicketsPage"))      : null;
 
 const GROUPS = [
   {
@@ -91,6 +98,10 @@ const GROUPS = [
       { id:"tasting",    title:"Beer & Wine Profiles",       emoji:"🎨", color:"#9b6a2a", desc:"Color, flavor, and tasting notes for every style",              page:TastingProfilePage },
     ],
   },
+];
+
+// Only added to the menu in dev (see SHOW_TOOLS above).
+const TOOLS_GROUP =
   {
     label: "Tools",
     emoji: "🛠️",
@@ -99,9 +110,10 @@ const GROUPS = [
       { id:"imgmgr",   title:"Image Manager", emoji:"🖼️", color:"#8B7BA8", desc:"Source and manage bottle images for every brand", page:ImageManagerPage },
       { id:"tickets",  title:"Dev Tickets",    emoji:"🎫", color:"#4A90A4", desc:"Todo tracker — open bugs, features, and refactors", page:TicketsPage },
     ],
-  },
-];
-const SECTIONS = GROUPS.flatMap(g => g.sections);
+  };
+
+const ALL_GROUPS = SHOW_TOOLS ? [...GROUPS, TOOLS_GROUP] : GROUPS;
+const SECTIONS = ALL_GROUPS.flatMap(g => g.sections);
 
 function DashboardCard({ section, onClick, index }) {
   const [hov, setHov] = useState(false);
@@ -233,7 +245,9 @@ function SectionShell({ section, onBack }) {
       </div>
 
       <div style={{ maxWidth:900, margin:"0 auto", padding:"clamp(20px, 4vw, 40px) clamp(16px, 4vw, 32px) 80px" }}>
-        {PageComponent ? <PageComponent accentColor={section.color} section={section} /> : <PlaceholderPage section={section} />}
+        <Suspense fallback={null}>
+          {PageComponent ? <PageComponent accentColor={section.color} section={section} /> : <PlaceholderPage section={section} />}
+        </Suspense>
       </div>
     </div>
   );
@@ -366,7 +380,7 @@ export default function App() {
 
         {/* Group list */}
         <main style={{ maxWidth:700, margin:"0 auto", padding:"0 16px 80px", display:"flex", flexDirection:"column", gap:10 }}>
-          {GROUPS.map((g, i) => (
+          {ALL_GROUPS.map((g, i) => (
             <GroupCard key={g.label} group={g} index={i} onClick={() => setActiveGroup(g)} />
           ))}
         </main>
